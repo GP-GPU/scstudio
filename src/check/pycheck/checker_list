@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+CHECK="Deadlock Livelock Acyclic FIFO"

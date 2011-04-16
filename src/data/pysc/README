@@ -1,0 +1,15 @@
+This directory contains library for writing high-level checking algorithms and ExportFormatter for the library.
+
+Several predefined example reproducer scripts exists:
+repr_deadlock.py  -- for deadlock checker
+repr_livelock.py  -- for livelock checker
+repr_acyclic.py   -- for acyclic checker
+repr_fifo.py      -- for fifo checker
+repr_deadlock2.py -- for deadlock checker
+repr_livelock2.py -- for livelock checker
+repr_acyclic2.py  -- for acyclic checker
+repr_fifo2.py     -- for fifo checker
+
+To run the reproducers you can use any valid python executable (python2+ compatible or python3 compatible(preferred)).
+For example:
+/usr/bin/python3 repr_deadlock.py
