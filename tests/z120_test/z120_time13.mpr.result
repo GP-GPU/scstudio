@@ -1,0 +1,20 @@
+Warning 24: Time information to nonexisting reference node: L2
+OK: z120_time13 is correct, should be correct
+
+mscdocument z120_time13;
+msc Stranka_1;
+initial connect L0, L1;
+L0: reference A connect L2;
+L1: reference B connect L2;
+L2: final;
+endmsc;
+msc A;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;
+msc B;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;

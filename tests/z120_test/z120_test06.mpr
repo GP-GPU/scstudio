@@ -1,0 +1,14 @@
+/*********************************************
+Simple bMSC (event driven notification)
+*********************************************/
+
+msc Strnka1;
+I1: instance;
+I1: out M1 to I2;
+I1: out M1 to I2;
+I1: endinstance;
+I2: instance;
+I2: in M1 from I1;
+I2: in M1 from I1;
+I2: endinstance;
+endmsc;

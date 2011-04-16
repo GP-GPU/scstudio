@@ -1,0 +1,18 @@
+msc Flow2;
+inst A;
+inst B;
+A: instance;
+out m,0 to B;
+out m,1 to B;
+in n,2 from B;
+in n,3 from B;
+out m,4 to B;
+endinstance;
+B: instance;
+in m,0 from A;
+in m,1 from A;
+out n,2 to A;
+out n,3 to A;
+in m,4 from A;
+endinstance;
+endmsc;

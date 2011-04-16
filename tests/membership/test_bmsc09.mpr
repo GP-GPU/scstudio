@@ -1,0 +1,17 @@
+msc feature;
+inst server;
+inst client;
+
+
+server: instance;
+out aaa,0 to client;
+in bbb,1 from client;
+in ccc,2 from client;
+endinstance;
+
+client: instance;
+in aaa,0 from server;
+out bbb,1 to server;
+out ccc,2 to server;
+endinstance;
+endmsc;

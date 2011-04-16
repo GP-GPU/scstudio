@@ -1,0 +1,18 @@
+msc Spec;
+inst A;
+inst B;
+text 'Diff algorithm bug:       Flow Spec and specification Flow2';
+text 'Diff algorithm TODO:       Set position to a new instance       (Flow 3 and Spec)';
+A: instance;
+in n,0 from B;
+in n,1 from B;
+out m,2 to B;
+in n,3 from B;
+endinstance;
+B: instance;
+out n,0 to A;
+out n,1 to A;
+in m,2 from A;
+out n,3 to A;
+endinstance;
+endmsc;

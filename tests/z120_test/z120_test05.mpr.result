@@ -1,0 +1,15 @@
+OK: z120_test05 is correct, should be correct
+
+mscdocument z120_test05;
+msc pok2;
+inst p1;
+inst p2;
+p1: instance;
+out a,0 to p2;
+in a,1 from p2;
+endinstance;
+p2: instance;
+in a,0 from p1;
+out a,1 to p1;
+endinstance;
+endmsc;

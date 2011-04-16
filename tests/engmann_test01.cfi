@@ -1,0 +1,27 @@
+# Input-File for PktMM callflow
+
+# Title
+title: Basic PktMM Message Flow           
+
+# Nodes (may be more than actually involved)
+node: 10.0.0.1 AM
+node: 10.0.0.2 PCS
+node: 10.0.0.3 CMTS
+node: 10.0.0.4 RKS 
+
+
+# Messages
+# From To Message; Keine Leerzeichen!
+
+
+AM PCS PKTMM3:GATE_SET
+PCS CMTS PKTMM2:GATE_SET
+CMTS PCS PKTMM2:GATE_SET_ACK
+PCS AM PKTMM3:GATE_SET_ACK
+PCS RKS PKTMM4:ACC_REQ(POLICY_REQ)
+RKS PCS PKTMM4:ACC_RSP
+
+
+
+
+

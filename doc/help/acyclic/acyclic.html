@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Acyclic property</title>
+    <meta name="author" content="Martin Chmelik" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>Acyclic property</h1>
+    <p>
+      ensures that there is no cyclic dependency among events in an BMSC. Such a
+      dependency is erroneous, because it requires to wait with sending a
+      message until it is received. An example of such BMSC design can be seen
+      in the following figure:
+    </p>
+      <ul class="gallery">
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/cyclic_simple.png" width="250"
+              alt="Cyclic BMSC" title="Cyclic BMSC" />
+            </li>
+            <li class="caption">
+              Cyclic design
+            </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/cyclic_result.png" width="250"
+              alt="Cyclic BMSC" title="Cyclic BMSC" />
+            </li>
+            <li class="caption">
+              Highlighted cyclic dependency
+            </li>
+          </ul>
+        </li>
+      </ul>
+    <p>
+      Sending message <i>m2</i> may not be done until message <i>m1</i>
+      is received, but message <i>m1</i> may not be send until message
+      <i>m2</i> is received.
+    </p>
+    SCStudio highlights the cyclic dependency: A more tricky example of an
+    acyclic design is depicted on the following figure. There is a coregion box
+    on the <i>Instance p</i> which contains send of the message <i>m2</i>
+    and receive of the message <i>m1</i>. From the semantics of
+    coregion it follows that <i>m1, m2</i> are unordered. Thus we can
+    perform first <i>m1</i> and then <i> m2 </i> and there is
+    no cyclic dependency.
+      <ul class="gallery">
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/acyclic.png" width="250"
+              alt="Acyclic BMSC" title="Acyclic BMSC" />
+            </li>
+            <li class="caption">
+              Acyclic design
+            </li>
+          </ul>
+        </li>
+      </ul>
+  </div>
+  </body>
+</html>

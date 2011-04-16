@@ -1,0 +1,16 @@
+OK: z120_test22 is correct, should be correct
+
+mscdocument z120_test22;
+msc setup_attach;
+initial connect L0;
+L0: condition when disconnected connect L1;
+L1: connect L2, L3;
+L2: reference failure connect L0;
+L3: reference connection connect L4;
+L4: condition connected connect L5;
+L5: final;
+endmsc;
+msc connection;
+endmsc;
+msc failure;
+endmsc;

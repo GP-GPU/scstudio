@@ -1,0 +1,37 @@
+z120_time35.mpr[18,6] Cannot match to any predicted input.
+Warning: String conversion: empty time interval
+z120_time35.mpr[19,6] Cannot match to any predicted input.
+z120_time35.mpr[22,6] Cannot match to any predicted input.
+Warning 05: Complete message (NAME,1) with only one event
+Warning 05: Complete message (NAME,2) with only one event
+Warning 20: MSC (Subprocess) has unterminated 1 instance
+OK: z120_time35 is correct, should be correct
+
+mscdocument z120_time35;
+msc Main;
+initial connect L0;
+L0: connect L1, L2;
+L1: reference Subprocess connect L3;
+L2: reference Subprocess time [1,2);
+ top bottom L1 (1,10);
+ connect L1;
+L3: final;
+endmsc;
+msc Subprocess;
+inst P1;
+inst P2;
+P1: instance;
+out NAME,0 to P2;
+endinstance;
+P2: instance;
+concurrent;
+label e0;
+in NAME,0 from P1 before e1;
+time e2 [12];
+label e1;
+in NAME,1 from found;
+endconcurrent;
+label e2;
+out NAME,2 to lost;
+endinstance;
+endmsc;

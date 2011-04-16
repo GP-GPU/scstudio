@@ -1,0 +1,35 @@
+/***********************************************
+Example of MSC where two MSC has the same name and one reference is to nondefined MSC.
+***********************************************/
+
+mscdocument Vykres2;
+msc Stranka_1;
+initial connect L0;
+L0: reference One connect L1;
+L1: reference Two connect L2;
+L2: final;
+endmsc;
+
+msc One;
+A: instance;
+B: instance;
+A: in A,1 from found;
+A: out jedna,2 to B;
+B: in jedna,2 from A;
+A: concurrent;
+A: out B1 to B;
+B: in B1 from A;
+A: out B,4 to lost;
+A: endconcurrent;
+A: endinstance;
+B: endinstance;
+endmsc;
+
+msc Two;
+ONE: instance;
+TWO: instance;
+ONE: out a,1 to TWO;
+TWO: in a,1 from ONE;
+ONE: endinstance;
+TWO: endinstance;
+endmsc;

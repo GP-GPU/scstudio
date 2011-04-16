@@ -1,0 +1,29 @@
+/******************************************************
+Example of bMSC where two events have the same name (incomplete input message)
+
+parser takes message label e0; in a,0 from NAME2; and wait for second part of the message
+ignores  label e0; in a,0 from NAME2; due to the same name of the event
+ignores  label e0; in a,0 from found before e1; due to the same name of the event
+
+ignores  label e0; out a,0 to NAME1; due to the same name of the event
+at the end parser recognize that the message label e0; in a,0 from NAME2; has only one part
+prints warning and modifies the message to label e0; in a,0 from found;
+******************************************************/
+
+msc Stranka1;
+inst NAME1;
+inst NAME2;
+NAME1: instance;
+concurrent;
+label e1; out b,1 to NAME2 before e0;
+label e0; in a,0 from NAME2;
+label e0; in a,0 from found;
+label e0; in a,0 from found before e1;
+endconcurrent;
+endinstance;
+NAME2: instance;
+label e0; out a,0 to NAME1;
+in b,1 from NAME1;
+endinstance;
+endmsc;
+

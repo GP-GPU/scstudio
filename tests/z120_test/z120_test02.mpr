@@ -1,0 +1,21 @@
+/*
+ * Created by Telelogic SDL 4.4
+ * This test contains
+ * - Comments
+ * - Conditions, references
+ */
+mscdocument z120_test02;
+msc z120_test02;
+expr L2;
+  L1: text 'Comment';
+  L2: connect seq (L3 alt L4);
+  L3: condition STATE1 seq (L5);
+  L4: condition STATE2 seq (L6);
+  L5: (ACTION1) seq (L7);
+  L6: (ACTION2) seq (L8 alt L9);
+  L7: end;
+  L8: (ACTION3A) seq (L2);
+  L9: (ACTION3B) seq (L10);
+  L10: end;
+endmsc;
+

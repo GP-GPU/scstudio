@@ -1,0 +1,15 @@
+mscdocument flow02_7.vsd;
+msc Page_1;
+inst A;
+inst B;
+A: instance;
+in d,0 from B;
+out b,1 to B;
+out c,2 to B;
+endinstance;
+B: instance;
+out d,0 to A;
+in b,1 from A;
+in c,2 from A;
+endinstance;
+endmsc;

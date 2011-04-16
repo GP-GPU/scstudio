@@ -1,0 +1,41 @@
+Warning 02: Unreferenced MSC: Strnka1, bmsc3
+OK: z120_test18 is correct, should be correct
+
+mscdocument z120_test18;
+msc Strnka1;
+initial connect L0;
+L0: reference bmsc1 connect L1;
+L1: final;
+endmsc;
+msc bmsc3;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+out ok,1 to B;
+endinstance;
+B: instance;
+out no,0 to A;
+in ok,1 from A;
+endinstance;
+endmsc;
+msc bmsc1;
+inst A;
+inst B;
+A: instance;
+out yes,0 to B;
+endinstance;
+B: instance;
+in yes,0 from A;
+endinstance;
+endmsc;
+msc bmsc2;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+endinstance;
+B: instance;
+out no,0 to A;
+endinstance;
+endmsc;

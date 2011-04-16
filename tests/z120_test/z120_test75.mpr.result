@@ -1,0 +1,24 @@
+Warning 16: Multiple instances with the same name: NAME
+OK: z120_test75 is correct, should be correct
+
+mscdocument z120_test75;
+msc Stranka_1;
+initial connect L0;
+L0: reference Trick connect L1;
+L1: final;
+endmsc;
+msc Trick;
+inst NAME;
+inst NAME;
+inst NAME;
+NAME: instance;
+out NAME,0 to NAME;
+out NAME,1 to NAME;
+in NAME,0 from NAME;
+in NAME,1 from NAME;
+endinstance;
+NAME: instance;
+endinstance;
+NAME: instance;
+endinstance;
+endmsc;

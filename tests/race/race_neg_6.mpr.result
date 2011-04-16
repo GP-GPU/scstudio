@@ -1,0 +1,56 @@
+Warning: HMSC node without successors violates the Z.120 standard.
+Race Free violated
+OK: race_neg_6 violated Race Free, should be violated
+mscdocument counter_example;
+msc HMSC;
+initial connect L0;
+L0: connect L1;
+L1: reference _1_Client_registration connect L2;
+/* MARKED */
+L2: reference _2_Server_registration connect L3;
+L3: connect L4;
+/* MARKED */
+L4: reference _3_Query_OK;
+endmsc;
+msc _1_Client_registration;
+inst Client;
+inst Proxy;
+Client: instance;
+out Register,0 to Proxy;
+in Response,1 from Proxy;
+endinstance;
+Proxy: instance;
+in Register,0 from Client;
+out Response,1 to Client;
+endinstance;
+endmsc;
+msc _2_Server_registration;
+inst Application_server;
+inst Proxy;
+Application_server: instance;
+in Register,0 from Proxy;
+/* MARKED */
+/* MARKED */
+out Response,1 to Proxy;
+endinstance;
+Proxy: instance;
+out Register,0 to Application_server;
+/* MARKED */
+in Response,1 from Application_server;
+endinstance;
+endmsc;
+msc _3_Query_OK;
+inst Client;
+inst Application_server;
+Client: instance;
+/* MARKED */
+out Message,0 to Application_server;
+in Response,1 from Application_server;
+endinstance;
+Application_server: instance;
+/* MARKED */
+/* MARKED */
+in Message,0 from Client;
+out Response,1 to Client;
+endinstance;
+endmsc;

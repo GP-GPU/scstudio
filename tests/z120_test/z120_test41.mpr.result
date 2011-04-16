@@ -1,0 +1,15 @@
+Warning 19: Message without label on the instance (ONE)
+Warning 19: Message without label on the instance (TWO)
+OK: z120_test41 is correct, should be correct
+
+mscdocument z120_test41;
+msc NoName;
+inst ONE;
+inst TWO;
+ONE: instance;
+out ,0 to lost;
+endinstance;
+TWO: instance;
+in ,1 from found;
+endinstance;
+endmsc;

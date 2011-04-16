@@ -1,0 +1,30 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+msc Triskac;
+inst A;
+inst B;
+A: instance;
+in ccc,0 from B;
+endinstance;
+B: instance;
+out ccc,0 to A;
+endinstance;
+endmsc;

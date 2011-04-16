@@ -1,0 +1,8 @@
+OK: z120_test52 is correct, should be correct
+
+mscdocument z120_test52;
+msc One;
+initial connect L0;
+L0: condition access, a connect L1;
+L1: final;
+endmsc;

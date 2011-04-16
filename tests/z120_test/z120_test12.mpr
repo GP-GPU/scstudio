@@ -1,0 +1,35 @@
+/*************************************************
+Example of bMSC with two coretions on instances
+*************************************************/
+
+mscdocument test11.vsd;
+msc Strnka1;
+inst A;
+inst B;
+A: instance;
+concurrent;
+out ano,0 to B;
+out ano,1 to B;
+in nie,2 from B;
+endconcurrent;
+concurrent;
+out micron,3 to B;
+out rad,4 to lost;
+endconcurrent;
+in dan,5 from B;
+in track,6 from B;
+endinstance;
+B: instance;
+concurrent;
+in ano,1 from A;
+out nie,2 to A;
+in ano,0 from A;
+endconcurrent;
+in micron,3 from A;
+concurrent;
+out dan,5 to A;
+endconcurrent;
+out track,6 to A;
+in rad,7 from found;
+endinstance;
+endmsc;

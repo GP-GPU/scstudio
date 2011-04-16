@@ -1,0 +1,13 @@
+msc Setup;
+inst NAME1;
+inst NAME2;
+NAME1: instance;
+out FTP,0 to NAME2;
+in HTTP,1 from NAME2;
+endinstance;
+NAME2: instance;
+in FTP,0 from NAME1;
+out HTTP,1 to NAME1;
+endinstance;
+endmsc;
+

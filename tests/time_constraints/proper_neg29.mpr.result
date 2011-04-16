@@ -1,0 +1,22 @@
+Warning: String conversion: [7] is not valid interval.
+OK: proper_neg29 is correct, should be correct
+
+mscdocument proper_neg29;
+msc Page_1;
+inst p;
+inst q;
+p: instance;
+label e0;
+out NAME,0 to q;
+time e1 [0,5), e2 [0];
+label e1;
+out NAME,1 to q;
+time e3 [100,200);
+endinstance;
+q: instance;
+label e2;
+in NAME,0 from p;
+label e3;
+in NAME,1 from p;
+endinstance;
+endmsc;

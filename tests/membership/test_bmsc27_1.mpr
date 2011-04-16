@@ -1,0 +1,15 @@
+mscdocument Drawing3;
+msc Page_1;
+inst Server;
+inst Client;
+Server: instance;
+in Http_request,0 from Client;
+out object,1 to Client;
+in result,2 from Client;
+endinstance;
+Client: instance;
+out Http_request,0 to Server;
+in object,1 from Server;
+out result,2 to Server;
+endinstance;
+endmsc;

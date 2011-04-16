@@ -1,0 +1,36 @@
+z120_test65.mpr[13,7] Cannot match to any predicted input.
+Warning 16: Multiple instances with the same name: NAME
+Warning 02: Unreferenced MSC: One, Stranka_1, Two
+OK: z120_test65 is correct, should be correct
+
+mscdocument z120_test65;
+msc One;
+initial connect L0;
+L0: condition access connect L1;
+L1: final;
+endmsc;
+msc Stranka_1;
+initial connect L0;
+L0: reference Trick connect L1;
+L1: final;
+endmsc;
+msc Two;
+inst Second;
+inst First;
+Second: instance;
+out true,0 to First;
+endinstance;
+First: instance;
+in true,0 from Second;
+endinstance;
+endmsc;
+msc Trick;
+inst NAME;
+inst NAME;
+NAME: instance;
+out NAME,0 to NAME;
+in NAME,0 from NAME;
+endinstance;
+NAME: instance;
+endinstance;
+endmsc;

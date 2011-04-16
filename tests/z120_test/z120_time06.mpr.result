@@ -1,0 +1,31 @@
+OK: z120_time06 is correct, should be correct
+
+mscdocument z120_time06;
+msc Process;
+initial connect L0;
+L0: reference Event top top L1 [3];
+ bottom bottom L1 origin [4];
+ connect L1;
+L1: reference Event connect L2;
+L2: final;
+endmsc;
+msc Event;
+inst Client;
+inst Server;
+Client: instance;
+label e0;
+out INVITE,0 to Server;
+time e1 [1];
+label e1;
+in 200_OK,1 from Server;
+out ACK,2 to Server;
+endinstance;
+Server: instance;
+label e2;
+in INVITE,0 from Client;
+time e3 origin [2];
+out 200_OK,1 to Client;
+label e3;
+in ACK,2 from Client;
+endinstance;
+endmsc;

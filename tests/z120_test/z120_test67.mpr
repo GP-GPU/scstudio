@@ -1,0 +1,45 @@
+/*************************************************
+Example of HMSC with references to bMSC (unordered bMSC definitions)
+
+bmsc1: doesn't finish two instances.
+*************************************************/
+
+mscdocument Vkres1;
+msc Strnka1;
+initial connect L0;
+L0: connect L1, L2;
+L1: reference bmsc2 connect L3;
+L2: reference bmsc1 connect L3;
+L3: reference bmsc3 connect L4;
+L4: final;
+endmsc;
+msc bmsc1;
+inst A;
+inst B;
+A: instance;
+out yes,0 to B;
+B: instance;
+in yes,0 from A;
+endmsc;
+msc bmsc2;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+endinstance;
+B: instance;
+out no,0 to A;
+endinstance;
+endmsc;
+msc bmsc3;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+out ok,1 to B;
+endinstance;
+B: instance;
+out no,0 to A;
+in ok,1 from A;
+endinstance;
+endmsc;

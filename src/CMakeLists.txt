@@ -1,0 +1,18 @@
+ADD_SUBDIRECTORY(data)
+ADD_SUBDIRECTORY(check)
+ADD_SUBDIRECTORY(membership)
+
+OPTION(BUILD_MONTECARLO "Enable to build Monte Carlo simulation module." ON)
+IF(BUILD_MONTECARLO)
+ADD_SUBDIRECTORY(montecarlo)
+ENDIF(BUILD_MONTECARLO)
+
+IF (WIN32)
+  FIND_PACKAGE(Excel)
+ENDIF(WIN32)
+
+CONFIGURE_FILE(
+  ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
+# $Id: CMakeLists.txt 608 2010-02-20 22:30:09Z gotthardp $

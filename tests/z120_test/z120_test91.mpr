@@ -1,0 +1,20 @@
+/***************************************************** 
+Simple test of bmsc (event driven notification)
+
+******************************************************/
+
+ms!cdocument bbb;
+msc pok2;
+A: instance;
+B: instance;
+A: in A,1 from found;
+A: out jedna,2 to B;
+B: in jedna,2 from A;
+A: concurrent;
+A: out B1,3 to B;
+B: in B1,3 from A;
+A: out B,4 to lost;
+A: endconcurrent;
+A: endinstance;
+B: endinstance;
+endmsc;

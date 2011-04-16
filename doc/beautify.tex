@@ -1,0 +1,234 @@
+% $Id: $
+
+\documentclass{article}
+\usepackage[plainpages=false, pdfpagelabels]{hyperref}
+\usepackage[pdftex]{graphicx,color}
+\usepackage{algorithmic}
+\usepackage{algorithm, verbatim}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\type}{{\tau}}
+\newcommand{\proc}{{P}}
+\newcommand{\procSet}{{\cal P}}
+\newcommand{\events}{{\cal E}}
+\newcommand{\match}{{\cal M}}
+\newcommand{\coregs}{{\cal C}}
+\newcommand{\genord}{{\cal G}}
+\newcommand{\MSCmap}{{\it L}}
+\newcommand{\MSCs}{{\cal L}}
+\newcommand{\timerSet}{{\cal T}}
+\newcommand{\timerMSGSet}{{{\cal T}_{MSG}}}
+\newcommand{\intervalSet}{{\cal I}}
+\newcommand{\intConstraintSet}{{\cal K}}
+\newcommand{\intConstraintMSGSet}{{\cal K}_{MSG}}
+\newcommand{\maxEvents }{{\it{Max}}}
+\newcommand{\minEvents }{{\it{Min}}}
+\newcommand{\solutionSet }{{\cal S}}
+\newcommand{\timingAssignment }{{\iota}}
+\newcommand{\timingAssignmentMSG}{{{\iota}_{MSG}}}
+\usepackage{amsmath, amsthm, amssymb}
+
+\begin{document}
+
+\section*{Beautify}
+The goal is to redraw a given \emph{bMSC} $ M =
+(E,<,\procSet,\type,\proc,\match,\coregs,\genord,\intConstraintSet, \timerSet)$
+such that all messages will be horizontal if possible.
+
+%\begin{algorithm}
+%\caption{Beautify(bMSC $M$)}
+\begin{algorithmic}[1]
+
+\STATE
+\STATE \textbf{Input} bMSC $M$
+\STATE \textbf{Output} bMSC $M$ with horizontal messages (if possible)
+\STATE 
+
+\STATE set $horizontal \leftarrow \{\}$;
+\STATE set $oblique \leftarrow \{\}$;
+\STATE event $e, e', e\_global$;
+\STATE bMSC $N$;
+\STATE int $gap$;
+\STATE instance $p, i$;
+\STATE
+
+\STATE $M.put\_events\_up()$;
+\FORALL{$q$ $\in$ instances of $M$}
+\STATE \COMMENT {events those messages have not been worked yet}
+\FOR{$e$ $\in$ events of $q$, $e.get\_message() \not \in horizontal$,  $e.get\_message() \not \in oblique$ }
+\STATE $e' \leftarrow e.mached\_event()$;
+\STATE $p \leftarrow e'.get\_instance()$; 
+\STATE
+\STATE \COMMENT {horizontal messages}
+\IF{$e.get\_y() == e'.get\_y()$}
+\STATE $horizontal.add(e.get\_message())$; 
+\ENDIF 
+\STATE
+
+\STATE \COMMENT {nonhorizonte message when message is going up}
+\pagebreak
+\IF{$e.get\_y() > e'.get\_y()$}
+\IF{none event on $p$ between $e.get\_y()$ and $e'.get\_y()$}
+\STATE $e'.set\_y(e.get\_y())$; 
+\STATE $horizontal.add(e.get\_message())$;
+\ELSE
+\STATE $global\_e \leftarrow e$; 
+\STATE $N \leftarrow M.duplication()$;
+\STATE $gap \leftarrow (e.get\_y() - e'.get\_y())$;
+
+
+\FORALL{$i$ $\in$ instance of $M$}
+\STATE $i.set\_atribut(0)$;
+\ENDFOR
+
+\IF{$M.shift(p, e', e, gap, global\_e) == false$}
+\STATE $M \leftarrow N$;
+\STATE $oblique.add(e.get\_message())$;
+\ELSE 
+\STATE $e'.set\_y(e.get\_y())$;
+\STATE $horizontal.add(e.get\_message())$;
+\ENDIF
+
+\ENDIF
+\ENDIF
+\STATE
+
+\STATE \COMMENT {nonhorizonte message when message is going down}
+\IF{$e.get\_y() < e'.get\_y()$}
+\IF{none event on $q$ between $e.get\_y()$ and $e'.get\_y()$}
+\STATE $e.set\_y(e'.get\_y())$; 
+\STATE $horizontal.add(e.get\_message())$;
+\ELSE
+\STATE $global\_e \leftarrow e'$; 
+\STATE $N \leftarrow M.duplication()$;
+\STATE $gap \leftarrow e'.get\_y() - e.get\_y()$;
+
+
+\FORALL{$i$ $\in$ instance of $M$}
+\STATE $i.set\_atribut(0)$;
+\ENDFOR
+
+\IF{$M.shift(q, e, e', gap, global\_e) == false$}
+\STATE $M \leftarrow N$;
+\STATE $oblique.add(e.get\_message())$;
+\ELSE 
+\STATE $e.set\_y(e'.get\_y())$;
+\STATE $horizontal.add(e.get\_message())$;
+\ENDIF
+
+\ENDIF
+\ENDIF
+\STATE
+
+\ENDFOR
+\ENDFOR
+
+\end{algorithmic}
+%\end{algorithm}
+
+\subsection*{Description of algorithm Beautify(bMSC $M$)}
+At first we declare some helping variables.\\
+	$horizontal$		 set of straight arrows \\
+	$oblique$ set of oblique arrows \\
+	$e$			left event of examined arrow \\
+	$e'$		right event (second end) of examined arrow \\
+	$p$			instance where event e' is lying \\
+\\
+Then we call function $put\_events\_up()$ on bMSC $M$. Now we have all events up and for straighten the arrows we will move them down. \\
+For all events of all instances we solve three different situations: \\
+\begin{itemize}
+\item The first situation is when the arrow is straight (lines 19 - 22). It is when $y$ coordinates of both events of arrow are equal. Then we only add this arrow to the variable $horizontal$. \\
+\item The second situation is when the arrow is going up (lines 24 - 44). It is when $y$ coordinate of right event ($e'$) is lower than $y$ coordinate of left event ($e$). If there is no event on instance $p$ (instance where $e'$ is lying) between $y$ coordinates of both events then we can move $e'$ without any other changes and add arrow into $horizontal$. If there is any events we have to move them and all others which relate with $e'$. For moving all events we use function $shift$ and we will do it on bMSC $M$. If it is impossible to move events (there is any crossing) the function $shift$ returns $FALSE$. Then we put $N$ (copy of bMSC $M$ withoud changes) into $M$. When there is not crossing, we move event $e'$ and add arrow to set $horizontal$. Besides this on lines 30 and 32 - 35 we declare helping variable $global\_e$ and set atributs of instances. It is needed for function $shift()$.
+\item The last situation is when the arrow is going down (lines 46 - 66). It is when $y$ coordinate of right event ($e'$) is bigger than left event ($e$). If there is no event on instance $q$ (instance where $e$ is lying) between $y$ coordinates of both events then we can move $e$ and add arrow into $horizontal$. Else we copy $M$ into helping variable $N$ and move all events with function $shift$. If it is impossible (crossing), we put $N$ into $M$. If it is possible, we will move $e$ into same level as $e'$ and add arrow into $horizontal$.  
+\end{itemize}
+   
+
+
+
+\begin{algorithm}
+\caption{shift(instances $q$, event $e'$, event $e$, int $gap$, event $global\_e$)}
+\begin{algorithmic}[1]
+
+\STATE \textbf{Input} bMSC whose events on $q$ are not moved
+\STATE \textbf{Output} TRUE - if it is possible to move events (no crossing), FALSE - if it is impossible to move events (crossing)
+\STATE
+
+\STATE event $f, f'$;
+\STATE instance $j$;
+\STATE
+
+\STATE \COMMENT {events on q, under e'}
+\FOR{(events $f$; $f$ $\in$ $q$; $f.get\_y > e'.get\_y$)}
+\STATE $f' \leftarrow f\_mached\_event()$;
+\STATE $j \leftarrow f'.get\_instance()$; 
+\STATE \COMMENT {oblique arrow can be obliquer}
+\IF{$f.get\_message()$ $\not \in horizontal$}
+\STATE $f.set\_y(f.get\_y() + gap)$;
+\ELSE
+
+\FOR{(events $h; h \in j; h.get\_y() > f'.get\_y()$)}
+\IF{$h == global\_e$}
+\STATE return false;
+\ENDIF
+\ENDFOR
+\STATE
+
+\IF{$j.get\_atribut() == 0$}
+\STATE $j.set\_atribut(1)$;
+\IF{$shift(j,f',f,gap,global\_e)==$false}
+\STATE return false;
+\ENDIF
+\ENDIF
+
+\STATE $f.set\_y(f.get\_y() + gap)$;
+\STATE $f'.set\_y(f'.get\_y() + gap)$;
+
+\ENDIF
+
+\ENDFOR
+
+\STATE return true;
+
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Description of algorithm shift(instances $q$, event $e'$, event $e$, int $gap$, event $global\_e$)}
+We get some atributes.\\
+$q$ is instance on which there is the event which we want to move \\
+$e'$ is the event which we want to move \\
+$e$ is mached event of $e'$ \\
+$gap$ is difference between $y$ coordinations of both events \\
+$global\_e$ is event which will help us to detect crossing two arrows. Its value does not change. \\
+\\
+Function $shift$ tries to move events which are below $e'$ (marked as $f$) and if it is necesarry then also tries to move events relate with $f$ (marked as $f'$).\\
+It does not matter how much oblique a nonhorizontal arrow is. So if arrow with terminal events $f$ and $f'$ does not belong to $horizontal$ we can move event $f$ with no other changes (we do not move $f'$). Then the function retuns TRUE.\\
+If arrow with terminal events $f$ and $f'$ belong to $horizontal$ we have to find out if there is any crossing between any arrows (it is impossible to straighten arrow) or not. If there is any crossing, one of events below $f'$ will be global\_e. We search all events below with recursion of function $shift$.  \\
+Because we do not want to search one instance twice, we will use $atribut$ of instances. If $atribut$ is equal to 1 then we have already searched it.\\
+If we find any crossing the function will return FALSE. 
+
+
+\begin{algorithm}
+\caption{put\_events\_up()}
+\begin{algorithmic}[1]
+
+\STATE int $step \leftarrow 10$;
+\STATE \COMMENT {distance between events}
+\FORALL{$q$ $\in$ instances of $M$}
+\FORALL{$e$ $\in$ events of $q$}
+\STATE $e.set\_y(step)$;
+\STATE $step \leftarrow step + 10$;
+\ENDFOR
+\STATE $step \leftarrow 10$;
+\ENDFOR
+
+
+
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Description of algorithm put\_events\_up()}
+For all instances we put their events up. Between two events of one instance there will be a constant gap. We are doing this because we want to move events only in one direction (down).
+
+
+\end{document}

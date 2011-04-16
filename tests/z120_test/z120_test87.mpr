@@ -1,0 +1,15 @@
+/*
+ * Example of HMSC with condition nodes of various types.
+ */
+
+mscdocument z120_test87;
+msc Stranka_1;
+initial connect L0, L1, L2, L3;
+L0: condition for 27.7% connect L6;
+L1: condition when state2a connect L4;
+L2: condition state1a connect L5;
+L3: condition otherwise connect L6;
+L4: condition when state2b, state2c connect L6;
+L5: condition state1b, state1c connect L6;
+L6: final;
+endmsc;

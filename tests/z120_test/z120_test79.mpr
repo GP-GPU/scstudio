@@ -1,0 +1,34 @@
+/*********************************
+HMSC with three connection nodes with the same name
+*********************************/
+
+mscdocument Vykres1;
+msc Denied;
+inst NAME2;
+inst NAME;
+NAME2: instance;
+out NAME,0 to NAME;
+endinstance;
+NAME: instance;
+in NAME,0 from NAME2;
+endinstance;
+endmsc;
+msc Stranka_1;
+initial connect L0, L1;
+L0: connect L2;
+L0: connect L3;
+L0: connect L4;
+L2: reference Denied connect L4;
+L3: reference Accept connect L4;
+L4: final;
+endmsc;
+msc Accept;
+inst NAME;
+inst NAME1;
+NAME: instance;
+in NAME,0 from NAME1;
+endinstance;
+NAME1: instance;
+out NAME,0 to NAME;
+endinstance;
+endmsc;

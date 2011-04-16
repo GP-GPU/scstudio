@@ -1,0 +1,21 @@
+/* Incorrect time constraint (top bottom) between reference node and final node (forbidden).
+ */
+mscdocument Vykres1;
+msc Stranka_1;
+initial connect L0, L1;
+L0: reference A top bottom L2 [0,inf);
+ connect L2;
+L1: reference B top bottom L2 [0,4);
+ connect L2;
+L2: final;
+endmsc;
+msc A;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;
+msc B;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;

@@ -1,0 +1,18 @@
+# Positive test-cases
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock1.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock2.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock3.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock4.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock5.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock6.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock7.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock8.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock9.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock10.mpr 1)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" nodeadlock11.mpr 1)
+# Negative test-cases
+ADD_CHECKER_TEST(scliveness "Deadlock Free" deadlock1.mpr 0)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" deadlock2.mpr 0)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" deadlock3.mpr 0)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" deadlock4.mpr 0)
+ADD_CHECKER_TEST(scliveness "Deadlock Free" deadlock5.mpr 0)

@@ -1,0 +1,5 @@
+msc One;
+initial connect L0;
+L0: condition access,a connect L1;
+L1: final;
+endmsc;

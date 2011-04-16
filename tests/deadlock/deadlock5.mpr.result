@@ -1,0 +1,18 @@
+Warning: HMSC node without successors violates the Z.120 standard.
+Deadlock Free violated
+OK: deadlock5 violated Deadlock Free, should be violated
+mscdocument counter_example;
+msc Page_1;
+initial connect L0;
+L0: reference A connect L1;
+/* MARKED */
+L1: reference A;
+endmsc;
+msc A;
+inst p;
+inst q;
+p: instance;
+endinstance;
+q: instance;
+endinstance;
+endmsc;

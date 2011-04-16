@@ -1,0 +1,54 @@
+mscdocument rozcvicka_hmsc.vsd;
+msc HMSC;
+initial connect L0;
+L0: reference Registration connect L1;
+L1: connect L2, L3;
+L2: reference Query_OK connect L1;
+L3: final;
+endmsc;
+
+msc Registration;
+initial connect L0;
+L0: reference Client_registration connect L1;
+L1: reference Server_registration connect L2;
+L2: final;
+endmsc;
+
+msc Client_registration;
+inst Client;
+inst Proxy;
+Client: instance;
+out Register,0 to Proxy;
+in Response,1 from Proxy;
+endinstance;
+Proxy: instance;
+in Register,0 from Client;
+out Response,1 to Client;
+endinstance;
+endmsc;
+
+msc Server_registration;
+inst Application_server;
+inst Proxy;
+Application_server: instance;
+in Register,0 from Proxy;
+out Response,1 to Proxy;
+endinstance;
+Proxy: instance;
+out Register,0 to Application_server;
+in Response,1 from Application_server;
+endinstance;
+endmsc;
+
+msc Query_OK;
+inst Client;
+inst Application_server;
+Client: instance;
+out Message,0 to Application_server;
+in Response,1 from Application_server;
+endinstance;
+Application_server: instance;
+in Message,0 from Client;
+out Response,1 to Client;
+endinstance;
+endmsc;

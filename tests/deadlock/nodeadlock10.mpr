@@ -1,0 +1,16 @@
+mscdocument nodeadlock10.vsd;
+msc Page_1;
+initial connect L0;
+L0: reference A connect L1, L2;
+L1: final;
+L2: reference A connect L3;
+L3: reference A connect L2;
+endmsc;
+msc A;
+inst p;
+inst q;
+p: instance;
+endinstance;
+q: instance;
+endinstance;
+endmsc;

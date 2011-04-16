@@ -1,0 +1,23 @@
+Warning: String conversion: [-inf,inf] is not valid interval.
+OK: proper_neg30 is correct, should be correct
+
+mscdocument proper_neg30;
+msc Page_1;
+inst p;
+inst q;
+p: instance;
+label e0;
+out NAME,0 to q;
+time e1 [1];
+label e2;
+out NAME,1 to q;
+time e3 [100];
+endinstance;
+q: instance;
+label e1;
+in NAME,0 from p;
+time e3 [100];
+label e3;
+in NAME,1 from p;
+endinstance;
+endmsc;

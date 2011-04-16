@@ -1,0 +1,12 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=scstudio.chm
+Contents file=scstudio.hhc
+Default topic=frontend.html
+Display compile progress=No
+Language=0x409 Anglictina (Spojene staty)
+Title=Sequence Chart Studio
+
+
+[INFOTYPES]
+

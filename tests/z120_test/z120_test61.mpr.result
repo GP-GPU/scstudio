@@ -1,0 +1,31 @@
+z120_test61.mpr[10,0] Missing ';'.
+z120_test61.mpr[12,0] Missing ';'.
+Warning 05: Complete message (tric,3) with only one event
+Warning 05: Complete message (tric3) with only one event
+OK: z120_test61 is correct, should be correct
+
+mscdocument z120_test61;
+msc Strnka1;
+inst client;
+inst server;
+client: instance;
+concurrent;
+out no,0 to server;
+in know,1 from server;
+endconcurrent;
+out yes,2 to lost;
+concurrent;
+in tric,3 from found;
+endconcurrent;
+in tric,4 from found;
+endinstance;
+server: instance;
+in no,0 from client;
+concurrent;
+out know,1 to client;
+endconcurrent;
+concurrent;
+out tric3,5 to lost;
+endconcurrent;
+endinstance;
+endmsc;

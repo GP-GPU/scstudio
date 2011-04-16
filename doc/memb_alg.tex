@@ -1,0 +1,256 @@
+% $Id: memb_alg.tex 545 2010-01-08 12:30:49Z xrehak $
+
+\documentclass{article}
+\usepackage[plainpages=false, pdfpagelabels]{hyperref}
+\usepackage[pdftex]{graphicx,color}
+\usepackage{algorithmic}
+\usepackage{algorithm, verbatim}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\type}{{\tau}}
+\newcommand{\proc}{{P}}
+\newcommand{\procSet}{{\cal P}}
+\newcommand{\events}{{\cal E}}
+\newcommand{\match}{{\cal M}}
+\newcommand{\coregs}{{\cal C}}
+\newcommand{\genord}{{\cal G}}
+\newcommand{\MSCmap}{{\it L}}
+\newcommand{\MSCs}{{\cal L}}
+\newcommand{\timerSet}{{\cal T}}
+\newcommand{\timerMSGSet}{{{\cal T}_{MSG}}}
+\newcommand{\intervalSet}{{\cal I}}
+\newcommand{\intConstraintSet}{{\cal K}}
+\newcommand{\intConstraintMSGSet}{{\cal K}_{MSG}}
+\newcommand{\maxEvents }{{\it{Max}}}
+\newcommand{\minEvents }{{\it{Min}}}
+\newcommand{\solutionSet }{{\cal S}}
+\newcommand{\timingAssignment }{{\iota}}
+\newcommand{\timingAssignmentMSG}{{{\iota}_{MSG}}}
+\usepackage{amsmath, amsthm, amssymb}
+
+\begin{document}
+
+\section*{Membership problem}
+Given an \emph{MSC} $ M =
+(E,<,\procSet,\type,\proc,\match,\coregs,\genord,\intConstraintSet, \timerSet)$
+with a timing assignment function $\timingAssignment : E \rightarrow \mathbb{R}^{+}$
+and an \emph{MSG} $G = (S, \rightarrow, s_0, s_f, \MSCmap, \MSCs,
+\intConstraintMSGSet, \timerMSGSet )$ the question is whether $M \in
+\mathcal{L}(G)$.
+
+
+\begin{algorithm}
+\caption{Membership}
+\begin{algorithmic}[1]
+
+
+\STATE \textbf{Input} bMSC $M$,  HMSC $H$
+\STATE \textbf{Output} Directed acyclic graph. Each path from initial to terminal vertex is a valid occurence of bMSC $M$
+\STATE 
+\STATE \COMMENT{Attribute initialization}
+\FORALL {$v \in$ nodes of $H$}
+\STATE $v$.attributes $\leftarrow \emptyset$;
+%\STATE v.attributes.DAG \leftarrow \emptyset;
+\ENDFOR
+
+\STATE u $\leftarrow$ initial node of HMSC $H$;
+\STATE u.attributes $\leftarrow \{(\vec{0},NULL)\}$;
+\STATE DFS(u, $\vec{0}$);
+\STATE \textbf{return} u.attributes.get\_DAG($\vec{0}$);
+
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{DFS (vertex, vector)}
+\label{alg:DFS}
+\begin{algorithmic}[1]
+%\STATE \COMMENT{Nested search working on global HMSC structure}
+\STATE \textbf{Input}: vertex where to start, vector = current position in bMSC
+\STATE \textbf{Output}: updated attributes in the HMSC structure
+\STATE
+\STATE \COMMENT{Update information}
+\IF{vertex is terminal and vector points to the bMSC M end}
+\STATE *p $\leftarrow$ new node (p.name $\leftarrow$ vertex, p.next $\leftarrow$ NULL);
+\STATE vertex.attributes.add$ (vector, p)$;
+\STATE 
+\ELSIF{connection is valid}
+\STATE new\_vector $\leftarrow$ vector + current vertex size;
+\STATE 
+\STATE list $\leftarrow$ getNonemptyIndirectSucessors(vertex)
+\FORALL {$u \mid (u,v,t) \in$ list}
+\IF{new\_vector $\not \in$ u.attributes}
+
+\STATE
+\STATE \COMMENT {Recursion}
+
+\STATE u.attributes.add(new\_vector, NULL);
+\STATE DFS(u,new\_vector);
+%\ELSE
+%\STATE vertex.attributes.(vector,DAG) $\leftarrow$ (vector, prepocitany graf);
+
+
+\ENDIF
+\ENDFOR
+\STATE
+\STATE \COMMENT {Retrieve information from DFS}
+%\IF{$\exists$ u: (u,v,t) $\in$ list: u.attributes. getDAG (new\_vector)   $\not =$ NULL}
+\STATE updateDAG(vertex,vector,new\_vector,list)
+%\ENDIF
+
+
+\ENDIF
+
+
+\end{algorithmic}
+\end{algorithm}
+
+In every vertex we mantain a list of pairs (vector, pointer to a graph). Having a pair  $(\vec{v},p)$ at line 24 in Algorithm \ref{alg:DFS} in a node means:
+\begin{itemize}
+\item there exists a path from the initial node to the current node, such that the concatenation of the path is a valid prefix of the input bMSC.
+\item every path from the root to the leaf in the referenced graph represents after concatenation the same bMSC. This bMSC is a valid suffix of the input bMSC from the position determined by $vector$. The graph represents all possible paths from current vertex, that are able to succesfully complete the bMSC.
+\end{itemize}
+
+\begin{algorithm}
+\caption{getNonemptyIndirectSucessors (start)}
+\begin{algorithmic}[1]
+\STATE \textbf{Input}: $start$ vertex
+\STATE \textbf{Output}: list of triples: nonempty indirect vertex $b$, all possible empty bMSCs on the path from start vertex to $b$, true if there is an edge between start and $b$, false otherwise
+\STATE
+%\STATE set $empty \leftarrow \emptyset$
+%\STATE set $border \leftarrow \emptyset$
+\STATE $(empty, border) \leftarrow$ nodeFinder($start$, nonempty reachable by empty);
+
+\FORALL{$b \in border$}
+\STATE $(empty_{b},border_{b}) \leftarrow$ reverseNodeFinder($b$);
+\ENDFOR
+
+\STATE \textbf{return} $\{(b,empty_{b} \cap empty, edge(start,b)) \mid b \in border \}$
+\end{algorithmic}
+\end{algorithm}
+\begin{comment}
+\begin{algorithm}
+\caption{updateDAG(vertex,vector,new\_vector,list)}
+\begin{algorithmic}[1]
+\IF{$\exists$ u: (u,v,t) $\in$ list: u.attributes.getDAG (new\_vector)   $\not =$ NULL}
+ \STATE *p $\leftarrow$ new node (p.name $\leftarrow$ vertex);
+ \FORALL{$u \mid (u,v,t) \in$ list}
+ \IF{$v \mid (u,v,t) = \emptyset$}
+ \STATE p.next.add(u.attributes.getDAG(new\_vector));
+ \ELSE
+ \STATE *q $\leftarrow$ new node (q.name $\leftarrow$ v);
+ \STATE q.next.add(u.attributes.getDAG(new\_vector));
+ \STATE p.next.add(q);
+ \IF{$t \mid (u,v,t)$}
+ \STATE p.next.add(u.attributes.getDAG(new\_vector));
+ \ENDIF
+ \ENDIF
+ \ENDFOR
+
+\ENDIF
+
+\end{algorithmic}
+\end{algorithm}
+\end{comment}
+
+\begin{algorithm}
+\caption{updateDAG(vertex,vector,new\_vector,list)}
+\begin{algorithmic}[1]
+\STATE \textbf{Input}: vertex,vector,new\_vector,list
+\STATE \textbf{Output}: updated attributes in the HMSC structure
+\STATE 
+\FORALL{ (u,v,t) $\in$ list: u.attributes.getDAG (new\_vector) = NULL}
+\STATE list.remove(u,v,t);
+\ENDFOR
+\IF{list nonempty}
+
+ \STATE *p $\leftarrow$ new node (p.name $\leftarrow$ vertex);
+ \STATE vertex.attributes.update(vector,p);
+ \FORALL{$u \mid (u,v,t) \in$ list}
+ \IF{$v \mid (u,v,t) \not = \emptyset$}
+ \STATE \COMMENT{There are possible more nodes with the same name}
+ \STATE *q $\leftarrow$ new node (q.name $\leftarrow$ \#v\#);
+ \STATE q.next.add(u.attributes.getDAG(new\_vector));
+ \STATE p.next.add(q);
+ \ENDIF
+
+  \IF{$t \mid (u,v,t)$}
+ \STATE p.next.add(u.attributes.getDAG(new\_vector));
+ \ENDIF
+ \ENDFOR
+
+\ENDIF
+
+\end{algorithmic}
+\end{algorithm}
+
+
+By the valid connection is understood, that  the bMSC projection determined by vectors (vector and new\_vector) is exactly the same as the MSC in current HMSC node. In the time case all time constraints are satisfied by the timing assignment function of the checked bMSC.
+
+\subsection*{Untimed case}
+Traverse both bMSCs and check the projections on processess.
+
+\subsection*{Timed case}
+\subsubsection*{Input}
+Timed bMSC with exact timed assignment, which conforms causal closure, bMSC with proper time constraints.
+\subsubsection*{Output}
+true if timed bMSC satisfies all timing constraints and timers conform.
+
+\subsubsection*{Algorithm} Traverse bMSC with timing constraints according to causal order and check every timer and time interval constraint whether the time difference of timing assignments of the matching events conforms.
+
+In the HMSC context, it is important to remember not only the vector of bMSC prefix, but also opened timers together with their time interval. We may not connect the graph until it is same  on vectors, timers and time intervals assigned to timers. 
+
+%\begin{algorithm}
+%\caption{getNonemptyIndirectSucessors (vertex)}
+%\begin{algorithmic}[1]
+%\STATE \textbf{Input}: $start$ vertex
+%\STATE \textbf{Output}: list of couples: nonempty indirect vertex $a$, all possible empty bMSCs on the path from start vertex to $a$
+
+%\STATE set $empty \leftarrow \emptyset$
+%\STATE set $border \leftarrow \emptyset$
+%\STATE DFS($start$)
+
+%\FORALL{$b \in border$}
+%\STATE $S_{b} \leftarrow \emptyset$
+%\STATE rDFS($b, S_{b}$)
+%\ENDFOR
+
+%\STATE \textbf{return forall} $b \in border$ $(b,S_b \cap empty, edge(vertex,b))$
+%\end{algorithmic}
+%\end{algorithm}
+
+%\begin{algorithm}
+%\caption{DFS ($vertex$)}
+%\begin{algorithmic}[1]
+%\STATE \COMMENT{runs almost as standard DFS }
+
+%\IF{empty $vertex$}
+%\STATE $empty \leftarrow empty \cup vertex$
+%\FORALL{$w \in vertex$ successors}
+%\STATE DFS($w$)
+%\ENDFOR
+%\ELSE 
+%\STATE $border \leftarrow border \cup vertex$
+%\ENDIF
+%\end{algorithmic}
+%\end{algorithm}
+
+
+
+%\begin{algorithm}
+%\caption{rDFS ($vertex, S_{b}$)}
+%\begin{algorithmic}[1]
+%\STATE \COMMENT{runs almost as standard DFS}
+
+%\IF{empty $vertex$}
+%\STATE $S_b \leftarrow S_b \cup vertex$
+%\FORALL{$w \in vertex$ predecessors}
+%\STATE rDFS($w$)
+%\ENDFOR
+%\ENDIF
+%\end{algorithmic}
+%\end{algorithm}
+
+\end{document}

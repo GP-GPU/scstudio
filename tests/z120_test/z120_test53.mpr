@@ -1,0 +1,19 @@
+/***************************************************
+Example of bMSC with mesages with the same name.
+***************************************************/
+
+msc Stranka1;
+inst W
+inst Q;
+W: instance;
+out a to Q;
+out a to Q;
+out a to Q;
+endinstance;
+Q: instance;
+in a from W;
+in a from W;
+in a from W;
+endinstance;
+endmsc;
+

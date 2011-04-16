@@ -1,0 +1,11 @@
+z120_test62.mpr[10,5] Missing elements.
+Warning 20: MSC (test01) has unterminated 1 instance
+OK: z120_test62 is correct, should be correct
+
+mscdocument z120_test62;
+msc test01;
+inst ONE;
+ONE: instance;
+in LEFT,0 from found;
+endinstance;
+endmsc;

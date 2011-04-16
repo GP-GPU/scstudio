@@ -1,0 +1,27 @@
+FIFO violated
+OK: nonfifo2 violated FIFO, should be violated
+mscdocument counter_example;
+msc Page_1;
+inst A;
+inst C;
+inst B;
+inst D;
+A: instance;
+concurrent;
+/* MARKED */
+out m2,0 to C;
+/* MARKED */
+out m1,1 to C;
+endconcurrent;
+endinstance;
+C: instance;
+/* MARKED */
+in m1,1 from A;
+/* MARKED */
+in m2,0 from A;
+endinstance;
+B: instance;
+endinstance;
+D: instance;
+endinstance;
+endmsc;

@@ -1,0 +1,30 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+msc mystery;
+inst A;
+inst B;
+A: instance;
+out bbb,0 to B;
+endinstance;
+B: instance;
+in bbb,0 from A;
+endinstance;
+endmsc;
+

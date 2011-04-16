@@ -1,0 +1,28 @@
+Universal Boundedness violated
+OK: unbounded2 violated Universal Boundedness, should be violated
+mscdocument counter_example;
+msc Page_1;
+initial connect L0;
+L0: reference bMSC connect L1;
+L1: reference bMSC2 connect L0;
+endmsc;
+msc bMSC;
+inst p;
+inst q;
+p: instance;
+out a,0 to q;
+endinstance;
+q: instance;
+in a,0 from p;
+endinstance;
+endmsc;
+msc bMSC2;
+inst p;
+inst q;
+p: instance;
+out a,0 to q;
+endinstance;
+q: instance;
+in a,0 from p;
+endinstance;
+endmsc;

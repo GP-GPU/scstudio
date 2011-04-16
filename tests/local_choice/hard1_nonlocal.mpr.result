@@ -1,0 +1,22 @@
+Warning: HMSC node without successors violates the Z.120 standard.
+Local Choice violated
+OK: hard1_nonlocal violated Local Choice, should be violated
+mscdocument counter_example;
+msc HMSC;
+initial connect L0;
+/* MARKED */
+L0: reference A;
+endmsc;
+msc A;
+inst A;
+inst B;
+inst C;
+A: instance;
+out m1,0 to B;
+endinstance;
+B: instance;
+in m1,0 from A;
+endinstance;
+C: instance;
+endinstance;
+endmsc;

@@ -1,0 +1,20 @@
+Warning 23: Instance (A) has not been started (e.g. A: instance;)
+OK: z120_test54 is correct, should be correct
+
+mscdocument z120_test54;
+msc pok2;
+inst B;
+inst A;
+B: instance;
+in jedna,0 from A;
+in B1,1 from A;
+endinstance;
+A: instance;
+in A,2 from found;
+out jedna,0 to B;
+concurrent;
+out B1,1 to B;
+out B,3 to lost;
+endconcurrent;
+endinstance;
+endmsc;

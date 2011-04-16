@@ -1,0 +1,17 @@
+msc Page_1;
+initial connect L0;
+L0: reference Test connect L1;
+L1: final;
+endmsc;
+
+msc Test;
+A:instance;
+out a,0 to B;
+out a,1 to B;
+endinstance;
+
+B:instance;
+in a,1 from A;
+in a,0 from A;
+endinstance;
+endmsc;

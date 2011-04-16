@@ -1,0 +1,56 @@
+/*
+ * scstudio - Sequence Chart Studio
+ * http://scstudio.sourceforge.net
+ *
+ *      This library is free software; you can redistribute it and/or
+ *      modify it under the terms of the GNU Lesser General Public
+ *      License version 2.1, as published by the Free Software Foundation.
+ *
+ *      This library is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *      Lesser General Public License for more details.
+ *
+ * Copyright (c) 2007-2010 Petr Gotthard <petr.gotthard@centrum.cz>
+ *
+ * $Id: eventsink.idl 546 2010-01-10 14:47:31Z gotthardp $
+ */
+
+// This file will be processed by the MIDL tool to
+// produce the type library (scstudio.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+  object,
+  uuid(85470DF7-41EE-4d18-8E55-458F3C6D3F6B),
+  dual,
+  helpstring("ITestEventSink Interface"),
+  pointer_default(unique)
+]
+interface ITestEventSink : IDispatch
+{
+};
+
+[
+  uuid(8295FFC9-6BB9-4C36-BD5F-FE5B8F0676DA),
+  version(1.0),
+  helpstring("Sequence Chart Studio 1.0 Type Library")
+]
+library SCStudioLib
+{
+  importlib("stdole2.tlb");
+
+  [
+    uuid(8E8B43E6-AB7C-4152-97A8-F9BDBFC8C4F1),
+    helpstring("ITestEventSink Class"),
+    noncreatable
+  ]
+  coclass TestEventSink
+  {
+    [default] interface ITestEventSink;
+  };
+};
+
+// $Id: eventsink.idl 546 2010-01-10 14:47:31Z gotthardp $

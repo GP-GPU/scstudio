@@ -1,0 +1,8 @@
+Warning: HMSC node without successors violates the Z.120 standard.
+Local Choice violated
+OK: simple2_nonlocal violated Local Choice, should be violated
+mscdocument counter_example;
+msc HMSC;
+/* MARKED */
+initial;
+endmsc;

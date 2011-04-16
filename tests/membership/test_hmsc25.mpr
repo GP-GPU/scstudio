@@ -1,0 +1,15 @@
+msc Page_1;
+initial connect L0;
+L0: reference Test connect L1;
+L1: final;
+endmsc;
+
+msc Test;
+A:instance;
+endinstance;
+
+B:instance;
+concurrent;
+endconcurrent;
+endinstance;
+endmsc;

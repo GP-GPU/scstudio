@@ -1,0 +1,17 @@
+mscdocument Drawing1;
+msc NAME;
+inst Server;
+inst Client;
+Server: instance;
+in Http_request,0 from Client;
+concurrent;
+out object,1 to Client;
+in result,2 from Client;
+endconcurrent;
+endinstance;
+Client: instance;
+out Http_request,0 to Server;
+in object,1 from Server;
+out result,2 to Server;
+endinstance;
+endmsc;

@@ -1,0 +1,16 @@
+Warning 08: MSC (Stranka1) has reference to nonexisting node: L3
+Warning 09: Reference to nonexisting MSC: NAME, NAME1
+Warning: HMSC node without successors violates the Z.120 standard.
+OK: z120_test49 is correct, should be correct
+
+mscdocument z120_test49;
+msc Stranka1;
+initial connect L0;
+L0: connect L1, L2;
+L1: reference NAME connect L2;
+L2: reference NAME1;
+endmsc;
+msc NAME;
+endmsc;
+msc NAME1;
+endmsc;

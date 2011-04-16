@@ -1,0 +1,16 @@
+mscdocument cons_pos_1.vsd;
+msc Page_1;
+initial connect L0;
+L0: reference NAME top bottom L1 [0,500]+(1000,inf);
+ connect L2, L1, L3;
+L2: reference NAME time [0,inf);
+ connect L2, L1;
+L1: reference NAME connect L4;
+L3: connect L1;
+L4: final;
+endmsc;
+msc NAME;
+inst r;
+r: instance;
+endinstance;
+endmsc;

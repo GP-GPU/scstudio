@@ -1,0 +1,9 @@
+OK: z120_test23 is correct, should be correct
+
+mscdocument z120_test23;
+msc test01;
+inst ONE;
+ONE: instance;
+in LEFT,0 from found;
+endinstance;
+endmsc;

@@ -1,0 +1,13 @@
+
+
+
+
+
+
+msc Test;
+A:instance;
+endinstance;
+
+B:instance;
+endinstance;
+endmsc;

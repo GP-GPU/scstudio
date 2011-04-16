@@ -1,0 +1,23 @@
+mscdocument Drawing1;
+
+msc Test;
+inst Lock;
+inst Key;
+Lock: instance;
+concurrent;
+in aaa,0 from Key;
+out bbb,1 to Key;
+endconcurrent;
+endinstance;
+Key: instance;
+out aaa,0 to Lock;
+in bbb,1 from Lock;
+endinstance;
+endmsc;
+
+
+msc Page_1;
+initial connect L0;
+L0: reference Test connect L1;
+L1: final;
+endmsc;

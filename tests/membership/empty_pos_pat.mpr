@@ -1,0 +1,15 @@
+mscdocument empty_pos_pat.vsd;
+msc Page-1;
+inst p;
+inst q;
+p: instance;
+out a,0 to q;
+out a,1 to q;
+in b,2 from q;
+endinstance;
+q: instance;
+in a,0 from p;
+in a,1 from p;
+out b,2 to p;
+endinstance;
+endmsc;

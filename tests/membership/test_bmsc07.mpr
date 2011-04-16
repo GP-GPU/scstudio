@@ -1,0 +1,13 @@
+msc mystery;
+inst A;
+inst B;
+A: instance;
+out bbb,0 to B;
+in a,1 from B;
+endinstance;
+B: instance;
+in bbb,0 from A;
+out a,1 to A;
+endinstance;
+endmsc;
+

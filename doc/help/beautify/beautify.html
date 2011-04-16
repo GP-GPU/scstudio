@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Beautify documentation
+    </title>
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+      <h2>
+        Beautify
+      </h2>
+      <p>
+        The main aim of this function is to redraw BMSC to be well-arranged. It
+        is accessible via menu <code>Check -> Drawing -> Beautify</code>.
+      </p>
+      <h3>
+        Example 1:
+      </h3>
+      <p>
+        It changes order of instances to minimize a number of messages going
+        from right side to left side and crossing instances with messages.
+        Instances are justified to top and have the same length. For <a
+        href="../fifo/fifo.html">FIFO</a> and <a
+        href="../acyclic/acyclic.html">acyclic</a> BMSC it makes all
+        messages horizontal and arranged over instances uniformly from top to
+        down.
+      </p>
+      <ul class="gallery">
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/unordered.png" width="500" border="0"
+              alt="Unordered BMSC" />
+            </li>
+            <li class="caption">
+              Before beautify
+            </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/ordered.png" width="350"
+              border="0" alt="Ordered BMSC" />
+            </li>
+            <li class="caption">
+              After beautify
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+      </p>
+      <h3>
+        Example 2:
+      </h3>
+      <p>
+        A <a href="../fifo/fifo.html">non-FIFO</a> BMSC is redrawn to a
+        form that no messages are going up.
+      </p>
+      <ul class="gallery">
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/unfifo2.png" width="250"
+              alt="Ordered non-FIFO BMSC" />
+            </li>
+            <li class="caption">
+              Acyclic design
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+      </p>
+      <h3>
+        Example 3:
+      </h3>
+      <p>
+        For coregions it changes the order of events to minimize number of
+        crossing two messages. After redrawing, messages are jointed with
+        coregion in such way that they do not go across coregion body.
+      </p>
+      <ul class="gallery">
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/coregion1.png" width="250"
+              alt="Crossing messages jointed with coregion" />
+            </li>
+            <li class="caption">
+              Before beautify
+            </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/coregion2.png" width="250 " alt="" />
+            </li>
+            <li class="caption">
+              After beautify
+            </li>
+          </ul>
+        </li>
+      </ul>
+  </div>
+  </body>
+</html>

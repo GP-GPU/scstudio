@@ -1,0 +1,16 @@
+mscdocument race_pos28.vsd;
+msc Main;
+initial connect L0;
+L0: reference A connect L1, L0;
+L1: final;
+endmsc;
+msc A;
+initial connect L0;
+L0: reference H connect L1;
+L1: final;
+endmsc;
+msc H;
+inst b;
+b: instance;
+endinstance;
+endmsc;

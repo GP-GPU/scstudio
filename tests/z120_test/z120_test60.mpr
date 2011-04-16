@@ -1,0 +1,25 @@
+mscdocument Vkres2;
+msc Strnka1;
+inst client;
+inst server;
+client: instance;
+concurrent;
+label e0; out no,0 to server;
+label e1; in know,1 from server;
+endconcurrent
+out yes,2 to lost;
+concurrent
+label e2; in tric,3 from server;
+endconcurrent;
+in tric,4 from found;
+endinstance;
+server: instance;
+in no,0 from client;
+concurrent;
+label e3; out know,1 to client;
+endconcurrent;
+concurrent;
+label e4; out tric,3 to client;
+endconcurrent;
+endinstance;
+endmsc;

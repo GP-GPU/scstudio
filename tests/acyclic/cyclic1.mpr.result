@@ -1,0 +1,32 @@
+Acyclic violated
+OK: cyclic1 violated Acyclic, should be violated
+mscdocument counter_example;
+msc Page_1;
+inst C;
+inst D;
+inst A;
+inst B;
+C: instance;
+in m1,0 from D;
+/* MARKED */
+/* MARKED */
+in m2,1 from D;
+/* MARKED */
+/* MARKED */
+out m3,2 to D;
+endinstance;
+D: instance;
+/* MARKED */
+/* MARKED */
+in m3,2 from C;
+/* MARKED */
+out m1,0 to C;
+/* MARKED */
+/* MARKED */
+out m2,1 to C;
+endinstance;
+A: instance;
+endinstance;
+B: instance;
+endinstance;
+endmsc;

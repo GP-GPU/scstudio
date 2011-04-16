@@ -1,0 +1,35 @@
+/* Basic time constraints in both MSC and HMSC
+ */
+mscdocument z120_time01;
+msc Main;
+initial connect L0;
+L0: connect L1, L2;
+L1: reference Subprocess connect L3;
+L2: reference Subprocess time [1,2), L1 origin [3,4];
+top bottom L1 origin (1,10);
+connect L1;
+L3: final;
+endmsc;
+msc Subprocess;
+inst P1;
+inst P2;
+P1: instance;
+out NAME,0 to P2;
+label e0;
+out NAME,1 to P2;
+time e1 [7];
+label e1;
+in NAME,2 from P2;
+endinstance;
+P2: instance;
+concurrent;
+label e2;
+in NAME,0 from P1 before e3;
+time e4 [12], e3 [4];
+label e3;
+in NAME,1 from P1;
+endconcurrent;
+label e4;
+out NAME,2 to P1;
+endinstance;
+endmsc;

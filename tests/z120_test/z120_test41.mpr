@@ -1,0 +1,13 @@
+/********************************************
+Example of test with non-labeled messages
+********************************************/
+
+mscdocument NoName;
+msc NoName;
+ONE: instance;
+TWO: instance;
+ONE: out ,1 to lost;
+TWO: in ,1 from found;
+ONE: endinstance;
+TWO: endinstance;
+endmsc;

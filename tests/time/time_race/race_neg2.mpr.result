@@ -1,0 +1,26 @@
+Time Race violated
+OK: race_neg2 violated Time Race, should be violated
+mscdocument counter_example;
+msc Page_1;
+inst a;
+inst x;
+inst b;
+a: instance;
+in NAME,0 from x;
+/* MARKED */
+out NAME,1 to b;
+endinstance;
+x: instance;
+/* MARKED */
+out NAME,2 to b;
+out NAME,0 to a;
+endinstance;
+b: instance;
+/* MARKED */
+/* MARKED */
+in NAME,1 from a;
+/* MARKED */
+/* MARKED */
+in NAME,2 from x;
+endinstance;
+endmsc;

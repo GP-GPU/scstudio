@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Non-local choice
+    </title>
+    <meta name="author" content="Martin Chmelik" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Non-local choice
+    </h1>
+    <p>
+      is a property of an HMSC node, that has more than one successor, occurring
+      when multiple different behaviors (branches <i>MSC A</i> or <i>MSC
+      B</i>) are possible and the branches are initiated by different
+      instances (<i>MSC A</i> is initiated by the <i>Instance p</i>,
+      <i>MSC B</i> is initiated by the <i>Instance q</i>).
+      Therefore the resulting behavior of the system may contain a combination
+      of both branches, resulting in a non specified implied behavior.
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/simple_nonlocal.png" width="550" border="0"
+            alt="HMSC specification with a branching node"
+            title="HMSC specification with a branching node" />
+          </li>
+          <li class="caption">
+            HMSC specification with a branching node
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/simple_nonlocal_MSCA.png" width="200"
+            border="0" alt="MSC A" title="MSC A" />
+          </li>
+          <li class="caption">
+            MSC A
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/simple_nonlocal_MSCB.png" width="200"
+            border="0" alt="MSC B" title="MSC B" />
+          </li>
+          <li class="caption">
+            MSC B
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      More formally, a branching node is called a non-local choice if one of the
+      conditions is satisfied:
+    </p>
+    <ul>
+      <li>
+        There exists a branch that is initiated by more than one instance.
+      </li>
+      <li>
+        There exist two branches, such that each is initiated by different
+        instance
+      </li>
+      <li>
+        .
+      </li>
+    </ul>
+    <p>
+      The result of the check on the previous example marks the non-local choice
+      node with the red color:
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/simple_nonlocal_result.png" width="350"
+            border="0" alt="Result of SCStudio" title="Result of SCStudio" />
+          </li>
+          <li class="caption">
+            Result of SCStudio
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/simple_nonlocal_implied.png" width="200"
+            border="0" alt="Implied behavior" title="Implied behavior" />
+          </li>
+          <li class="caption">
+            Implied behavior
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  </body>
+</html>

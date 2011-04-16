@@ -1,0 +1,12 @@
+/******************************************
+Example of HMSC with two nodes with the same name (connection node)
+*******************************************/
+msc Stranka1;
+initial connect L0;
+L0: connect L1, L2;
+L1: reference NAME connect L2;
+L2: reference NAME1 connect L3;
+L1: connect L3, L2;
+L3: final;
+endmsc;
+

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Drawing Settings - SCStudio frontend
+    </title>
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>Drawing Settings</h1>
+
+    <p>
+      The SCStudio frontend may be configured via menu
+      <code>Check &#8594; Drawing &#8594; Settings&hellip;</code>.
+      Concrete configuration sections are described below.
+    </p>
+
+    <h2>Message Numbering</h2>
+    <p>
+      Message numbering and its configuration is described on a
+      <a href="message_numbering.html">separate page</a>.
+    </p>
+
+    <h2>Message Snapping</h2>
+    <p>
+      When a message is dropped onto the drawing, the user has to connect this
+      message to the instances manually. If Message snapping is enabled, then all
+      new messages are automatically snapped to the nearest instances as soon as
+      the user releases the mouse button. The nearest instances are taken from
+      the mouse position.
+    </p>
+    <p>
+      Snapping can be enabled via <code>Check -> Drawing -> Settings&hellip;</code>,
+      tab Snap &amp; Glue. Following dialog will be shown:
+    </p>
+    <p>
+      <img src="pictures/message_snapping_options.png"
+      alt="Message Snapping options dialog" />
+    </p>
+    <p>
+      Options are:<br /> <code>Enable/disable message snapping</code><br />
+      &#160; &#160;- sets whether message snapping is enabled, otherwise all
+      other options are disabled.
+    </p>
+    <p>
+      When the message is already dropped on the page, user can still use
+      snapping. As the message is moved, it automatically snaps to the nearest
+      instance(s) (if exists). Since the message can be oblique, three types of
+      snapping are provided:<br /><br /> <code>straighten</code><br />
+      &#160;&#160;- the message is straightened on the current location of the
+      mouse cursor and snapped to instance(s).<br /> <code>preserve
+      vertical distance between send - receive</code><br />
+      &#160;&#160;- endpoint(s) of the message are horizontally stretched and snapped
+      to the nearest instance(s).<br /> <code>preserve slope</code><br />
+      &#160;&#160;- the message stays obliqued as it was. The endpoint(s) will
+      be prolonged to the nearest instance(s).<br />
+    </p>
+    <h3>
+      Restrictions
+    </h3>
+    <ul>
+      <li>Multiple message snapping is not implemented.</li>
+      <li>Lost and Found messages are snapped only at one endpoint.</li>
+      <li>Messages can be snapped only to the instances lines. Instance's head and end
+    symbols are ignored.</li>
+    </ul>
+
+    <h2>Protection</h2>
+    <p>
+      In the Protection section, some drawing protection options can be set.
+    </p>
+    <p>
+      Normally, shapes can be rotated in Microsoft Visio. However, the
+      ITU-T Z.120 standard specifies the instances to be drawn vertically.
+      The option <code>Do not allow to rotate instances</code> may be set to
+      disable instance rotating.
+    </p>
+</div>
+  </body>
+</html>

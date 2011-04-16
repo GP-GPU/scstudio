@@ -1,0 +1,18 @@
+mscdocument spec03.vsd;
+msc Page_1;
+inst A;
+inst B;
+inst C;
+A: instance;
+out a,0 to B;
+out b,1 to B;
+endinstance;
+B: instance;
+in b,1 from A;
+in a,2 from C;
+in a,0 from A;
+endinstance;
+C: instance;
+out a,2 to B;
+endinstance;
+endmsc;

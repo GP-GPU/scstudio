@@ -1,0 +1,13 @@
+ADD_SUBDIRECTORY(pseudocode)
+
+# plug-ins
+ADD_SUBDIRECTORY(liveness)
+ADD_SUBDIRECTORY(order)
+ADD_SUBDIRECTORY(race)
+ADD_SUBDIRECTORY(boundedness)
+ADD_SUBDIRECTORY(structure)
+ADD_SUBDIRECTORY(time)
+ADD_SUBDIRECTORY(localchoice)
+ADD_SUBDIRECTORY(realizability)
+
+# $Id: CMakeLists.txt 361 2009-09-24 14:27:29Z vacek $

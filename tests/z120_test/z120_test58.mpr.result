@@ -1,0 +1,29 @@
+z120_test58.mpr[16,9] Missing ';'.
+z120_test58.mpr[16,9] Unwanted input: expected ';'.
+Warning 11: Instance (server) does not have any open coregion
+
+OK: z120_test58 is correct, should be correct
+
+mscdocument z120_test58;
+msc Strnka1;
+inst client;
+inst server;
+client: instance;
+concurrent;
+out no,0 to server;
+in know,1 from server;
+endconcurrent;
+out yes,2 to lost;
+concurrent;
+in tric,3 from server;
+endconcurrent;
+in tric,4 from found;
+endinstance;
+server: instance;
+in no,0 from client;
+concurrent;
+out know,1 to client;
+endconcurrent;
+out tric,3 to client;
+endinstance;
+endmsc;

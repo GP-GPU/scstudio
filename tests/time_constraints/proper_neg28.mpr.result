@@ -1,0 +1,27 @@
+Warning 31: Infinite recursion at node: L0
+Warning 31: Infinite recursion at node: L2
+Warning 31: Infinite recursion at node: L1
+Warning 31: Infinite recursion at node: L2
+Warning 31: Infinite recursion at node: L1
+Correct Time Constraint Syntax violated
+OK: proper_neg28 violated Correct Time Constraint Syntax, should be violated
+mscdocument counter_example;
+msc NAME;
+inst asd;
+inst dsrgdf;
+inst NAME;
+asd: instance;
+out NAME,0 to dsrgdf;
+endinstance;
+dsrgdf: instance;
+label e0;
+in NAME,0 from asd;
+time/* MARKED */
+ e1 [0,inf);
+in NAME,1 from NAME;
+endinstance;
+NAME: instance;
+label e1;
+out NAME,1 to dsrgdf;
+endinstance;
+endmsc;

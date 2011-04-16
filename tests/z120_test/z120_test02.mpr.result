@@ -1,0 +1,25 @@
+Warning 09: Reference to nonexisting MSC: ACTION1, ACTION2, ACTION3A, ACTION3B
+OK: z120_test02 is correct, should be correct
+
+mscdocument z120_test02;
+msc z120_test02;
+text 'Comment';
+initial connect L0;
+L0: connect L1, L2;
+L1: condition STATE1 connect L3;
+L2: condition STATE2 connect L4;
+L3: reference ACTION1 connect L5;
+L4: reference ACTION2 connect L6, L7;
+L5: final;
+L6: reference ACTION3A connect L0;
+L7: reference ACTION3B connect L8;
+L8: final;
+endmsc;
+msc ACTION1;
+endmsc;
+msc ACTION2;
+endmsc;
+msc ACTION3A;
+endmsc;
+msc ACTION3B;
+endmsc;

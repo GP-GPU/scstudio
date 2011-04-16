@@ -1,0 +1,21 @@
+Warning 20: MSC (z120_test01) has unterminated 1 instance
+OK: z120_test01 is correct, should be correct
+
+mscdocument z120_test01;
+msc z120_test01;
+inst ONE;
+inst TWO;
+text 'Comment';
+ONE: instance;
+in LEFT,0 from found;
+out NAME,1 to TWO;
+out NAME,2 to TWO;
+endinstance;
+TWO: instance;
+out LOOPBACK,3 to TWO;
+out RIGHT,4 to lost;
+in NAME,2 from ONE;
+in NAME,1 from ONE;
+in LOOPBACK,3 from TWO;
+endinstance;
+endmsc;

@@ -1,0 +1,33 @@
+Warning 31: Infinite recursion at node: L1
+Warning 31: Infinite recursion at node: L2
+Warning 31: Infinite recursion at node: L0
+Correct Time Constraint Syntax violated
+OK: proper_neg19 violated Correct Time Constraint Syntax, should be violated
+mscdocument counter_example;
+msc HMSC;
+initial connect L0;
+/* MARKED */
+L0: reference A connect L1;
+L1: final;
+endmsc;
+msc A;
+initial connect L0;
+/* MARKED */
+L0: reference A time [0,inf);
+ connect L1;
+/* MARKED */
+L1: reference NAME connect L2;
+L2: final;
+endmsc;
+msc NAME;
+initial connect L0;
+/* MARKED */
+L0: reference A top/* MARKED */
+ bottom L1 [0,inf);
+ connect L1, L2;
+/* MARKED */
+L1: reference NAME connect L3;
+/* MARKED */
+L2: reference NAME connect L3;
+L3: final;
+endmsc;

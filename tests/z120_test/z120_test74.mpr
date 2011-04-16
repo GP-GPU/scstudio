@@ -1,0 +1,29 @@
+/***********************************************************
+ Two coregions has not finished. 
+ ************************************************************/
+mscdocument Vykres1;
+msc Stranka_1;
+inst Yes;
+inst No;
+Yes: instance;
+out Tricky,0 to No;
+in normal,1 from No;
+concurrent;
+out easy,2 to No;
+in non_easy,3 from No;
+out non_easy,4 to No;
+in normal,5 from No;
+out easy,6 to No;
+endinstance;
+
+No: instance;
+in Tricky,0 from Yes;
+out normal,1 to Yes;
+in easy,2 from Yes;
+in non_easy,4 from Yes;
+out non_easy,3 to Yes;
+concurrent;
+out normal,5 to Yes;
+in easy,6 from Yes;
+endinstance;
+endmsc;

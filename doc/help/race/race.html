@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Race Condition
+    </title>
+    <meta name="author" content="Martin Chmelik" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Race Condition
+    </h1>
+    <p>
+      Informally, two events are in race if they are specified by user to
+      perform in some order, but there is a possibility that they can perform in
+      an inverse order. Race condition occurs in a BMSC whenever a pair of
+      events is drawn in a particular order but there exists a execution with a
+      different order. If the real implementation is based on the BMSC
+      specification, it may lead to a system failure. Do not mix up race
+      condition with <a href="../fifo/fifo.html">FIFO</a>; race
+      condition is only applicable for BMSCs that satisfy FIFO.
+    </p>
+    <p>
+      SCStudio finds all pairs of events in a given BMSC and also in BMSCs
+      referenced by an HMSC. On the next picture there is an example of an BMSC
+      which contains race condition:
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/easyrace_1.png" width="300" border="0"
+            alt="Input BMSC" title="Input BMSC" />
+          </li>
+          <li class="caption">
+            Input BMSC
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/easyrace_2.png" width="300" border="0"
+            alt="Possible execution" title="Possible execution" />
+          </li>
+          <li class="caption">
+            Possible execution
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/easyrace_result.png" width="300" border="0"
+            alt="SCStudio result" title="SCStudio result" />
+          </li>
+          <li class="caption">
+            SCStudio result
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      The race condition may also occur between events from different BMSC
+      within an HMSC. HMSC contains race if there exists path which contains a
+      race. SCStudio is capable of finding one such occurrence:
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/trickyrace_1.png" width="100" border="0"
+            alt="Input HMSC" title="Input HMSC" />
+          </li>
+          <li class="caption">
+            Input HMSC with a race
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/trickyrace_2.png" width="300" border="0"
+            alt="MSC A" title="MSC A" />
+          </li>
+          <li class="caption">
+            MSC A
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/trickyrace_3.png" width="300" border="0"
+            alt="MSC B" title="MSC B" />
+          </li>
+          <li class="caption">
+            MSC B
+          </li>
+        </ul>
+      </li>
+    </ul>
+</div>
+  </body>
+</html>

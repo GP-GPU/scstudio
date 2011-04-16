@@ -1,0 +1,30 @@
+OK: z120_test71 is correct, should be correct
+
+mscdocument z120_test71;
+msc Strnka1;
+inst A;
+inst B;
+A: instance;
+concurrent;
+out ano,0 to B;
+in nie,1 from B;
+endconcurrent;
+concurrent;
+out micron,2 to B;
+endconcurrent;
+in dan,3 from B;
+in track,4 from B;
+endinstance;
+B: instance;
+concurrent;
+out nie,1 to A;
+in ano,0 from A;
+endconcurrent;
+in micron,2 from A;
+concurrent;
+out dan,3 to A;
+endconcurrent;
+out track,4 to A;
+in rad,5 from found;
+endinstance;
+endmsc;

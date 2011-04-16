@@ -1,0 +1,15 @@
+/*
+ * Created by Telelogic SDL 4.4
+ * This test contains
+ * - One message with no name
+ */
+
+mscdocument NoName;
+msc NoName;
+ONE: instance;
+TWO: instance;
+ONE: out ,1 to TWO;
+TWO: in ,1 from ONE;
+ONE: endinstance;
+TWO: endinstance;
+endmsc;

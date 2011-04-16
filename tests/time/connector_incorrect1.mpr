@@ -1,0 +1,20 @@
+/* Incorrect time constraint between alternative references A and B.
+ */
+mscdocument Vykres1;
+msc Stranka_1;
+initial connect L0, L1;
+L0: reference A top bottom L1 [0,inf);
+ connect L2;
+L1: reference B connect L2;
+L2: final;
+endmsc;
+msc A;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;
+msc B;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;

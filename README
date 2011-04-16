@@ -1,0 +1,54 @@
+Part A. User Instructions
+=========================
+
+The latest version can be obtained at
+  http://scstudio.sourceforge.net
+
+
+Part B. Developer Instructions
+==============================
+
+The repository has the following structure
+  doc/ Documentation, manual pages.
+  src/ Source codes.
+    check/ Verification algorithms.
+    data/ Structures for MSC, export and import functions.
+    view/ Applications.
+      visio/ Microsoft Visio plug-in.
+      test/ Console application for tests under Unix/Linux.
+  tests/ Automated regression tests.
+
+To get the latest sources
+svn co https://scstudio.svn.sourceforge.net/svnroot/scstudio/trunk scstudio
+
+To make a snapshot
+svn cp trunk https://scstudio.svn.sourceforge.net/svnroot/scstudio/tags/0.1
+
+
+Source files should have the following properties
+  svn:eol-style=native
+  svn:keywords=Id
+
+Directories should have the following properties
+  svn:ignore=<files>
+
+
+This can be set by the following commands
+  svn ps svn:eol-style "native" FILE...
+  svn ps svn:keywords "Id" FILE...
+  svn pg svn:ignore DIR > FILE
+  svn ps svn:ignore DIR -F FILE
+
+The ~/.subversion/config can be modified to set some file properties
+automatically:
+
+enable-auto-props = yes
+
+[auto-props]
+*.c = svn:eol-style=native;svn:keywords=Id
+*.cpp = svn:eol-style=native;svn:keywords=Id
+*.h = svn:eol-style=native;svn:keywords=Id
+*.in = svn:eol-style=native;svn:keywords=Id
+
+
+$Id: README 123 2008-11-28 23:39:47Z gotthardp $

@@ -1,0 +1,14 @@
+Warning 31: Infinite recursion at node: L1
+Warning 09: Reference to nonexisting MSC: bmsc1
+Warning 03: Infinite recursion among MSCs
+OK: z120_test31 is correct, should be correct
+
+mscdocument z120_test31;
+msc out_iha;
+initial connect L0;
+L0: reference bmsc1 connect L1;
+L1: reference out_iha connect L0, L2;
+L2: final;
+endmsc;
+msc bmsc1;
+endmsc;

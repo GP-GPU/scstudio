@@ -1,0 +1,45 @@
+/*
+ * Created by Telelogic SDL 4.4
+ * This test contains
+ * - Comments
+ * - Unterminated instance
+ * - Lost, found, loopback and overtaking messages
+ * - Messages of the same name
+ */
+mscdocument z120_test01;
+msc z120_test01;
+/*#SDTREF(MSC,-b 4,109)*/
+ONE: instance;
+/*#SDTREF(MSC,-b 4,110)*/
+TWO: instance;
+text 
+/*#SDTREF(MSC,-b 4,108)*/
+'Comment';
+TWO: out 
+/*#SDTREF(MSC,-b 4,111)*/
+LOOPBACK,1(parameter) to TWO;
+ONE: in 
+/*#SDTREF(MSC,-b 4,114)*/
+LEFT,2(parameter) from found;
+TWO: out 
+/*#SDTREF(MSC,-b 4,116)*/
+RIGHT,3(parameter) to lost;
+ONE: out 
+/*#SDTREF(MSC,-b 4,119)*/
+NAME,4(parameter) to TWO;
+ONE: out 
+/*#SDTREF(MSC,-b 4,121)*/
+NAME,5(parameter) to TWO;
+TWO: in 
+/*#SDTREF(MSC,-b 4,122)*/
+NAME,5(parameter) from ONE;
+TWO: in 
+/*#SDTREF(MSC,-b 4,120)*/
+NAME,4(parameter) from ONE;
+TWO: in 
+/*#SDTREF(MSC,-b 4,112)*/
+LOOPBACK,1(parameter) from TWO;
+ONE: endinstance
+/*#SDTREF(MSC,-b 4,123)*/
+;
+endmsc;

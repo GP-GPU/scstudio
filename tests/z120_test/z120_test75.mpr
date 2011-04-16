@@ -1,0 +1,26 @@
+/*****************************************************
+Example of MSC where three instances have the same name (NAME)
+*****************************************************/
+
+msc Trick;
+inst NAME;
+inst NAME;
+inst NAME;
+NAME: instance;
+out NAME,0 to NAME;
+out NAME,1 to NAME;
+endinstance;
+NAME: instance;
+in NAME,0 from NAME;
+endinstance;
+NAME: instance;
+in NAME,1 from NAME;
+endinstance;
+endmsc;
+
+msc Stranka_1;
+initial connect L0;
+L0: reference Trick connect L1;
+L1: final;
+endmsc;
+

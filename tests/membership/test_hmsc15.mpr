@@ -1,0 +1,51 @@
+mscdocument Drawing12;
+
+msc B;
+inst Private;
+inst Lock;
+inst Key;
+Private: instance;
+out aaa,0 to Lock;
+endinstance;
+Lock: instance;
+in aaa,0 from Private;
+in bbb,1 from Key;
+endinstance;
+Key: instance;
+out bbb,1 to Lock;
+endinstance;
+endmsc;
+
+msc Page_1;
+initial connect L0;
+L0: reference A connect L1;
+L1: reference B connect L2;
+L2: final;
+endmsc;
+
+msc A;
+inst Private;
+inst Lock;
+inst Key;
+Private: instance;
+out aaa,0 to Lock;
+out bbb,1 to Lock;
+in bbb,2 from Lock;
+endinstance;
+
+Lock: instance;
+in aaa,0 from Private;
+concurrent;
+in bbb,1 from Private before e0;
+in bbb,3 from Key;
+label e0;
+out aaa,4 to Key;
+endconcurrent;
+out bbb,2 to Private;
+endinstance;
+
+Key: instance;
+out bbb,3 to Lock;
+in aaa,4 from Lock;
+endinstance;
+endmsc;

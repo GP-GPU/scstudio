@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Message Numbering &ndash; SCStudio frontend</title>
+<link href="../help.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+<h1>Message Numbering</h1>
+<p>Message numbering allows users to enumerate all types of message shapes (left, right, lost, found).<br>
+You can enumerate all messages on the active page (if no messages are selected) or the selection.<br>
+</p>
+
+<h2>Enable message numbering</h2>
+<p>By pressing Message numbering button <img src="pictures/icon_message_enumeration.png" alt="Message Numbering">, via menu <code>Check->Drawing->Message numbering->Message numbering</code> or by using hotkey <Code>Ctrl+Alt+E</Code> the dialog with options will be shown:</p>
+
+<p>
+<img src="pictures/message_numbering_options.png" alt="Message Numbering options dialog">
+</p>
+
+<p>You can choose:<br>
+- specific numbering type (numbers, letters, capital letters, romans)<br>
+- starting index (1-9999 for number, letters and capital letters and 1-3999 for romans)<br>
+- and additional string following the index such as ".", "-", &hellip; (max 4 chars). A space between the index and the message label is added automatically.<br>
+</p>
+
+<p>
+When the OK button is pressed, messages are numbered according to their positions on the page from left to right and then from top to bottom.<br>
+Already numbered messages will be overwritten by new numbering.
+ </p>
+
+<h2>Disable message numbering</h2>
+<p>Numbering can be deleted by pressing Delete numbering button <img src="pictures/icon_message_enumeration_disable.png" alt="Disable message numbering"> on the toolbar, via menu <code>Check->Drawing->Message numbering->Delete numbering</code> or by using hotkey <Code>Ctrl+Alt+D.</Code></p>
+
+<p>
+Using <code>Delete numbering</code> on selection causes other messages indexes will be recomputed. <br>
+If no selection is used all numbering indexes will be deleted.
+</p>
+
+<h2>Numbering group selection</h2>
+<p>When a group of messages is numbered, user can select it by right-click on any of numbered messages from group and choose <code>Select numbering group</code> from context menu. Example is shown in the following picture:</p>
+
+<p>
+<img src="pictures/select_numbering_group.png" alt="Select numbering group">
+</p>
+
+<h2>Auto numbering</h2>
+<p>New messages can be automatically numbered after they are dropped on the page. Specific behavior can be set via menu <code>Check->Drawing->Settings</code>, tab Numbering. Following dialog will be shown:</p>
+
+<p>
+<img src="pictures/message_numbering_autoenum_options.png" alt="Auto numbering options">
+</p>
+
+<p>
+Options are:<br>
+</p>
+
+<p>
+<code>automatic numbering new messages</code><br>
+&nbsp; &nbsp;- sets whether auto numbering is enabled, otherwise all other options are disabled.<br><br>
+<code>as nearest message</code><br>
+&nbsp; &nbsp;- new messages will be numbered according to the group of the closest message on the active page. All message indexes in the current group will be recounted. If the closest message isn't numbered, new one won't be either. <br>
+<code>as nearest numbered message</code><br>
+&nbsp; &nbsp;- new messages will be numbered according to the closest <b>numbered</b> message on the active page. If there are no numbered messages on the active page you can choose between: <br><br>
+&nbsp; &nbsp; &nbsp;<code>don't number</code><br>
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;- don't number new messages if there are no numbered messages on the page.<br>
+&nbsp; &nbsp; &nbsp;<code>use numbering style</code><br>
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;- use specific numbering style if there are no numbered messages on the page.<br>
+</p>
+</div>
+</body>
+</html>

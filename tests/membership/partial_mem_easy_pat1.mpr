@@ -1,0 +1,13 @@
+mscdocument partial_mem_easy_pat1.vsd;
+msc Page_1;
+inst A;
+inst B;
+A: instance;
+out a,0 to B;
+in e,1 from B;
+endinstance;
+B: instance;
+in a,0 from A;
+out e,1 to A;
+endinstance;
+endmsc;

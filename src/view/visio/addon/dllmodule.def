@@ -1,0 +1,9 @@
+; dllmodule.def : Declares the module parameters.
+
+LIBRARY      "scstudio.vsl"
+
+EXPORTS
+  DllCanUnloadNow    PRIVATE
+  DllGetClassObject  PRIVATE
+  DllRegisterServer  PRIVATE
+  DllUnregisterServer  PRIVATE

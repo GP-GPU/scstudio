@@ -1,0 +1,14 @@
+/*************************************************
+Exampe of bMsc where are 2 instances with the same name. 
+*************************************************/
+
+mscdocument Vykres1;
+msc Stranka1;
+inst NAME;
+inst NAME;
+NAME: instance;
+endinstance;
+NAME: instance;
+endinstance;
+endmsc;
+

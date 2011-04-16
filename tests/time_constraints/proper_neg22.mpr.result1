@@ -1,0 +1,29 @@
+Warning 31: Infinite recursion at node: L0
+Warning 24: Time information to nonexisting reference node: L1
+Warning 03: Infinite recursion among MSCs
+Correct Time Constraint Syntax violated
+OK: proper_neg22 violated Correct Time Constraint Syntax, should be violated
+mscdocument counter_example;
+msc A;
+initial connect L0;
+/* MARKED */
+L0: reference A bottom/* MARKED */
+ top L1 [0,inf), top L2 [0,inf);
+ connect L1, L3;
+L1: reference NAME time [0,inf);
+ connect L2;
+L3: connect L1, L2;
+L2: reference NAME time [0,inf);
+ connect L4;
+L4: final;
+endmsc;
+msc NAME;
+inst asd;
+inst dsrgdf;
+asd: instance;
+out NAME,0 to dsrgdf;
+endinstance;
+dsrgdf: instance;
+in NAME,0 from asd;
+endinstance;
+endmsc;

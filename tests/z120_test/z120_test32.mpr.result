@@ -1,0 +1,19 @@
+Warning 17: Multiple events with the same name: e1
+OK: z120_test32 is correct, should be correct
+
+mscdocument z120_test32;
+msc Stranka1;
+inst NAME1;
+inst NAME2;
+NAME1: instance;
+concurrent;
+out b,0 to NAME2 before e0;
+label e0;
+in a,1 from NAME2;
+endconcurrent;
+endinstance;
+NAME2: instance;
+out a,1 to NAME1;
+in b,0 from NAME1;
+endinstance;
+endmsc;

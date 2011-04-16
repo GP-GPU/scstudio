@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Tighten Time
+    </title>
+    <meta name="author" content="Lubos Korenciak" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Tighten Time
+    </h1>
+    <p>
+      The purpose of the tighten time algorithm is to shorten interval sets of
+      time constraints to minimal possible values. It deletes every value of
+      time constraints which cannot be used due to other more restrictive time
+      constraints.
+    </p>
+    <h3>
+      Basic MSC
+    </h3>
+    <p>
+      After the tighten time algorithm, every constraint contains only values in
+      interval sets for which exists valid time assignment.
+    </p>
+    <p>
+      The time assignment for BMSC (resp. HMSC path) is an assignment of time
+      value to every event such that it satisfies all constraints in given BMSC
+      (resp. HMSC path). I.e. for every constraint which restricts two events,
+      the difference of values assigned by the assignment to these events must
+      be included in the interval set of this constraint.
+    </p>
+    <p>
+      An example of the tighten time algorithm on a BMSC is shown on the next
+      picture. The time constraint which contains value (0,10) has to be changed
+      to [5,10) because the communication turnover takes at least 5 time units.
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten2_1.png" width="350" border="0"
+            alt="Original BMSC" title="Original BMSC" />
+          </li>
+          <li class="caption">
+            Original BMSC
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten2_2.png" width="350" border="0"
+            alt="Tightened BMSC" title="Tightened BMSC" />
+          </li>
+          <li class="caption">
+            Tightened BMSC
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+    </p>
+    <h3>
+      High-level MSC
+    </h3>
+    <p>
+      After the tighten time algorithm, every constraint contains only values in
+      interval sets for which exists valid time assignment for some path from
+      the start node to an end node.
+    </p>
+    <p>
+      An example of the tighten time algorithm on a HMSC is shown on the next
+      picture. The constraints change because of the following reasons:
+    </p>
+    <ul>
+      <li>
+        the constraint on the node <i> B </i> changes because of the <i>Original
+        BMSC B</i>
+      </li>
+      <li>
+        the lower bound of the constraint between the nodes <i>A</i>
+        and <i>B</i> changes to 8 because the lower bound of the first
+        path is 9 and the lower bound of the second path is 8
+      </li>
+      <li>
+        the <i>Original BMSC A</i> tightens to the <i>Tightened BMSC
+        A</i> because of the both constraints on the nodes <i> A </i>
+        (the upper bound is derived from the constraint containing [3,5] and the
+        lower bound from the constraint containing [2,8])
+      </li>
+      <li>
+        the upper bound of the HMSC constraint originally containing [3,5] is
+        tightened to 5 (not included) because the candidates for the upper bound
+        is the lower value from upper bound 5 (from the original constraint) and
+        the value derived from constraints containing, (8,10], (3,4] and [2,8].
+        We have to compute the upper bound candidate from the values of the time
+        intervals. Since we can stay at least 3 (not included) time units in the
+        first node <i> A </i> and at least 2 time units in the node <i>B</i>
+        and we can stay at most 10 time units in the whole execution we get that
+        we can stay at most 10 - 3 - 2 = 5 (not included) time units in second
+        node <i> A </i>. Thus the original constraint (with the value
+        [3,5]) will contain [3,5) after the execution of the tightening
+        algorithm.
+      </li>
+      <li>
+        the upper bound of the constraint containing originally [2,8] tightens
+        to 4 (not included), because the possible upper bound for this
+        constraint derived from the first path is 10 - 4 - 3 = 3 (not included)
+        and from the second path it is 10 - 3 - 3 = 4 (not included).
+      </li>
+    </ul>
+    <h4>
+      Before:
+    </h4>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten1_1.png" width="350" border="0"
+            alt="Original HMSC" title="Original HMSC" />
+          </li>
+          <li class="caption">
+            Original HMSC
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten1_2.png" width="250" border="0"
+            alt="Original BMSC A" title="Original BMSC A" />
+          </li>
+          <li class="caption">
+            Original BMSC A
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten1_3.png" width="250" border="0"
+            alt="Original BMSC B" title="Original BMSC B" />
+          </li>
+          <li class="caption">
+            Original BMSC B
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+    </p>
+    <h4>
+      After:
+    </h4>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten1_4.png" width="350" border="0"
+            alt="Tightened HMSC" title="Tightened HMSC" />
+          </li>
+          <li class="caption">
+            Tightened HMSC
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten1_5.png" width="250" border="0"
+            alt="Tightened BMSC A" title="Tightened BMSC A" />
+          </li>
+          <li class="caption">
+            Tightened BMSC A
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/tighten1_6.png" width="250" border="0"
+            alt="Tightened BMSC B" title="Tightened BMSC B" />
+          </li>
+          <li class="caption">
+            Tightened BMSC B
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+    </p>
+    <h3>
+      Current implementation:
+    </h3>
+    In the current implementation the following features are not supported and
+    therefore ignored by the algorithm: <i> Ordering Line, Ordering
+    Side-Side, Ordering Sides, Ordering Arrow. </i>
+</div>
+  </body>
+</html>

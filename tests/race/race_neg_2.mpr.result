@@ -1,0 +1,55 @@
+Warning: HMSC node without successors violates the Z.120 standard.
+Race Free violated
+OK: race_neg_2 violated Race Free, should be violated
+mscdocument counter_example;
+msc Page_1;
+initial connect L0;
+L0: reference _1_0 connect L1;
+/* MARKED */
+L1: reference _2_a connect L2;
+/* MARKED */
+L2: reference _3_b;
+endmsc;
+msc _1_0;
+inst p;
+inst q;
+inst r;
+p: instance;
+endinstance;
+q: instance;
+endinstance;
+r: instance;
+endinstance;
+endmsc;
+msc _2_a;
+inst p;
+inst q;
+inst r;
+p: instance;
+/* MARKED */
+out a,0 to q;
+endinstance;
+q: instance;
+/* MARKED */
+/* MARKED */
+in a,0 from p;
+endinstance;
+r: instance;
+endinstance;
+endmsc;
+msc _3_b;
+inst q;
+inst r;
+inst p;
+q: instance;
+/* MARKED */
+/* MARKED */
+in b,0 from r;
+endinstance;
+r: instance;
+/* MARKED */
+out b,0 to q;
+endinstance;
+p: instance;
+endinstance;
+endmsc;

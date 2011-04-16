@@ -1,0 +1,47 @@
+/*************************************************************
+Example of MSC where HMSC has non-available node (L1). 
+BMsc3 won't be created due to instance A not start (A: instance;) 
+*************************************************************/
+
+mscdocument Vkres1;
+
+msc bmsc3;
+inst A;
+inst B;
+in no,0 from B;
+out ok,1 to B;
+endinstance;
+B: instance;
+out no,0 to A;
+in ok,1 from A;
+endinstance;
+endmsc;
+
+msc Strnka1;
+initial connect L0;
+L0: reference bmsc1 connect L2;
+L1: reference bmsc2 connect L0, L2;
+L2: final;
+endmsc;
+
+msc bmsc1;
+inst A;
+inst B;
+out yes,0 to B;
+endinstance;
+B: instance;
+in yes,0 from A;
+endinstance;
+endmsc;
+
+msc bmsc2;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+endinstance;
+B: instance;
+out no,0 to A;
+endinstance;
+endmsc;
+

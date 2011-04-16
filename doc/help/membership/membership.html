@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      membership documentation
+    </title>
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body lang="en-US" dir="ltr" style="border: none; padding: 0in">
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Find Flow Algorithm
+    </h1>
+    <p>
+      The find flow problem is deciding whether given flow (BMSC) is contained in a
+      given specificaiton (BMSC or HMSC with nesting level 1, means each node represents BMSC). 
+      The algorithm is able to check both untimed and timed cases of MSCs.<br />
+    </p>
+    <h3>
+      Example 1:
+    </h3>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/memebership_4.png" width="250" border="0"
+            alt="BMSC g flow" title="BMSC flow" />
+          </li>
+          <li class="caption">
+            BMSC flow
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/memebership_1.png" width="150" border="0"
+            alt="HMSC specification" title="HMSC specification" />
+          </li>
+          <li class="caption">
+             HMSC specification
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/memebership_2.png" width="250" border="0"
+            alt="BMSC BMSC01" title="BMSC01" />
+          </li>
+          <li class="caption">
+            BMSC BMSC01
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/memebership_3.png" width="250" border="0"
+            alt="BMSC BMSC02" title="BMSC02" />
+          </li>
+          <li class="caption">
+            BMSC BMSC02
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      In the figure above we have specified an input to the find flow algorithm.
+      Every path from the initial node to the terminal node in a HMSC describes 
+      a scenario, which could be represented by a BMSC.<br/>
+
+      In this case, there is only one path in the <i>HMSC specification</i>. The BMSC
+      specified by the path is formed from nodes (BMSCs) on the path which are 
+      sequentialy composed (putting the BMSCs one after the other and gluing
+      the matching process lines). It is easy to see that the <i>BMSC flow</i>
+      is exactly the same BMSC represented by the path in the <i>HMSC specification</i>.
+      The result of procedure solving the find flow problem should
+      be every successful path i.e. <i>HMSC specification</i>.
+    </p>
+    <p>
+      <h2>More formal specification of the procedure:</h2>
+    </p>
+    <p>
+      Input:
+    </p>
+    <ul>
+      <li>
+        <p>
+          BMSC (could contain timing assignment)
+        </p>
+      </li>
+      <li>
+        <p>
+          MSC (could contain both HMSC and BMSC time constraints)
+        </p>
+      </li>
+    </ul>
+    <p>
+      Output:
+    </p>
+    <ul>
+      <li>
+        <p>
+          yes - the BMSC flow describes one of the MSC specification scenarious. 
+                In case the specification is defined by HMSC (nesting level 1) the algorithm
+                shows the path which describes the same scenario as the BMSC flow.
+        </p>
+      </li>
+      <li>
+        <p>
+          no - the BMSC flow does not describe any of the MSC specification scenarious
+        </p>
+      </li>
+    </ul>
+    <p>
+       <h2>Time constraints representation</h2>
+    </p>
+    <p>
+       Time constraints in BMSC flow is representing by time intervals which describe concrete time (one value).  
+       In the MSC specification, there is allowed to use time intervals which contain more time values.
+
+    <h3>
+      Example 2:
+    </h3>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/Membership_help_bmsc.png" width="250" border="0"
+            alt="BMSC g flow" title="BMSC flow" />
+          </li>
+          <li class="caption">
+            BMSC flow 
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/Membership_help_hmsc.png" width="400" height="450" border="0"
+            alt="HMSC specification" title="HMSC specification" />
+          </li>
+          <li class="caption">
+            HMSC specification
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/bmsc1.png" width="250" height="250" border="0"
+            alt="BMSC g1" title="BMSC1" />
+          </li>
+          <li class="caption">
+            BMSC bmsc1
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/bmsc2.png" width="250" height="250" border="0"
+            alt="BMSC g2" title="BMSC2" />
+          </li>
+          <li class="caption">
+            BMSC bmsc2
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/bmsc3.png" width="250" height="250" border="0"
+            alt="BMSC g3" title="BMSC3" />
+          </li>
+          <li class="caption">
+            BMSC bmsc3
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/Membership_help_result.png" width="400" height="450" border="0"
+            alt="Result HMSC" title="Result HMSC" />
+          </li>
+          <li class="caption">
+            Result HMSC
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      In the result, the find flow algorithm colored the path in specification which was met by the BMSC flow. 
+    </p>
+  </div>
+  </body>
+</html>

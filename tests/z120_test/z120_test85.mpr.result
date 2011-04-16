@@ -1,0 +1,35 @@
+OK: z120_test85 is correct, should be correct
+
+mscdocument z120_test85;
+msc Stranka_1;
+initial connect L0;
+L0: reference One connect L1;
+L1: reference Two connect L2;
+L2: final;
+endmsc;
+msc One;
+inst A;
+inst B;
+A: instance;
+in A,0 from found;
+out jedna,1 to B;
+concurrent;
+out B1,2 to B;
+out B,3 to lost;
+endconcurrent;
+endinstance;
+B: instance;
+in jedna,1 from A;
+in B1,2 from A;
+endinstance;
+endmsc;
+msc Two;
+inst ONE;
+inst TWO;
+ONE: instance;
+out a,0 to TWO;
+endinstance;
+TWO: instance;
+in a,0 from ONE;
+endinstance;
+endmsc;

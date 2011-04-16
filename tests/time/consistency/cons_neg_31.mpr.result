@@ -1,0 +1,46 @@
+Warning: HMSC node without successors violates the Z.120 standard.
+Time Consistent violated
+OK: cons_neg_31 violated Time Consistent, should be violated
+mscdocument counter_example;
+msc Page_1;
+initial connect L0;
+L0: reference a top top L1 [0,13), bottom L2 (100,200)+[210,inf);
+ connect L1;
+L1: reference b time [6];
+ bottom/* MARKED */
+ bottom L2 [8,9);
+ connect L2;
+L2: reference b;
+endmsc;
+msc a;
+inst z;
+inst y;
+inst x;
+z: instance;
+label e0;
+in NAME,0 from y;
+endinstance;
+y: instance;
+label e1;
+out NAME,0 to z;
+time e0 [0,5]+[7,inf);
+endinstance;
+x: instance;
+endinstance;
+endmsc;
+msc b;
+inst y;
+inst x;
+inst z;
+y: instance;
+label e0;
+out NAME,0 to x;
+time e1 [6,20];
+endinstance;
+x: instance;
+label e1;
+in NAME,0 from y;
+endinstance;
+z: instance;
+endinstance;
+endmsc;

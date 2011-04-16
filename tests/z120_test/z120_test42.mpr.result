@@ -1,0 +1,40 @@
+z120_test42.mpr[11,0] Cannot match to any predicted input.
+z120_test42.mpr[11,0] Cannot match to any predicted input.
+z120_test42.mpr[11,13] Cannot match to any predicted input.
+Warning 05: Complete message (no,0) with only one event
+Warning 05: Complete message (ok,1) with only one event
+z120_test42.mpr[30,0] Cannot match to any predicted input.
+z120_test42.mpr[30,0] Cannot match to any predicted input.
+Warning 05: Complete message (yes,0) with only one event
+Warning 02: Unreferenced MSC: Strnka1, bmsc3
+OK: z120_test42 is correct, should be correct
+
+mscdocument z120_test42;
+msc Strnka1;
+initial connect L0;
+L0: reference bmsc1 connect L1;
+L1: final;
+endmsc;
+msc bmsc3;
+inst B;
+B: instance;
+out no,0 to lost;
+in ok,1 from found;
+endinstance;
+endmsc;
+msc bmsc1;
+inst B;
+B: instance;
+in yes,0 from found;
+endinstance;
+endmsc;
+msc bmsc2;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+endinstance;
+B: instance;
+out no,0 to A;
+endinstance;
+endmsc;

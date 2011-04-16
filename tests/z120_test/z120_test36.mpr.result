@@ -1,0 +1,21 @@
+OK: z120_test36 is correct, should be correct
+
+mscdocument z120_test36;
+msc SameName;
+inst ONE;
+inst TWO;
+ONE: instance;
+out M,0 to TWO;
+out M,1 to TWO;
+out M,2 to TWO;
+out M,3 to TWO;
+out M,4 to TWO;
+endinstance;
+TWO: instance;
+in M,0 from ONE;
+in M,2 from ONE;
+in M,3 from ONE;
+in M,1 from ONE;
+in M,4 from ONE;
+endinstance;
+endmsc;

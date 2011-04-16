@@ -1,0 +1,14 @@
+/************************************************* 
+Simple test of HMSC
+
+Node L1 is defined wrongly.
+**************************************************/
+
+msc Stranka1;
+initial connect L0;
+L0: connect L1, L2;
+L1: NAME connect L2;
+L2: reference NAME1 connect L3;
+L3: final;
+endmsc;
+

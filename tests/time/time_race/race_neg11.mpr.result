@@ -1,0 +1,43 @@
+Time Race violated
+OK: race_neg11 violated Time Race, should be violated
+mscdocument counter_example;
+msc Page_1;
+initial connect L0;
+/* MARKED */
+L0: reference a connect L1;
+/* MARKED */
+L1: reference c connect L2;
+L2: final;
+endmsc;
+msc a;
+inst y;
+inst z;
+inst x;
+y: instance;
+/* MARKED */
+/* MARKED */
+in NAME,0 from z;
+endinstance;
+z: instance;
+/* MARKED */
+out NAME,0 to y;
+endinstance;
+x: instance;
+endinstance;
+endmsc;
+msc c;
+inst x;
+inst y;
+inst z;
+x: instance;
+/* MARKED */
+out NAME,0 to y;
+endinstance;
+y: instance;
+/* MARKED */
+/* MARKED */
+in NAME,0 from x;
+endinstance;
+z: instance;
+endinstance;
+endmsc;

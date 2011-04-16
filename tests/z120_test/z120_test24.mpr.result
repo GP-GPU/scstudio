@@ -1,0 +1,18 @@
+Warning 16: Multiple instances with the same name: NAME
+OK: z120_test24 is correct, should be correct
+
+mscdocument z120_test24;
+msc Stranka1;
+inst NAME;
+inst NAME;
+NAME: instance;
+out a,0 to NAME;
+out a,1 to NAME;
+out a,2 to NAME;
+in a,0 from NAME;
+in a,1 from NAME;
+in a,2 from NAME;
+endinstance;
+NAME: instance;
+endinstance;
+endmsc;

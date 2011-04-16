@@ -1,0 +1,39 @@
+Time Consistent violated
+OK: cons_neg_7 violated Time Consistent, should be violated
+mscdocument counter_example;
+msc Page_1;
+inst p;
+inst r;
+inst q;
+inst s;
+p: instance;
+label e0;
+out NAME,0 to q;
+time e1 [2], e2 (5,6);
+endinstance;
+r: instance;
+label e3;
+in NAME,1 from q;
+time e4 (0,inf);
+label e5;
+out NAME,2 to s;
+time/* MARKED */
+ e1 [0,inf);
+label e1;
+in NAME,3 from s;
+endinstance;
+q: instance;
+label e2;
+in NAME,0 from p;
+time e6 [0];
+label e6;
+out NAME,1 to r;
+time e3 [0];
+endinstance;
+s: instance;
+in NAME,2 from r;
+label e4;
+out NAME,3 to r;
+time e1 [0];
+endinstance;
+endmsc;

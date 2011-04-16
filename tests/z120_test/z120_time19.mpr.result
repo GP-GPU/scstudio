@@ -1,0 +1,22 @@
+OK: z120_time19 is correct, should be correct
+
+mscdocument z120_time19;
+msc pok2;
+inst A;
+inst B;
+A: instance;
+in A,0 from found;
+out jedna,1 to B;
+concurrent;
+label e0;
+out B,2 to lost before e1;
+time e1 [12];
+label e1;
+out B1,3 to B;
+endconcurrent;
+endinstance;
+B: instance;
+in jedna,1 from A;
+in B1,3 from A;
+endinstance;
+endmsc;

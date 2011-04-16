@@ -1,0 +1,19 @@
+OK: z120_test47 is correct, should be correct
+
+mscdocument z120_test47;
+msc pok2;
+inst A;
+inst B;
+A: instance;
+in A,0 from found;
+out jedna,1 to B;
+concurrent;
+out B1,2 to B;
+out B,3 to lost;
+endconcurrent;
+endinstance;
+B: instance;
+in jedna,1 from A;
+in B1,2 from A;
+endinstance;
+endmsc;

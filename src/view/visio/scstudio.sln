@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scstudio", "addon\scstudio.vcproj", "{0E00282C-F48B-4984-A274-5B59E1E2AD49}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "setup-nsis", "setup-nsis\setup-nsis.vcproj", "{77848F6B-EA64-4917-8E72-21FA1DD2B2F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E00282C-F48B-4984-A274-5B59E1E2AD49}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0E00282C-F48B-4984-A274-5B59E1E2AD49}.Debug|Win32.Build.0 = Debug|Win32
+		{0E00282C-F48B-4984-A274-5B59E1E2AD49}.Release|Win32.ActiveCfg = Release|Win32
+		{0E00282C-F48B-4984-A274-5B59E1E2AD49}.Release|Win32.Build.0 = Release|Win32
+		{77848F6B-EA64-4917-8E72-21FA1DD2B2F6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{77848F6B-EA64-4917-8E72-21FA1DD2B2F6}.Release|Win32.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

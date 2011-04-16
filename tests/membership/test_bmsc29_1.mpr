@@ -1,0 +1,24 @@
+
+
+
+
+
+
+
+msc bmsc3;
+inst A;
+inst B;
+A: instance;
+label e1;
+in no,0 from B;
+time e0 [1];
+out ok,1 to B;
+time e1 [2,3];
+endinstance;
+B: instance;
+label e0;
+out no,0 to A;
+in ok,1 from A;
+endinstance;
+endmsc;
+

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Strong realizability
+    </title>
+    <meta name="author" content="Martin Chmelik" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Strong realizability
+    </h1>
+    <p>
+      is a property of an HMSC. A MSC is realizable if it is possible to write computer programs for all instances from the MSC in such a way that the behavior of the resulting distributed system is the same as the one described by the MSC. It is assumed that asynchronous transfer of messages is used in the realization. An HMSC is <i>strongly realizable</i> iff it is <a
+      href="../boundedness/boundedness.html">universally bounded</a> and
+      <a href="../locaLchoice/localchoice.html">local-choice</a>.
+      Universal boundedness assures that using finite message buffers is sufficient. If an MSC is not bounded, no realization with finite buffers is capable of performing the entire behavior described by the MSC.
+      Local-choice assures that the realization does not reach undefined states in which
+      two instances decide to use different paths; this behavior is actually not described by the original MSC.
+    </p>
+    <p>
+      The condition is a sufficiency condition, not a necessary condition; some non-local choices, for example,
+      may be resolved by adding additional information to certain messages. Un-boundedness, on the other hand, cannot be fought in any way as described above.
+    </p>
+    <p>
+      In this definition, a BMSC is always considered realizable; in reality, there could be some issues in the realization resulting from <a href="../race/race.html">race condition</a>, <a href="../fifo/fifo.html">non-fifo</a> or <a href="../acyclic/acyclic.html">cyclicness</a>. It is expected that a realization exactly reflects the sequence of events described by the BMSC including possible design flaws; in some cases, this may lead to a deadlock in the realization.
+    </p>
+    <p>
+      The definition of realizability is planned to be user-configurable in further versions.
+    </p>
+</div>
+  </body>
+</html>

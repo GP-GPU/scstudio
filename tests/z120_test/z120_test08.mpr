@@ -1,0 +1,20 @@
+/***********************************************
+Example of bMsc with coregion (instance driven notification)
+***********************************************/
+
+msc Stranka1;
+inst NAME1;
+inst NAME2;
+NAME1: instance;
+concurrent;
+out b,1 to NAME2 before e0;
+label e0;
+in a,0 from NAME2;
+endconcurrent;
+endinstance;
+NAME2: instance;
+out a,0 to NAME1;
+in b,1 from NAME1;
+endinstance;
+endmsc;
+

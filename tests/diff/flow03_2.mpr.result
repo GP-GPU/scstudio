@@ -1,0 +1,30 @@
+OK: HMSC contains bMSC
+
+mscdocument msc_diff;
+msc Page_1;
+inst A;
+inst B;
+inst C;
+A: instance;
+out a,0 to B;
+/* REMOVED */
+/* REMOVED */
+in a,1 from B;
+/* ADDED */
+/* ADDED */
+out b,2 to B;
+endinstance;
+B: instance;
+/* REMOVED */
+/* REMOVED */
+out a,1 to A;
+/* ADDED */
+/* ADDED */
+in b,2 from A;
+in a,3 from C;
+in a,0 from A;
+endinstance;
+C: instance;
+out a,3 to B;
+endinstance;
+endmsc;

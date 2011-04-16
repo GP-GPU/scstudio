@@ -1,0 +1,21 @@
+Correct Time Constraint Syntax violated
+OK: connector_incorrect1 violated Correct Time Constraint Syntax, should be violated
+mscdocument counter_example;
+msc Stranka_1;
+initial connect L0, L1;
+L0: reference A top/* MARKED */
+ bottom L1 [0,inf);
+ connect L2;
+L1: reference B connect L2;
+L2: final;
+endmsc;
+msc A;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;
+msc B;
+inst NAME;
+NAME: instance;
+endinstance;
+endmsc;

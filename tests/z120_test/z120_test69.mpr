@@ -1,0 +1,30 @@
+/*************************************************
+Example of bMSC with coregion (used '_' sign)
+
+line 24: event e1 does not exist.
+*************************************************/
+
+mscdocument Vkres1;
+msc Strnka1;
+inst PC;
+inst Server;
+PC: instance;
+out SYN,0 to Server;
+in SYNACK,1 from Server;
+out ACK,2 to Server;
+out request_a,3 to Server;
+out request_b,4 to Server;
+in result,5 from Server;
+endinstance;
+Server: instance;
+in SYN,0 from PC;
+out SYNACK,1 to PC;
+in ACK,2 from PC;
+concurrent;
+in request_a,3 from PC before e0,e1;
+in request_b,4 from PC;
+label e0;
+out result,5 to PC;
+endconcurrent;
+endinstance;
+endmsc;

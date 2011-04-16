@@ -1,0 +1,17 @@
+
+
+
+
+
+
+msc Test;
+A:instance;
+out a,0 to B;
+out a,1 to B;
+endinstance;
+
+B:instance;
+in a,0 from A;
+in a,1 from A;
+endinstance;
+endmsc;

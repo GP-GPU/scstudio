@@ -1,0 +1,9 @@
+mscdocument cons_pos_17.vsd;
+msc Page_1;
+inst NAME;
+inst NAME2;
+NAME: instance;
+endinstance;
+NAME2: instance;
+endinstance;
+endmsc;

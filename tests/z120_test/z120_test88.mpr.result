@@ -1,0 +1,32 @@
+OK: z120_test88 is correct, should be correct
+
+mscdocument z120_test88;
+msc Pada_export_import;
+inst A;
+inst I;
+inst S;
+inst H;
+A: instance;
+in SIP,0 from I;
+endinstance;
+I: instance;
+concurrent;
+out SIP,0 to A before e0, e1;
+in Trying,1 from S before e2;
+label e0;
+out INV,2 to S before e1;
+label e1;
+in Resp,3 from H;
+label e2;
+out Query,4 to H;
+endconcurrent;
+endinstance;
+S: instance;
+in INV,2 from I;
+out Trying,1 to I;
+endinstance;
+H: instance;
+in Query,4 from I;
+out Resp,3 to I;
+endinstance;
+endmsc;

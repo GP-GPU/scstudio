@@ -1,0 +1,22 @@
+/*
+ * Created by Telelogic SDL 4.4
+ * This test contains
+ * - Several messages with the same name
+ */
+mscdocument SameName;
+msc SameName;
+ONE: instance;
+TWO: instance;
+ONE: out M,1 to TWO;
+TWO: in M,1 from ONE;
+ONE: out M,2 to TWO;
+ONE: out M,3 to TWO;
+TWO: in M,3 from ONE;
+ONE: out M,4 to TWO;
+TWO: in M,4 from ONE;
+TWO: in M,2 from ONE;
+ONE: out M,5 to TWO;
+TWO: in M,5 from ONE;
+ONE: endinstance;
+TWO: endinstance;
+endmsc;

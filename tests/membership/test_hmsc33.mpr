@@ -1,0 +1,25 @@
+msc Page_1;
+initial connect L0;
+L0: reference B time [1]; connect L1;
+L1: final;
+endmsc;
+
+msc B;
+inst PC;
+inst Router;
+inst Server;
+PC: instance;
+in c,0 from Server;
+out b,1 to Router;
+endinstance;
+Router: instance;
+in c,2 from Server;
+in b,1 from PC;
+endinstance;
+Server: instance;
+concurrent;
+out c,2 to Router;
+out c,0 to PC;
+endconcurrent;
+endinstance;
+endmsc;

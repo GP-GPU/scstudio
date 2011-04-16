@@ -1,0 +1,15 @@
+mscdocument fifo1.vsd;
+msc Page_1;
+inst A;
+inst B;
+inst C;
+inst D;
+A: instance;
+endinstance;
+B: instance;
+endinstance;
+C: instance;
+endinstance;
+D: instance;
+endinstance;
+endmsc;

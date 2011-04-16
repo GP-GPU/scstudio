@@ -1,0 +1,11 @@
+/**************************************************
+Example of bMSC with commnet and definition of  parameter after message identification
+**************************************************/
+
+mscdocument z120;
+msc test01;
+/*commnet example */
+ONE: instance; //comment example  
+ONE: in LEFT,2('/*commnet example*/parameter') from found;
+ONE: edinstance;
+endmsc;

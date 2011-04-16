@@ -1,0 +1,13 @@
+mscdocument race_neg4.vsd;
+msc Page_1;
+inst p;
+inst q;
+p: instance;
+out NAME,0 to q;
+in NAME,1 from q;
+endinstance;
+q: instance;
+out NAME,1 to p;
+in NAME,0 from p;
+endinstance;
+endmsc;

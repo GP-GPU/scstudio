@@ -1,0 +1,28 @@
+mscdocument Drawing2;
+msc Page_1;
+inst Private;
+inst Lock;
+inst Key;
+Private: instance;
+out aaa,0 to Lock;
+out bbb,1 to Lock;
+in bbb,2 from Lock;
+out aaa,3 to Lock;
+endinstance;
+
+Lock: instance;
+in aaa,0 from Private;
+in bbb,4 from Key;
+in bbb,1 from Private;
+out aaa,5 to Key;
+out bbb,2 to Private;
+in aaa,3 from Private;
+in bbb,6 from Key;
+endinstance;
+
+Key: instance;
+out bbb,4 to Lock;
+in aaa,5 from Lock;
+out bbb,6 to Lock;
+endinstance;
+endmsc;

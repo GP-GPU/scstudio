@@ -1,0 +1,19 @@
+Warning 05: Complete message (jedna,2) with only one event
+OK: z120_test45 is correct, should be correct
+
+mscdocument z120_test45;
+msc pok2;
+inst A;
+inst B;
+A: instance;
+in A,0 from found;
+concurrent;
+out B1,1 to B;
+out B,2 to lost;
+endconcurrent;
+endinstance;
+B: instance;
+in jedna,3 from found;
+in B1,1 from A;
+endinstance;
+endmsc;

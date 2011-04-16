@@ -1,0 +1,12 @@
+msc bbb;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+time [@4, @5];
+endinstance;
+B: instance;
+out no,0 to A;
+time [@2, @3];
+endinstance;
+endmsc;

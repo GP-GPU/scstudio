@@ -1,0 +1,17 @@
+# execute doxygen in the current directory, i.e. trunk/doc/doxygen/
+
+doxygen doxygen.config
+
+# change permissions
+
+chmod -R g+wX html
+
+# remove old version
+sftp login,scstudio@web.sourceforge.net
+ cd htdocs/doxygen/
+ rm *
+ quit
+
+# copy the new version to sourceforge.net
+
+scp -r html/* login,scstudio@web.sourceforge.net:htdocs/doxygen/

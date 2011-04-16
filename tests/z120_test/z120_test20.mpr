@@ -1,0 +1,31 @@
+/**************************************************
+Example of HMSC with references to bMSC and loop (L0->L1->L0)
+**************************************************/
+
+mscdocument Vkres1;
+msc Strnka1;
+initial connect L0;
+L0: reference bmsc1 connect L1;
+L1: reference bmsc2 connect L0, L2;
+L2: final;
+endmsc;
+msc bmsc1;
+inst A;
+inst B;
+A: instance;
+out yes,0 to B;
+endinstance;
+B: instance;
+in yes,0 from A;
+endinstance;
+endmsc;
+msc bmsc2;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+endinstance;
+B: instance;
+out no,0 to A;
+endinstance;
+endmsc;

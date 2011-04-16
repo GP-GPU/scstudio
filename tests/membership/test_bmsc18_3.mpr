@@ -1,0 +1,24 @@
+mscdocument Drawing1;
+msc print;
+inst Tic;
+inst Tac;
+
+Tic: instance;
+in a,0 from Tac;
+in c,1 from Tac;
+in a,2 from Tac;
+in b,3 from Tac;
+in a,4 from Tac;
+endinstance;
+
+
+
+
+Tac: instance;
+out a,0 to Tic;
+out c,1 to Tic;
+out a,2 to Tic;
+out b,3 to Tic;
+out a,4 to Tic;
+endinstance;
+endmsc;

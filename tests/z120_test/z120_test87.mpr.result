@@ -1,0 +1,13 @@
+OK: z120_test87 is correct, should be correct
+
+mscdocument z120_test87;
+msc Stranka_1;
+initial connect L0, L1, L2, L3;
+L0: condition for 27.7% connect L4;
+L1: condition when state2a connect L5;
+L2: condition state1a connect L6;
+L3: condition otherwise connect L4;
+L4: final;
+L5: condition when state2b, state2c connect L4;
+L6: condition state1b, state1c connect L4;
+endmsc;

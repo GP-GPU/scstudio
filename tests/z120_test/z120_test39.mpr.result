@@ -1,0 +1,11 @@
+Warinig 14: HMSC has defined a successor for end node
+OK: z120_test39 is correct, should be correct
+
+mscdocument z120_test39;
+msc Stranka_1;
+initial connect L0;
+L0: reference Trick connect L1;
+L1: final;
+endmsc;
+msc Trick;
+endmsc;

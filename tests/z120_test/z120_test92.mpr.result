@@ -1,0 +1,23 @@
+OK: z120_test92 is correct, should be correct
+
+mscdocument z120_test92;
+msc Page_1;
+inst a;
+inst c;
+inst b;
+text 'text';
+a: instance;
+out 1,0 to b;
+in 4,1 from b;
+endinstance;
+c: instance;
+in 2,2 from b;
+out 3,3 to b;
+endinstance;
+b: instance;
+in 1,0 from a comment 'Ev''ent ';
+out 2,2 to c;
+in 3,3 from c;
+out 4,1 to a;
+endinstance;
+endmsc;

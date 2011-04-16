@@ -1,0 +1,15 @@
+OK: z120_test06 is correct, should be correct
+
+mscdocument z120_test06;
+msc Strnka1;
+inst I1;
+inst I2;
+I1: instance;
+out M1,0 to I2;
+out M1,1 to I2;
+endinstance;
+I2: instance;
+in M1,0 from I1;
+in M1,1 from I1;
+endinstance;
+endmsc;

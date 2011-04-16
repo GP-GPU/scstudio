@@ -1,0 +1,21 @@
+/*************************************************
+Example of bMsc where one event in coregion is labeled the other not.
+*************************************************/
+
+mscdocument z120_test46;
+msc pok2;
+inst A;
+inst B;
+A: instance;
+in A,0 from found;
+out jedna,1 to B;
+concurrent;
+out B1,2 to B;
+label e1; out B,3 to lost;
+endconcurrent;
+endinstance;
+B: instance;
+in jedna,1 from A;
+in B1,2 from A;
+endinstance;
+endmsc;

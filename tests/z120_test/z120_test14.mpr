@@ -1,0 +1,31 @@
+/***********************************************
+Example of bMSC
+***********************************************/
+mscdocument test11.vsd;
+msc Strnka1;
+inst A;
+inst B;
+A: instance;
+concurrent;
+label e0; out ano,0 to B;
+label e2; in nie,2 from B;
+endconcurrent;
+concurrent;
+label e3; out micron,3 to B;
+endconcurrent;
+in dan,5 from B;
+in track,6 from B;
+endinstance;
+B: instance;
+concurrent;
+label e6; out nie,2 to A;
+label e7; in ano,0 from A;
+endconcurrent;
+in micron,3 from A;
+concurrent;
+label e8; out dan,5 to A;
+endconcurrent;
+out track,6 to A;
+in rad,7 from found;
+endinstance;
+endmsc;

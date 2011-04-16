@@ -1,0 +1,32 @@
+z120_test64.mpr[21,9] Missing 'from'.
+z120_test64.mpr[21,9] Unwanted input: expected ';'.
+z120_test64.mpr[25,23] Missing ';'.
+z120_test64.mpr[25,29] Cannot match to any predicted input.
+z120_test64.mpr[27,6] Cannot match to any predicted input.
+Warning 04: Instances with unfinished coregion: Server
+Warning 05: Complete message (request_b,4) with only one event
+Warning 05: Complete message (result,5) with only one event
+Warning 20: MSC (Strnka1) has unterminated 1 instance
+OK: z120_test64 is correct, should be correct
+
+mscdocument z120_test64;
+msc Strnka1;
+inst PC;
+inst Server;
+PC: instance;
+out SYN,0 to Server;
+in SYNACK,1 from Server;
+out ACK,2 to Server;
+out request_a,3 to Server;
+out request_b,4 to lost;
+in result,5 from found;
+endinstance;
+Server: instance;
+in SYN,0 from PC;
+out SYNACK,1 to PC;
+in ACK,2 from PC;
+concurrent;
+in request_a,3 from PC;
+endconcurrent;
+endinstance;
+endmsc;

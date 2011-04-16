@@ -1,0 +1,13 @@
+mscdocument Drawing2;
+msc Page_1;
+inst Lock;
+inst Key;
+Lock: instance;
+out bbb,0 to Key;
+in aaa,1 from Key;
+endinstance;
+Key: instance;
+out aaa,1 to Lock;
+in bbb,0 from Lock;
+endinstance;
+endmsc;

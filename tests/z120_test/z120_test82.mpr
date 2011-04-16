@@ -1,0 +1,15 @@
+/*******************************************
+HMSC with three reference nodes with the same name.
+*******************************************/
+
+mscdocument Vykres1;
+msc Stranka_1;
+initial connect L0, L1;
+L0: connect L2;
+L1: connect L3;
+L2: reference Denied connect L4;
+L2: reference True connect L4;
+L2: reference False connect L4;
+L3: reference Accept connect L4;
+L4: final;
+endmsc;

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Automatic Drawing - SCStudio frontend
+    </title>
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Automatic drawing
+    </h1>
+    <p>
+      With all required shapes available in the BMSC and HMSC stencils, it is
+      possible to draw virtually any MSC diagram. In practice, there are many
+      stereotypes, however. SCStudio helps the user draw some frequently used
+      patterns by several automatic drawing functions.
+    </p>
+    <h2 id="add_instances">
+      Add Instances
+    </h2>
+    <p>
+      The first of them is the <code>Add Instances</code> function
+      accessible via menu <code>Check &#8594; Drawing &#8594; Add Instances</code>,
+      or <code>Ctrl+Alt+F</code> keyboard shortcut. It is available in
+      the context (right-click) menu of the document, too. The function draws a
+      given number of instances on the active page of the document, with
+      constant or dynamic space between each two of them.
+    </p>
+    <p>
+      When invoked, the following dialog appears:
+    </p>
+    <img class="big" src="pictures/add_instances_options.png"
+    alt="Add Instances options dialog" />
+    <p>
+      The first two fields set the number of instances to be drawn and their
+      length. Next two fields set the starting point from which to start
+      drawing. If the cursor was in the document drawing area in the time of Add
+      Instances invocation (that is, the keyboard shortcut or context-menu was
+      used), the start position fields are filled with the cursor position, i.e.
+      drawing will start from the point where the cursor was.
+    </p>
+    <p>
+      In the Options panel, if the Total width switch is chosen, all the
+      instances will be drawn in the place of a width given, so the gaps between
+      instances will be calculated to fit this area. On the contrary, the
+      Spacing switch sets constant gaps between the instances not limiting the
+      total width.
+    </p>
+    <p>
+      All numbers in the dialog are in units of the current page of the
+      document.
+    </p>
+    <h2 id="message_sequence">
+      Message Sequence
+    </h2>
+    <p>
+      The Message Sequence function draws a sequence of messages among selected
+      instances. The basic usage is that when one instance sends a message,
+      which is received and resent by several other instances and finally
+      received by the last instance, as illustrated in the following picture.
+    </p>
+    <img src="pictures/message_sequence.png" alt="Message Sequence example" />
+    <p>
+      The Message Sequence function is accessible via menu <code>Check &#8594;
+      Drawing &#8594; Message Sequence</code>, or <code>Ctrl+Alt+S</code>
+      keyboard shortcut or <code>Message Sequence</code> context-menu
+      on instances. As for other automatic drawing functions, an options dialog
+      is opened after Message Sequence invocation:
+    </p>
+    <img class="big" src="pictures/message_sequence_options.png"
+    alt="Message Sequence options dialog" />
+    <p>
+      The first option in the dialog determines the direction of the sequence.
+      For each direction, a separate message label may be specified in the Left
+      and Right Message Captions input boxes. Uni- and bidirectional message
+      sequences are supported.
+    </p>
+    <p>
+      Starting Y-position determines the instances, among which the sequence is
+      to be drawn. The initial set of instances is taken according to current
+      selection:
+    </p>
+    <ul>
+      <li>
+        if there are no instances selected, all instances on the page are taken;
+      </li>
+      <li>
+        if there is exactly one instance selected, then SCStudio waits for
+        another instance to be selected;
+      </li>
+      <li>
+        otherwise, all selected instances are taken into account.
+      </li>
+    </ul>
+    From all of these instances, the leftmost and the rightmost instances are
+    recognized as the first and last instance in the message sequence. Between
+    these two, all other instances crossing an imaginary horizontal line at
+    height equal to Starting Y-position are qualified for the message sequence.
+    (During the options dialog, these two instances are marked with red color.)
+    <p>
+      The Starting Y-position has a default value of mouse position, so the most
+      comfortable way of invoking Message Sequence is using the context-menu on
+      the first instance at the point where the sequence should start, followed
+      by selecting the last instance, to which the sequence shall come.
+    </p>
+    <p>
+      The next two input boxes, Vertical space between messages and Vertical
+      space between left and right sequence define the vertical space between to
+      subsequent messages on the same instance.
+    </p>
+    <p>
+      The last options group determines treatment of coregions found in the way
+      of the message sequence. Such a situation may be forbidden (by the first
+      choice in the dialog) or ignored (the second choice - the incident
+      messages are simply attached to the coregion without any order), or the
+      messages passing through a coregion may be ordered by ordering line or
+      side-side ordering.
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+/****************************************************
+Example of HMSC (notification according to Z120_1999 standard)
+****************************************************/
+msc setup_attach;
+       initial connect L1;
+   L1: condition when disconnected connect L2;
+   L2: connect L3, L4;
+   L3: reference failure connect L1;
+   L4: reference connection connect L5;
+   L5: condition connected connect L6;
+   L6: final;
+endmsc;
+
+msc connection;
+endmsc;
+
+msc failure;
+endmsc;

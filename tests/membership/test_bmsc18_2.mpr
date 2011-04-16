@@ -1,0 +1,34 @@
+/*
+ * Test should be 0 because the message ordering: in the test_hmsc18 is said:
+ *
+ * 1. the receive of the first message form the Tac instance (message a) is 
+ * received before receive of the second message from the Tac instance (message b). 
+ * 
+ * 2. the receive of the third message form the Tac instance (message a) is
+ * received before receive of the fourth message from the Tac instance (message c)
+ * (BROKEN CONDITION)
+ */
+mscdocument Drawing1;
+msc print;
+inst Tic;
+inst Tac;
+
+Tic: instance;
+in a,0 from Tac;
+in c,1 from Tac;
+in a,2 from Tac;
+in b,3 from Tac;
+in a,4 from Tac;
+endinstance;
+
+
+
+
+Tac: instance;
+out a,0 to Tic;
+out b,3 to Tic;
+out a,4 to Tic;
+out c,1 to Tic;
+out a,2 to Tic;
+endinstance;
+endmsc;

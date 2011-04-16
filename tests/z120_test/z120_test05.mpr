@@ -1,0 +1,17 @@
+/***********************************************
+Simple test of bMSC (event driven notification)
+***********************************************/
+
+msc pok2;
+p1: instance;
+p2: instance;
+
+p1: out a to p2;
+p2: in a from p1;
+
+p2: out a to p1;
+p1: in a from p2;
+
+p1: endinstance;
+p2: endinstance;
+endmsc;

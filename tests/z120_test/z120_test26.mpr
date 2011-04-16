@@ -1,0 +1,26 @@
+/**********************************************
+Example of HMSC with reference to HMSC
+**********************************************/
+
+mscdocument Vykres2;
+msc Two;
+inst Second;
+inst First;
+Second: instance;
+out true,0 to First;
+endinstance;
+First: instance;
+in true,0 from Second;
+endinstance;
+endmsc;
+msc Stranka_1;
+initial connect L0;
+L0: reference One connect L1;
+L1: reference Two connect L2;
+L2: final;
+endmsc;
+msc One;
+initial connect L0;
+L0: condition access connect L1;
+L1: final;
+endmsc;

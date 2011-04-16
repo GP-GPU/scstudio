@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      FIFO
+    </title>
+    <meta name="author" content="Martin Chmelik" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      FIFO (First In, First Out) property
+    </h1>
+    <p>
+      is a BMSC property. The property ensures that it is possible to implement
+      the desired behavior without deadlocks, that would be caused by channel
+      behavior.
+    </p>
+    <p>
+      There are several types of channels and several ways how they can be used
+      in BMSC. Some of the most useful are the following:
+    </p>
+    <ul>
+      <li>
+        FIFO channel for every pair of instances
+      </li>
+      <li>
+        FIFO channel for every pair of instances and labels
+      </li>
+      <li>
+        One FIFO channel for every process
+      </li>
+      <li>
+        One FIFO channel for all processes
+      </li>
+    </ul>
+    The SCStudio currently supports the first two options. The extension for
+    other options is planned.
+    <h2>
+      Basic Message Sequence Chart
+    </h2>
+    <h3>
+      FIFO channel for every pair of instances
+    </h3>
+    <p>
+      FIFO property is violated when there are two messages, such that they
+      share a common source and destination instance and the latter message may
+      arrive before the first one.
+    </p>
+    <p>
+      Imagine we have a system in an all-channel FIFO environment which behaves
+      according to a BMSC specification. A process expects the messages to
+      arrive in some order, according to specification, but the messages might
+      have been sent in a different order. A deadlock is reached as there might
+      be a different message in the head of the channel queue.
+    </p>
+    <p>
+      An example of a non-FIFO design can be seen on the next picture. Message
+      <i>m1</i> is sent before <i>m2</i>, but instance <i>q</i>
+      receives message <i>m2</i> before <i>m1. </i>Because we
+      are having a FIFO channel between instances <i>p</i> and <i>q</i>,
+      this is not possible and leads to a deadlock.
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/simple_non_fifo.png" width="250" border="0"
+            alt="Example of a non-fifo design"
+            title="Example of a non-fifo design" />
+          </li>
+          <li class="caption">
+            Example of a non-FIFO design
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+    </p>
+    <h4>
+      Formal definition:
+    </h4>
+    <p>
+      BMSC is FIFO if for all receive events <i>c</i>, <i>d</i>
+      and their matching send events <i>a, b</i> (&lt;<i>a,c</i>>
+      forms the first message and &lt;<i>b,d</i>> forms the second
+      message) it holds that <i>c &lt; d => a &lt; b</i>, where &lt; is
+      the visual order and the two messages belong to the same channel.
+    </p>
+    <p>
+      On the next picture we can see tricky examples of FIFO BMSCs. They satisfy
+      the FIFO property, because the receive events of both messages are in
+      coregion. This means that the user has specified that the receive events
+      can happen in an arbitrary order. So that if there is any order of these
+      two events in the head of the channel queue, the system will certainly not
+      reach deadlock.
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/fifo1.png" width="250" border="0"
+            alt="FIFO MSC design" title="FIFO MSC design" />
+          </li>
+          <li class="caption">
+            Example of a FIFO design
+          </li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/fifo2.png" width="250" border="0"
+            alt="FIFO MSC design" title="FIFO MSC design" />
+          </li>
+          <li class="caption">
+            Example of a different FIFO design
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      An example of a non-FIFO design can be seen on the following picture. This
+      is because the <i>Instance q</i> can execute only the receive
+      event of message <i>m1</i> and then the receive event of the
+      message <i>m2</i>. However it is possible (due to coregion), that
+      the message <i>m2</i> is at head of the channel queue of Instance
+      q and message <i>m2</i> is behind it.
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/nonfifo1.png" width="250" border="0"
+            alt="non-fifo design" title="non-fifo design" />
+          </li>
+          <li class="caption">
+            Example of a non-FIFO design
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3>
+      FIFO channel for every pair of instances and labels
+    </h3>
+    <p>
+      In this case we can have more than one FIFO channel between two processes.
+      For every label there is one channel. Everything what has satisfied FIFO
+      property in the previous case, will satisfy the property also in this
+      case. The difference can be seen on the following FIFO example:
+    </p>
+    <ul class="gallery">
+      <li>
+        <ul>
+          <li>
+            <img src="pictures/label_channel_fifo.png" width="250" border="0"
+            alt="FIFO MSC design" title="FIFO MSC design" />
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>
+      Messages <i>m2</i> and <i>m1</i> are not in the same
+      channel, therefore they may arrive in any order.
+    </p>
+    <!--  comment <H3>One FIFO buffer for every process</H3> <P>TODO, wait until
+      implementation is done</P> <H3>One FIFO buffer for all processes</H3>
+      <P>TODO, wait until implementation is done</P> -->
+    <h2>
+      High-level Message Sequence Chart
+    </h2>
+    <p>
+      HMSC satisfies FIFO property for a certain channel type, if every BMSC
+      represented by the HMSC satisfies the FIFO property for that channel type.
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+mscdocument Ola;
+msc iha;
+initial connect L1;
+L1: reference aaa time [1,4]; connect L2;
+L2: final;
+endmsc;
+
+msc aaa;
+inst A;
+inst B;
+A: instance;
+in no,0 from B;
+endinstance;
+B: instance;
+out no,0 to A;
+endinstance;
+endmsc;
+

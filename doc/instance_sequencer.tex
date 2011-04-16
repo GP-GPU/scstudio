@@ -1,0 +1,174 @@
+% $Id: $
+
+\documentclass{article}
+\usepackage[plainpages=false, pdfpagelabels]{hyperref}
+\usepackage[pdftex]{graphicx,color}
+\usepackage{algorithmic}
+\usepackage{algorithm, verbatim}
+\newtheorem{defn}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newcommand{\type}{{\tau}}
+\newcommand{\proc}{{P}}
+\newcommand{\procSet}{{\cal P}}
+\newcommand{\events}{{\cal E}}
+\newcommand{\match}{{\cal M}}
+\newcommand{\coregs}{{\cal C}}
+\newcommand{\genord}{{\cal G}}
+\newcommand{\MSCmap}{{\it L}}
+\newcommand{\MSCs}{{\cal L}}
+\newcommand{\timerSet}{{\cal T}}
+\newcommand{\timerMSGSet}{{{\cal T}_{MSG}}}
+\newcommand{\intervalSet}{{\cal I}}
+\newcommand{\intConstraintSet}{{\cal K}}
+\newcommand{\intConstraintMSGSet}{{\cal K}_{MSG}}
+\newcommand{\maxEvents }{{\it{Max}}}
+\newcommand{\minEvents }{{\it{Min}}}
+\newcommand{\solutionSet }{{\cal S}}
+\newcommand{\timingAssignment }{{\iota}}
+\newcommand{\timingAssignmentMSG}{{{\iota}_{MSG}}}
+\usepackage{amsmath, amsthm, amssymb}
+
+
+\begin{document}
+\section*{Instance$\_$sequencer}
+This function should find the best possible order of instances. 
+
+%\begin{algorithm}
+%\caption{Instance$\_$sequencer(int $x$, int $y$)}
+\begin{algorithmic}[1]
+\STATE \textbf{Input} bMSC $M$, int $x = 1$ parameter of penalization of arrow going back, int $y = 1$ parameter of penalization of arrow crossing with instance;
+\STATE \textbf{Output} bMSC $M$ with the best order of instances;
+\STATE
+
+\STATE \COMMENT {sets of indexes of ordered and non-ordered instances}
+\STATE set$<$int$>$ $ordered$, $unordered$;
+\STATE instance $u$;
+\STATE int $i=0, j, maximum, max\_j, max\_i, n$;
+\STATE \COMMENT {vector of indexes of ordered instances}
+\STATE vector$<$int$>$ $array$; 
+\STATE
+
+\STATE \COMMENT {setting indexes of instances and putting indexes into $unordered$ }
+\FORALL {$u$ instances of $M$}
+\STATE $u$.set\_atribut($i$);
+\STATE $i++$;
+\STATE $unordered$.insert($i$);
+\ENDFOR
+\STATE
+
+\STATE \COMMENT {finding two instances with the most arrows between them}
+\STATE $maximum = -\infty$;
+\STATE $n = array.$size();
+\FOR {$i = 0; i < n; i++$}
+\FOR {$j = i+1; j < n; j++$}
+\IF {$maximum < $arrows\_from\_$i$\_to\_$j$ $+$ arrows\_from\_$j$\_to\_$i$}
+\STATE $maximum \leftarrow$ arrows\_from\_$i$\_to\_$j$ + arrows\_from\_$j$\_to\_$i$;
+\STATE $max\_j \leftarrow j$;
+\STATE $max\_i \leftarrow i$;
+\ENDIF
+\ENDFOR
+\ENDFOR
+\STATE
+
+\STATE \COMMENT {putting initial index to array with using function declared on vectors}
+\STATE $array$.push\_back($max\_i$);
+\STATE $ordered$.insert($max\_i$);
+\STATE $unordered$.erase($max\_i$);
+\STATE
+\STATE \COMMENT {putting index to array with using out function add(index, x, y)}
+\STATE $array$.add($max\_j, x, y$);
+\STATE $ordered$.insert($max\_j$);
+\STATE $unordered$.erase($max\_j$);
+\STATE
+
+\STATE \COMMENT {doing this for all unordered instances: finding one instance which has the most arrows with ordered instances, adding the instance to the best position among the already ordered instances and moving its index from $unordered$ to $ordered$}
+\WHILE {$unordered \neq \emptyset$}
+\STATE $maximum = -\infty$; 
+\STATE \COMMENT{finding an index of instance with the most arrows between ordered instances and this instance}
+\FORALL {$i \in unordered$}
+\FORALL {$j \in ordered$}
+\IF {$maximum < $ arrows\_from\_$i$\_to\_$j$ $+$ arrows\_from\_$j$\_to\_$i$}
+\STATE $maximum \leftarrow$ arrows\_from\_$i$\_to\_$j$ + arrows\_from\_$j$\_to\_$i$;
+\STATE $max\_i \leftarrow i$;
+\ENDIF
+\ENDFOR
+\ENDFOR
+\STATE \COMMENT {putting the chosen index into $array$}
+\STATE $array$.add($max\_i, x, y$);
+\STATE $ordered$.insert($max\_i$);
+\STATE $unordered$.erase($max\_i$);
+\ENDWHILE
+\STATE
+
+\STATE \COMMENT {setting coordinate $x$ of instances according to $array$ }
+\STATE $j = 0$;
+\FOR {$i = 0; i < n; i++$}
+\STATE $i$.get\_instance().set\_x() = $j$;
+\STATE $j++$;
+\ENDFOR
+
+
+
+\end{algorithmic}
+%\end{algorithm}
+
+\begin{algorithm}
+\caption{add(vector$<$int$>$ $array$,  int $index$, int $x$, int $y$)}
+\begin{algorithmic}[1]
+
+\STATE \textbf{Input} vector $array$ vector of indexes of ordered instances, int $index$ index of instance we want to put in array, int $x$ parameter of penalization of arrow going back, int $y$ parameter of penalization of crossing arrow with instance;
+\STATE \textbf{Output} vector $array$ with $index$ on the best possible position;
+\STATE
+
+\STATE int $min\_value = \infty, min\_i=0$;
+\STATE
+\STATE \COMMENT {counting number of arrows between instances in $array$, counting it with penalization, doing this for all possible positions of new index and finding minimal value}
+
+\STATE $array$.push\_back($index$);
+\STATE \COMMENT {size of $array$ is $(n+1)$ and the last value has index $n$}
+
+\FOR {$i = n; i > 0; i--$}
+\IF {$min\_value > array$.count\_value($x,y$)}
+\STATE $min\_value = array$.count\_value($x,y$);
+\STATE $min\_i = i$;
+\ENDIF
+\STATE swap$(array[i], array[i-1])$;
+\ENDFOR
+
+\STATE
+\FOR {$i=0; i<min\_i; i++$}
+\STATE swap$(array[i],array[i+1])$;
+\ENDFOR
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\begin{algorithm}
+\caption{count\_value(vector$<$int$>$ $array$, int $x$, int $y$)}
+\begin{algorithmic}[1]
+
+\STATE \textbf{Input} vector $array$ of indexes of instances; int $x$ parameter of penalization of arrow going back, int $y$ parameter of penalization of crossing arrow with instance;
+\STATE \textbf{Output} int $value$ - number of arrows in $array$, which are penalized with $x$ and $y$;
+\STATE
+
+\STATE int $value$;
+\FOR {$i = 0; i < array.$size$(); i++ $ }
+\FOR {$j = i+1; j < array.$size$(); j++ $}
+\STATE \COMMENT {penalizing arrows crossing some instances by parameter $x$, these instances are not next to instance on position $i$}
+\IF {$j > i+1$}
+\STATE $value \leftarrow value + ($arrows\_from\_array$[i]$\_to\_array$[j] + $ \linebreak arrows\_from\_array$[j]$\_to\_array$[i]*x^{j-i-1}$;
+\ENDIF
+\STATE \COMMENT {penalizing arrows going back by parameter $y$}
+\STATE $value \leftarrow value + ($arrows\_from\_array$[j]$\_to\_array$[i] * y$;
+\ENDFOR
+\ENDFOR
+\STATE
+\RETURN $value$;
+
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}

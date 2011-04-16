@@ -1,0 +1,33 @@
+mscdocument Drawing1;
+msc Test;
+inst Lock;
+inst Private;
+inst Key;
+
+Lock: instance;
+concurrent;
+in aaa,0 from Private before e0;
+in ccc,1 from Key before e1;
+label e0;
+out bbb,2 to Key;
+label e1;
+out ddd,3 to Private;
+endconcurrent;
+endinstance;
+
+Private: instance;
+out aaa,0 to Lock;
+in ddd,3 from Lock;
+endinstance;
+
+Key: instance;
+in bbb,2 from Lock;
+out ccc,1 to Lock;
+endinstance;
+endmsc;
+
+msc Page_1;
+initial connect L0;
+L0: reference Test connect L1;
+L1: final;
+endmsc;

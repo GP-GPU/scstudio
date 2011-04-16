@@ -1,0 +1,17 @@
+
+
+
+
+
+
+msc bmsc3;
+inst A;
+inst B;
+A: instance;
+out ok,1 to B;
+endinstance;
+B: instance;
+in ok,1 from A;
+endinstance;
+endmsc;
+

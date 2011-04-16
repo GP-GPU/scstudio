@@ -1,0 +1,20 @@
+/**************************************************
+Example of bMSC where two instances have the same name
+**************************************************/
+
+mscdocument z120_test09;
+msc Stranka1;
+inst NAME;
+inst NAME;
+NAME: instance;
+out a to NAME;
+out a to NAME;
+out a to NAME;
+endinstance;
+NAME: instance;
+in a from NAME;
+in a from NAME;
+in a from NAME;
+endinstance;
+endmsc;
+

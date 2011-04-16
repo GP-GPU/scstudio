@@ -1,0 +1,14 @@
+mscdocument Vykres1;
+msc Stranka_1;
+inst Client;
+inst Server;
+Client: instance;
+label e0;
+out Request,0 to Server;
+time e1 &t1, e1 (1,2] &t2;
+endinstance;
+Server: instance;
+label e1;
+in Request,0 from Client;
+endinstance;
+endmsc;

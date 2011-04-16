@@ -1,0 +1,30 @@
+mscdocument Vykres1;
+msc Stranka_1;
+initial connect L0;
+L0: connect L1, L2;
+L1: reference Secret connect L3;
+L2: reference Mystery connect L3;
+L3: final;
+endmsc;
+
+msc Secret;
+inst A;
+inst B;
+A: instance;
+out ccc,0 to B;
+endinstance;
+B: instance;
+in ccc,0 from A;
+endinstance;
+endmsc;
+
+msc Mystery;
+inst A;
+inst B;
+A: instance;
+in ccc,0 from B;
+endinstance;
+B: instance;
+out ccc,0 to A;
+endinstance;
+endmsc;

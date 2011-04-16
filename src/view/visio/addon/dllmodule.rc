@@ -1,0 +1,636 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Czech resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CSY)
+#ifdef _WIN32
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MESSAGE_SEQUENCE_OPTIONS DIALOGEX 0, 0, 495, 197
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Message Sequence Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,438,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,438,25,50,14
+    GROUPBOX        "Direction:",IDC_STATIC,7,7,423,64
+    CONTROL         "Right only",IDC_MS_DIR_RIGHT,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,19,48,10
+    CONTROL         "Left only",IDC_MS_DIR_LEFT,"Button",BS_AUTORADIOBUTTON,13,31,44,10
+    CONTROL         "Right, Left",IDC_MS_DIR_RIGHT_LEFT,"Button",BS_AUTORADIOBUTTON,13,43,50,10
+    CONTROL         "Left, Right",IDC_MS_DIR_LEFT_RIGHT,"Button",BS_AUTORADIOBUTTON,13,55,50,10
+    LTEXT           "Right Message Captions:",IDC_STATIC,83,19,80,8
+    EDITTEXT        IDC_MS_RIGHT_MESSAGE,164,17,259,14,ES_AUTOHSCROLL
+    LTEXT           "Left Message Captions:",IDC_STATIC,83,43,76,8
+    EDITTEXT        IDC_MS_LEFT_MESSAGE,164,41,259,14,ES_AUTOHSCROLL
+    LTEXT           "Starting Y-position:",IDC_STATIC,7,78,62,8
+    LTEXT           "Vertical space between messages:",IDC_STATIC,7,94,111,8
+    EDITTEXT        IDC_MS_START_POS_Y,164,76,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MS_VERTICAL_SPACE,164,92,40,14,ES_AUTOHSCROLL
+    LTEXT           "Vertical space between left and right sequence:",IDC_STATIC,7,110,154,8
+    EDITTEXT        IDC_MS_VERTICAL_SPACE_LEFT_RIGHT,164,108,40,14,ES_AUTOHSCROLL
+    LTEXT           "<units>",IDC_MS_UNITS0,207,78,27,8
+    LTEXT           "<units>",IDC_MS_UNITS1,207,94,27,8
+    LTEXT           "<units>",IDC_MS_UNITS2,207,110,27,8
+    GROUPBOX        "Upon crossing a coregion:",IDC_STATIC,7,128,423,62
+    CONTROL         "Cancel the message sequence and report an error",IDC_MS_COREGION_ERROR,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,13,140,177,10
+    CONTROL         "Connect to the coregion",IDC_MS_COREGION_CONTINUE,
+                    "Button",BS_AUTORADIOBUTTON,13,151,93,10
+    CONTROL         "Connect to the coregion and order the messages in the sequence using:",IDC_MS_COREGION_ORDER,
+                    "Button",BS_AUTORADIOBUTTON,13,162,247,10
+    CONTROL         "Ordering Line",IDC_MS_CONNECT_WITH_LINE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,260,162,59,10
+    CONTROL         "Ordering Side-Side",IDC_MS_CONNECT_WITH_SIDE_SIDE,
+                    "Button",BS_AUTORADIOBUTTON,260,173,75,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_MESSAGE_SEQUENCE_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 488
+        VERTGUIDE, 13
+        VERTGUIDE, 430
+        VERTGUIDE, 438
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 190
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IMPORT_DISTANCES_BMP BITMAP                  "ImportDistancesBmp.bmp"
+#endif    // Czech resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 240, 79
+STYLE DS_SETFONT | DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About Sequence Chart Studio"
+FONT 8, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    LTEXT           "Sequence Chart Studio 0.0.0",IDC_ABOUT_VERSION,5,5,230,10
+    LTEXT           "http://scstudio.sourceforge.net",IDC_STATIC,5,15,230,10
+    LTEXT           "This program comes with ABSOLUTELY NO WARRANTY. This program is a free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License version 2.1.",IDC_STATIC,5,30,230,25
+    DEFPUSHBUTTON   "&OK",IDOK,184,60,50,14
+END
+
+IDD_CHECK_OPTIONS DIALOGEX 0, 0, 200, 159
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Verification Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,145,14,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,145,33,50,14
+    LTEXT           "Properties to check",IDC_STATIC,5,5,130,8
+    CONTROL         "",IDC_CHECKLIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,14,130,90
+    LTEXT           "Use channel for each",IDC_STATIC,5,107,130,8
+    COMBOBOX        IDC_CHANNELTYPE,5,116,130,61,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Display",IDC_STATIC,5,133,130,8
+    COMBOBOX        IDC_OUTPUTLEVEL,5,142,130,61,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_SIMULATOR_OPTIONS DIALOGEX 0, 0, 191, 52
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Simulator Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Bin width",IDC_STATIC,5,16,30,8
+    EDITTEXT        IDC_SIM_BIN_WIDTH,5,25,40,14,ES_AUTOHSCROLL
+    GROUPBOX        "Upper limits",IDC_STATIC,52,5,75,42
+    LTEXT           "Message delay",IDC_STATIC,61,16,48,8
+    EDITTEXT        IDC_SIM_MESSAGE_DELAY,60,25,40,14,ES_AUTOHSCROLL
+    LTEXT           "[sec]",IDC_STATIC,102,27,17,8
+    DEFPUSHBUTTON   "OK",IDOK,136,9,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,136,28,50,14
+END
+
+IDD_FIND_FLOW DIALOGEX 0, 0, 307, 111
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Start",IDOK,252,14,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,252,34,50,14
+    LTEXT           "Find flow",IDC_STATIC,5,5,100,8
+    CONTROL         "",IDC_DRAWING1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | TVS_CHECKBOXES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,5,14,116,92
+    LTEXT           "In drawing",IDC_STATIC,127,5,100,8
+    CONTROL         "",IDC_DRAWING2,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | TVS_CHECKBOXES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,127,14,116,92
+    CONTROL         "Diff",IDC_DIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,253,56,24,10
+END
+
+IDD_INSTANCES_FIELD_OPTIONS DIALOGEX 0, 0, 215, 115
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add Instances Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,158,5,52,14
+    PUSHBUTTON      "Cancel",IDCANCEL,158,25,52,14
+    LTEXT           "Number of instances:",IDC_STATIC,5,5,70,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_IF_INSTANCES_CNT,80,5,43,14,ES_AUTOHSCROLL
+    GROUPBOX        "",IDC_OPTIONS_GROUP_BOX,5,70,205,40
+    LTEXT           "Instance length:",IDC_STATIC,5,23,70,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_IF_INSTANCE_LENGTH,80,23,43,14,ES_AUTOHSCROLL
+    LTEXT           "Start position:",IDC_STATIC,5,40,50,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_IF_START_POS_X,80,40,43,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_IF_START_POS_Y,80,55,43,14,ES_AUTOHSCROLL
+    CONTROL         "Total width:",IDC_TOTAL_WIDTH_RDO,"Button",BS_AUTORADIOBUTTON,10,79,54,10
+    CONTROL         "Spacing:",IDC_SPACING_RDO,"Button",BS_AUTORADIOBUTTON,10,94,43,10
+    EDITTEXT        IDC_IF_TOTAL_WIDTH,80,78,43,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_IF_SPACING,80,93,43,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Default values",IDC_DEFAULT_BTN,158,47,52,14
+    LTEXT           "x:",IDC_STATIC,64,40,9,12,SS_CENTERIMAGE
+    LTEXT           "y:",IDC_STATIC,64,55,9,12,SS_CENTERIMAGE
+    LTEXT           "<units>",IDC_IF_UNITS0,127,24,27,8
+    LTEXT           "<units>",IDC_IF_UNITS1,127,41,27,8
+    LTEXT           "<units>",IDC_IF_UNITS2,127,56,27,8
+    LTEXT           "<units>",IDC_IF_UNITS3,128,81,27,8
+    LTEXT           "<units>",IDC_IF_UNITS4,127,95,27,8
+END
+
+IDD_ENUMERATION_OPTIONS DIALOGEX 0, 0, 236, 63
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Message numbering"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,179,10,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,179,27,50,14
+    GROUPBOX        "Options",IDC_STATIC,6,7,168,50
+    COMBOBOX        IDC_COMBO_NUMBERING,48,18,71,66,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Type:",IDC_STATIC,11,20,24,8,SS_CENTERIMAGE
+    CTEXT           "+",IDC_STATIC,125,18,12,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_ADDITION,143,18,25,14,ES_AUTOHSCROLL | ES_NOHIDESEL
+    EDITTEXT        IDC_STARTING_INDEX,63,36,25,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Starting index:",IDC_STATIC,11,39,50,8,SS_CENTERIMAGE
+END
+
+IDD_NUMBERING_GLOBAL DIALOGEX 0, 0, 275, 126
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_TRANSPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "as nearest message",IDC_NEAREST_MSG,"Button",BS_AUTORADIOBUTTON | WS_GROUP,17,27,80,10
+    CONTROL         "as nearest numbered message",IDC_NEAREST_NUMBERED_MSG,
+                    "Button",BS_AUTORADIOBUTTON,17,41,114,10
+    CONTROL         "don't number",IDC_DONT_NUMBER,"Button",BS_AUTORADIOBUTTON | WS_GROUP,17,81,58,10
+    CONTROL         "use numbering style:",IDC_USE_NUMBERING_STYLE,"Button",BS_AUTORADIOBUTTON,17,97,83,10
+    GROUPBOX        "",IDC_STATIC,7,17,261,42,WS_GROUP
+    COMBOBOX        IDC_COMBO_NUMBERING_GLOBAL,101,95,71,66,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "+",IDC_STATIC,173,95,12,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_ADDITION_GLOBAL,185,95,25,14,ES_AUTOHSCROLL | ES_NOHIDESEL
+    EDITTEXT        IDC_STARTING_INDEX_GLOBAL,237,95,25,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Index:",IDC_STATIC,215,97,21,8,SS_CENTERIMAGE
+    CONTROL         "automatic numbering new messages",IDC_ENUM_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,131,10
+    GROUPBOX        "If no nearest (numbered) message found:",IDC_STATIC,7,65,261,54,WS_GROUP
+END
+
+IDD_SNAP_GLOBAL DIALOGEX 0, 0, 275, 186
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "mouse control",IDC_SNAP_ENABLED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,52,61,10
+    GROUPBOX        "Oblique message options:",IDC_STATIC,7,72,261,61
+    CONTROL         "straighten",IDC_STRAIGHTEN,"Button",BS_AUTORADIOBUTTON | WS_GROUP,13,87,47,10
+    CONTROL         "preserve vertical distance between send - receive",IDC_PRESERVE_VERTICAL,
+                    "Button",BS_AUTORADIOBUTTON,13,101,176,10
+    CONTROL         "preserve slope",IDC_PRESERVE_SLOPE,"Button",BS_AUTORADIOBUTTON,13,115,63,10
+    CONTROL         "arrow-keys control",IDC_KEYS_ENABLED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,36,76,10
+    CONTROL         "buttons",IDC_BUTTONS_ENABLED,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,13,20,41,10
+    GROUPBOX        "Allow message snapping for:",IDC_STATIC,7,7,261,62
+    GROUPBOX        "Edge instances treatment:",IDC_STATIC,7,135,261,44
+    CONTROL         "preserve message type",IDC_EDGE_PRESERVE_TYPE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,150,149,91,8
+    CONTROL         "change the type to lost/found",IDC_EDGE_CHANGE_TYPE,
+                    "Button",BS_AUTORADIOBUTTON,150,161,112,10
+    CONTROL         "Alow jumping to edge instances and: ",IDC_EDGE_THREATMENT_ENABLED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,148,132,10
+END
+
+IDD_PROTECTION_GLOBAL DIALOGEX 0, 0, 275, 186
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Do not allow to rotate instances",IDC_DONT_ROTATE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,118,10
+END
+
+IDD_IMPORT_SETTINGS DIALOGEX 0, 0, 250, 268
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Import Settings"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,141,247,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,192,247,50,14
+    CONTROL         255,IDC_STATIC,"Static",SS_BITMAP,7,7,236,228
+    LTEXT           "All distances are measured in millimetres.",IDC_STATIC,7,235,131,8
+    EDITTEXT        IDC_COR_WIDTH_VALUE_IMP,45,82,24,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HEAD_WIDTH_VALUE_IMP,44,7,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HEAD_DIST_VALUE_IMP,93,40,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_INCOMPLETE_MSG_VALUE_IMP,167,83,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SLOPE_VALUE_IMP,167,139,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SUCCESSOR_DIST_VALUE_IMP,22,138,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_FOOT_DIST_VALUE_IMP,192,191,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SPACE_VALUE_IMP,93,220,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BEGIN_COR_DIST_VALUE_IMP,80,69,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_END_COR_DIST_VALUE_IMP,82,93,27,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CHECK_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 195
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 154
+    END
+
+    IDD_SIMULATOR_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 186
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 47
+    END
+
+    IDD_FIND_FLOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 302
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_INSTANCES_FIELD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 210
+        VERTGUIDE, 10
+        VERTGUIDE, 19
+        VERTGUIDE, 48
+        VERTGUIDE, 64
+        VERTGUIDE, 123
+        VERTGUIDE, 130
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 110
+        HORZGUIDE, 54
+    END
+
+    IDD_ENUMERATION_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 229
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_NUMBERING_GLOBAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        VERTGUIDE, 14
+        VERTGUIDE, 24
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+
+    IDD_SNAP_GLOBAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        VERTGUIDE, 13
+        VERTGUIDE, 150
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_PROTECTION_GLOBAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_IMPORT_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 261
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_CHECK          ICON                    "icon_check.ico"
+IDI_ICON_FIND_FLOW      ICON                    "icon_findflow.ico"
+IDI_ICON_SELECT_INSTANCES ICON                    "icon_select_instances.ico"
+IDI_ICON_SELECT_MESSAGES ICON                    "icon_select_messages.ico"
+IDI_ICON_SIMULATION_START ICON                    "icon_simulation_start.ico"
+IDI_ICON_SIMULATION_STOP ICON                    "icon_simulation_stop.ico"
+IDI_ICON_SELECT_ADD_INSTANCES ICON                    "icon_select_add_instances.ico"
+IDI_ICON_SELECT_ADD_MESSAGES ICON                    "icon_select_add_messages.ico"
+IDI_ICON_ENABLE_MESSAGE_ENUMERATION ICON                    "icon_message_enumeration.ico"
+IDI_ICON_DISABLE_MESSAGE_ENUMERATION ICON                    "icon_message_enumeration_disable.ico"
+IDI_ICON_JUMP_LEFT      ICON                    "icon_jump_left_messages.ico"
+IDI_ICON_JUMP_RIGHT     ICON                    "icon_jump_right_messages.ico"
+IDI_ICON_JUMP_LEFT_COPY ICON                    "icon_jump_left_messages_copy.ico"
+IDI_ICON_JUMP_RIGHT_COPY ICON                    "icon_jump_right_messages_copy.ico"
+IDI_ICON_SELECT_GROUP   ICON                    "icon_message_select_group.ico"
+IDI_ICON_BEAUTIFY       ICON                    "icon_beautify.ico"
+IDI_ICON_MESSAGE_SEQUENCE ICON                    "icon_message_sequence.ico"
+IDI_ICON_REVERSE_MESSAGE ICON                    "icon_reverse_message.ico"
+IDI_ICON_TIGHTEN_TIME   ICON                    "icon_tighten_time.ico"
+IDI_ICON_ADD_INSTANCES  ICON                    "icon_add_instances.ico"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "1 TYPELIB ""scstudio.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,4,0,0
+ PRODUCTVERSION 0,4,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x9L
+#else
+ FILEFLAGS 0x8L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004e4"
+        BEGIN
+            VALUE "CompanyName", "Masaryk University Brno"
+            VALUE "FileDescription", "Microsoft Visio add-on for design and verification of Message Sequence Charts (MSC)."
+            VALUE "FileVersion", "0.4.0"
+            VALUE "InternalName", "scstudio.vsl"
+            VALUE "LegalCopyright", "(c) Petr Gotthard. All rights reserved."
+            VALUE "OriginalFilename", "scstudio.vsl"
+            VALUE "PrivateBuild", "$Revision: 1065 $"
+            VALUE "ProductName", "Sequence Chart Studio"
+            VALUE "ProductVersion", "0.4.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_SCSTUDIO            REGISTRY                "dllmodule.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CHECK_OPTIONS DLGINIT
+BEGIN
+    IDC_CHANNELTYPE, 0x403, 3, 0
+0x6464, "\000" 
+    IDC_OUTPUTLEVEL, 0x403, 3, 0
+0x6464, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ADDON_NAME          "Sequence Chart Studio"
+    IDS_ERROR_VISIO_VERSION "This application requires Microsoft Office Visio 2003 or later."
+    IDS_VSL_NAME            "scstudio.vsl"
+    IDS_REPORT_VIEW         "Verification Report"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BEAUTIFY_SETTINGS DIALOGEX 0, 0, 519, 306
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,399,287,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,462,287,50,14
+    CONTROL         251,IDC_STATIC,"Static",SS_BITMAP,21,34,236,228
+    GROUPBOX        "    arranging messages and coregions, setting the length of incomplete",IDC_STATIC,264,7,248,75
+    LTEXT           "message (a) and setting the instances length to",IDC_STATIC,276,18,154,8
+    CONTROL         "",IDC_ARRANGING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,266,7,10,10
+    CONTROL         "constant value (b)",IDC_CONST_INSTANCE_RDO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,276,29,75,10
+    CONTROL         "the first occurrence in diagram",IDC_FIRST_INSTANCE_RDO,
+                    "Button",BS_AUTORADIOBUTTON,276,42,113,10
+    CONTROL         "original value",IDC_ORIGINAL_INSTANCE_RDO,"Button",BS_AUTORADIOBUTTON,276,55,58,10
+    CONTROL         "sum of individual distances on instance (c), (d), (e), (f), (g), (h)",IDC_PARTS_INSTANCE_RDO,
+                    "Button",BS_AUTORADIOBUTTON,276,69,219,10
+    GROUPBOX        "    setting the width of instances head/foot to",IDC_STATIC,264,86,248,37
+    CONTROL         "constant value (i)",IDC_CONST_HEAD_RDO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,276,98,72,10
+    CONTROL         "the first occurrence in diagram",IDC_FIRST_HEAD_RDO,
+                    "Button",BS_AUTORADIOBUTTON,276,110,113,10
+    GROUPBOX        "    setting the width of coregions to",IDC_STATIC,264,127,248,38
+    CONTROL         "constant value (j)",IDC_CONST_COREGION_RDO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,276,138,73,10
+    CONTROL         "the first occurrence in diagram",IDC_FIRST_COREGION_RDO,
+                    "Button",BS_AUTORADIOBUTTON,276,153,113,10
+    GROUPBOX        "    setting the space between instances (k) and permutation of instances",IDC_STATIC,264,170,248,110
+    CONTROL         "original order",IDC_ORIGINAL_ORDER_RDO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,276,182,58,10
+    CONTROL         "eliminate crossing messages with instances ",IDC_CROSSING_ORDER_RDO,
+                    "Button",BS_AUTORADIOBUTTON,276,205,155,10
+    CONTROL         "eliminate messages going back",IDC_GOING_BACK_ORDER_RDO,
+                    "Button",BS_AUTORADIOBUTTON,276,229,113,10
+    CONTROL         "eliminate both",IDC_BOTH_ORDER_RDO,"Button",BS_AUTORADIOBUTTON,276,255,61,10
+    CONTROL         252,IDC_STATIC,"Static",SS_BITMAP,429,195,59,28
+    CONTROL         253,IDC_STATIC,"Static",SS_BITMAP,428,249,59,27
+    CONTROL         250,IDC_STATIC,"Static",SS_BITMAP,428,222,47,26
+    LTEXT           "All distances are measured in millimetres.",IDC_STATIC,11,266,131,8
+    CONTROL         "",IDC_SETTING_HEAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,266,85,10,10
+    CONTROL         "",IDC_SETTING_COREGION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,266,127,10,10
+    CONTROL         "",IDC_SETTING_SPACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,266,170,10,10
+    EDITTEXT        IDC_COR_WIDTH_VALUE,59,104,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HEAD_WIDTH_VALUE,61,32,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HEAD_DIST_VALUE,109,61,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_INCOMPLETE_MSG_VALUE,183,111,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SLOPE_VALUE,183,160,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SUCCESSOR_DIST_VALUE,37,160,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_FOOT_DIST_VALUE,207,213,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SPACE_VALUE,107,245,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_INSTANCE_LENGTH_VALUE,4,116,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BEGIN_COR_DIST_VALUE,97,90,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_END_COR_DIST_VALUE,99,115,27,12,ES_AUTOHSCROLL
+    LTEXT           "(k)",IDC_STATIC,136,248,10,8
+    LTEXT           "(b)",IDC_STATIC,32,119,10,8
+    LTEXT           "(a)",IDC_STATIC,212,114,10,8
+    LTEXT           "(c)",IDC_STATIC,99,63,10,8
+    LTEXT           "(d)",IDC_STATIC,125,92,10,8
+    LTEXT           "(e)",IDC_STATIC,128,117,10,8
+    LTEXT           "(f)",IDC_STATIC,28,162,8,8
+    LTEXT           "(g)",IDC_STATIC,211,163,10,8
+    LTEXT           "(h)",IDC_STATIC,236,216,10,8
+    LTEXT           "(i)",IDC_STATIC,89,35,8,8
+    LTEXT           "(j)",IDC_STATIC,51,107,8,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_BEAUTIFY_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 512
+        VERTGUIDE, 264
+        VERTGUIDE, 266
+        VERTGUIDE, 276
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 301
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_GOING_BACK_BMP      BITMAP                  "GoingBackBmp.bmp"
+IDB_INSTANCES_DISTANCES_BMP BITMAP                  "InstanceDistances.bmp"
+IDB_CROSSING_BMP        BITMAP                  "CrossingBmp.bmp"
+IDB_CROSSING_GOING_BACK_BMP BITMAP                  "BackCrossingBmp.bmp"
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "scstudio.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

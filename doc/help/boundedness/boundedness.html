@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Universal Boundedness
+    </title>
+    <meta name="author" content="Martin Chmelik" />
+    <link href="../help.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+	<div class="menu">
+			<h1>
+				<a href="../index.html">Sequence Chart Studio</a>
+			</h1>
+			<ul>
+				<li>
+					Microsoft Visio Front-end
+					<ul>
+					      <li>
+						<a href="../frontend/shape_selection.html">Shape selection</a>
+					      </li>
+					      <li>
+						<a href="../frontend/automatic_drawing.html">Automatic drawing</a>
+					      </li>
+					      <li>
+						<a href="../frontend/message_numbering.html">Message numbering</a>
+					      </li>
+					      <li>
+						<a href="../frontend/flip_message_direction.html">Flip message direction</a>
+					      </li>
+					      <li>
+						<a href="../frontend/settings.html">Drawing settings</a>
+					      </li>
+					</ul>
+				</li>
+				<li>
+					Verification Algorithms
+					<ul>
+						<li>
+							<a href="../acyclic/acyclic.html">Acyclic property</a>
+						</li>
+						<li>
+							<a href="../time_syntax/time_syntax.html">Correct Time Constraint
+							Syntax</a>
+						</li>
+						<li>
+							<a href="../deadlock/deadlock.html">Deadlock Free</a>
+						</li>
+						<li>
+							<a href="../fifo/fifo.html">FIFO - First In First Out</a>
+						</li>
+						<li>
+							<a href="../livelock/livelock.html">Livelock Free</a>
+						</li>
+						<li>
+							<a href="../localchoice/localchoice.html">Local Choice</a>
+						</li>
+						<li>
+							<a href="../recursivity/recursivity.html">Nonrecursivity</a>
+						</li>
+						<li>
+							<a href="../race/race.html">Race Condition</a>
+						</li>
+						<li>
+							<a href="../realizability/realizability.html">Strong Realizability</a>
+						</li>
+						<li>
+							<a href="../time_consistency/time_consistency.html">Time Consistent</a>
+						</li>
+						<li>
+							<a href="../time_trace_race/time_race.html">Time Race</a>
+						</li>
+						<li>
+							<a href="../unique_instance/unique_instance.html">Unique Instance
+							Names</a>
+						</li>
+						<li>
+							<a href="../boundedness/boundedness.html">Universal Boundedness</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="../membership/membership.html">Find Flow</a>
+				</li>
+				<li>
+					<a href="../montecarlo/montecarlo.html">Monte Carlo Simulation</a>
+				</li>
+				<li>
+					Drawing Transformers
+					<ul>
+					  
+						<li>
+							<a href="../beautify/beautify.html">Beautify</a>
+						</li>
+						<li>
+							<a href="../time_tighten/time_tighten.html">Tighten Time</a>
+						</li>
+						<li>
+							Repaint
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<div class="footer">
+			<p><a href="http://scstudio.sourceforge.net/" target="_blank">scstudio homepage</a></p>
+			<p><a href="http://sourceforge.net/projects/scstudio/" target="_blank">scstudio on sourceforge</a></p>
+			<p>The software is freely available under <a target="_blank" href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.</p>
+			<p>&#169; 2010</p>
+		</div>
+	</div>
+    <div class="content">
+    <h1>
+      Universal Boundedness
+    </h1>
+    <p>
+      is a property of an HMSC. An HMSC is universally bounded if there exists
+      an upper bound on size of communication buffers of all involved processes.
+      Informally, each instance waits for a response before sending the same
+      message again. A dialog is an example of bounded communication. E-mail
+      spam is an example of unbounded communication - actually, it is not rare
+      that an input buffer (mailbox) gets full in this case.
+    </p>
+    <p>
+      When all the possible executions of an HMSC are finite, then HMSC is
+      universally bounded. Therefore only HMSCs containing a cycle may be
+      unbounded. Every cycle whose repetitive execution may lead to unbounded
+      grow of an input buffer is found and displayed by SCStudio.
+    </p>
+    <p>
+      The HMSC on the following picture is unbounded. This is because there is
+      no mechanism for keeping the buffer for messages between <i>X</i>
+      and <i>Y</i> bounded.
+    </p>
+      <ul class="gallery">
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/unbounded_hmsc.png" width="200"
+              alt="Unbounded HMSC" title="Unbounded HMSC" />
+            </li>
+            <li class="caption">
+              Unbounded HMSC
+            </li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <li>
+              <img src="pictures/unbounded_msc.png" width="250"
+              alt="MSC A" title="MSC A" />
+            </li>
+            <li class="caption">
+              MSC A
+            </li>
+          </ul>
+        </li>
+      </ul>
+    <p>
+      For any bound <i>B</i> of the buffer we can make an execution for
+      which the buffer is not sufficiently large. This execution is for example
+      the one which goes through cycle <i>B+1</i> times, the sending of
+      message is very fast and the receiving is very slow. It is so slow, that
+      in point of time when we have sent all messages we have not received any
+      of them. Thus we have exceeded the bound <i>B</i> for this
+      buffer.
+    </p>
+  </div>
+  </body>
+</html>

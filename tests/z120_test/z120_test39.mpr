@@ -1,0 +1,13 @@
+/*************************************************
+Example of HMSC where the end node has defined successor.
+*************************************************/
+
+msc Trick;
+endmsc;
+
+msc Stranka_1;
+initial connect L0;
+L0: reference Trick connect L1;
+L1: final connect L0;
+endmsc;
+

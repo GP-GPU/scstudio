@@ -1,0 +1,18 @@
+z120_test53.mpr[7,0] Cannot match to any predicted input.
+OK: z120_test53 is correct, should be correct
+
+mscdocument z120_test53;
+msc Stranka1;
+inst W;
+inst Q;
+W: instance;
+out a,0 to Q;
+out a,1 to Q;
+out a,2 to Q;
+endinstance;
+Q: instance;
+in a,0 from W;
+in a,1 from W;
+in a,2 from W;
+endinstance;
+endmsc;

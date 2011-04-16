@@ -1,0 +1,18 @@
+Warning 15: Multiple nodes with the same name: L0
+Warning 15: Multiple nodes with the same name: L1
+Warning 15: Multiple nodes with the same name: L2
+Warning 15: Multiple nodes with the same name: L3
+Warning 09: Reference to nonexisting MSC: Denied
+OK: z120_test80 is correct, should be correct
+
+mscdocument z120_test80;
+msc Stranka_1;
+initial connect L0, L1, L2, L3, L4;
+L0: connect L2;
+L1: condition true connect L2;
+L2: reference Denied connect L4;
+L3: condition mark connect L4;
+L4: final;
+endmsc;
+msc Denied;
+endmsc;

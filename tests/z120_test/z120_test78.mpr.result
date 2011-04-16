@@ -1,0 +1,10 @@
+Warning 15: Multiple nodes with the same name: L0
+Warning 08: MSC (Stranka_1) has reference to nonexisting node: L1
+OK: z120_test78 is correct, should be correct
+
+mscdocument z120_test78;
+msc Stranka_1;
+initial connect L0;
+L0: connect L1;
+L1: final;
+endmsc;
