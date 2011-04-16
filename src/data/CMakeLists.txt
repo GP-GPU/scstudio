@@ -48,6 +48,7 @@ ADD_SUBDIRECTORY(Z120)
 ADD_SUBDIRECTORY(modelchecking)
 # build transformers
 ADD_SUBDIRECTORY(beautify)
+ADD_SUBDIRECTORY(pysc)
 
 OPTION(BUILD_PCAP "Enable to build the PCAP import module" OFF)
 IF(BUILD_PCAP)

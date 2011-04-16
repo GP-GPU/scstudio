@@ -1,5 +1,13 @@
 ENABLE_TESTING()
 
+ADD_EXECUTABLE(py_convert_test
+  py_convert_test.cpp)
+TARGET_LINK_LIBRARIES(py_convert_test
+  scmsc
+  scpycheck
+)
+ADD_TEST(py_convert_test ${EXECUTABLE_OUTPUT_PATH}/py_convert_test)
+
 ADD_EXECUTABLE(universal_boundedness_checker_test
   universal_boundedness_checker_test.cpp
 )
