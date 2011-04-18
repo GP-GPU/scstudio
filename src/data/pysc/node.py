@@ -16,7 +16,7 @@ class Node(object):
 			self.succ.append(succ)
 			succ.pred.append(self)
 	def traverse(self, condition = None, l = []):
-		if self.ReferenceNode and self.msc != None:
+		if self.ReferenceNode and self.msc and self.msc.HMsc:
 			self.msc.traverse(condition, l)
 		for node in self.succ:
 			if node not in l:

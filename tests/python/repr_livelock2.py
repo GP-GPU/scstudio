@@ -30,11 +30,13 @@ def fill1():
 	end2 = EndNode()
 	h2.end = end2
 
+	b1 = BMsc("baddie");
 	start1.add_successor(n1)
 	n1.add_successor(n2)
 	n2.add_successor(n3)
 	n3.add_successor(n1)
 	n1.msc = h2
+	n2.msc = b1
 	n3.msc = h2
 
 
