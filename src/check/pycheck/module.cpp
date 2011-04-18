@@ -16,13 +16,14 @@
 #include "check/pycheck/livelock_checker_visio.h"
 #include "check/pycheck/acyclic_checker_visio.h"
 #include "check/pycheck/fifo_checker_visio.h"
+#include "check/pycheck/universal_checker_visio.h"
 
 // module initialization function
 // note: the Visio add-on searches for a function of this name
 extern "C" SCPYCHECK_EXPORT
 Checker** init_checkers()
 {
-  Checker **result = new Checker* [9];
+  Checker **result = new Checker* [11];
 
   result[0] = new PyBDeadlockChecker();
   result[1] = new PyHDeadlockChecker();
@@ -32,6 +33,8 @@ Checker** init_checkers()
   result[5] = new PyHAcyclicChecker();
   result[6] = new PyBFIFOChecker();
   result[7] = new PyHFIFOChecker();
-  result[8] = NULL;
+  result[8] = new PyBUniversalChecker();
+  result[9] = new PyHUniversalChecker();
+  result[10] = NULL;
   return result;
 }

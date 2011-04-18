@@ -9,6 +9,8 @@ ADD_LIBRARY(scpycheck SHARED
   acyclic_checker_visio.cpp
   fifo_checker_visio.h
   fifo_checker_visio.cpp
+  universal_checker_visio.h
+  universal_checker_visio.cpp
 )
 
 TARGET_LINK_LIBRARIES(scpycheck
