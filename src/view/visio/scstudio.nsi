@@ -188,6 +188,7 @@ Section "Microsoft Visio Add-On" SecAddon
   WriteRegStr HKCU '${RegModulesPath}' 'sc_membership' 'scmembership.dll'
   WriteRegStr HKCU '${RegModulesPath}' 'sc_montecarlo' 'scmontecarlo.dll'
   WriteRegStr HKCU '${RegModulesPath}' 'sc_beautify' 'scbeautify.dll'
+  WriteRegStr HKCU '${RegModulesPath}' 'sc_pycheck' 'scpycheck.dll'
   ; register stencils
   WriteRegStr HKCU '${RegStencilsPath}' 'bmsc' 'Basic MSC.vsx'
   WriteRegStr HKCU '${RegStencilsPath}' 'hmsc' 'HMSC.vsx'
