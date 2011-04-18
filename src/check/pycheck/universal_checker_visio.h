@@ -21,6 +21,9 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <string>
+#include <cstring>
+#include <iostream>
 #include "data/msc.h"
 #include "data/checker.h"
 #include "data/pysc/py_conv.h"

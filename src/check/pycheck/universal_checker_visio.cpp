@@ -14,6 +14,7 @@
  */
 
 #include "check/pycheck/universal_checker_visio.h"
+#define get_file_name() "run_test_file"
 
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
