@@ -27,7 +27,7 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
   }
   getline(f, inp);
   f.close();
-  cinp = new char [inp.size()+1];
+  char *cinp = new char [inp.size()+1];
   strcpy(cinp, inp.c_str());
   PyConv *exp;
   try{
@@ -65,7 +65,7 @@ std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm
   }
   getline(f, inp);
   f.close();
-  cinp = new char [inp.size()+1];
+  char *cinp = new char [inp.size()+1];
   PyConv *exp;
   try{
     exp = new PyConv(cinp);
