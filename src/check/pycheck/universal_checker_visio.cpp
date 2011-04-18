@@ -19,9 +19,9 @@
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
-  ifstream f;
+  std::ifstream f;
   f.open(get_file_name());
-  string inp;
+  std::string inp;
   if(!f.is_open()){
     throw 13;
   }
@@ -57,9 +57,9 @@ Checker::PreconditionList PyHUniversalChecker::get_preconditions(MscPtr msc) con
 PyBUniversalCheckerPtr PyBUniversalChecker::m_instance;
 
 std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm){
-  ifstream f;
+  std::ifstream f;
   f.open(get_file_name());
-  string inp;
+  std::string inp;
   if(!f.is_open()){
     throw 13;
   }
