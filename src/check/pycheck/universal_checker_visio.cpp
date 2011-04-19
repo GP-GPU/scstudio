@@ -14,30 +14,56 @@
  */
 
 #include "check/pycheck/universal_checker_visio.h"
-#define get_file_name() "run_test_file"
+#define PY_MODULE "pyscuser"
 
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
-std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
-  std::ifstream f;
+std::list<char *> list_checkers(){
+  std::list<char *> ret;
+/*  std::ifstream f;
   f.open(get_file_name());
   std::string inp;
+  char *cinp;
   if(!f.is_open()){
+    std::cout << "Cannot open conf file:" << get_file_name() << std::endl;
     throw 13;
   }
-  getline(f, inp);
-  f.close();
-  char *cinp = new char [inp.size()+1];
-  strcpy(cinp, inp.c_str());
-  PyConv *exp;
-  try{
-    exp = new PyConv(cinp);
+  while(f.good()){
+    getline(f, inp);
+    if(inp != ""){
+      cinp = new char [inp.size()+1];
+      strcpy(cinp, inp.c_str());
+      ret.push_back(cinp);
+    }
   }
-  catch(int e){
-    std::cout << "Cannot initialize checker" << std::endl;
+  f.close();*/
+  return ret;
+}
+
+std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
+  std::list<char *> checkers = list_checkers();
+  std::list<char *>::iterator it = checkers.begin();
+  std::list<HMscPtr> ret;
+  if(!checkers.size())
+    return ret;
+  PyConv * exp;
+  try{
+    exp = new PyConv(*it);
+  }
+  catch(int){
+    std::cout << "Cannot initialize checker:" << *it << std::endl;
     throw 15;
   }
-  std::list<HMscPtr> ret = exp->checkHMsc(hmsc, chm);
+  it++;
+  for(;it != checkers.end();it++){
+    if(!exp.reinit(*it)){
+      std::cout << "Cannot initialize checker:" << *it << std::endl;
+      throw 11;
+    }
+    ret = exp->checkHMsc(hmsc, chm);
+    if(ret.size())
+      return ret;
+  }
   delete exp;
   return ret;
 }
@@ -57,24 +83,31 @@ Checker::PreconditionList PyHUniversalChecker::get_preconditions(MscPtr msc) con
 PyBUniversalCheckerPtr PyBUniversalChecker::m_instance;
 
 std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm){
-  std::ifstream f;
-  f.open(get_file_name());
-  std::string inp;
-  if(!f.is_open()){
-    throw 13;
-  }
-  getline(f, inp);
-  f.close();
-  char *cinp = new char [inp.size()+1];
-  PyConv *exp;
+  std::list<char *> checkers = list_checkers();
+  std::list<char *>::iterator it = checkers.begin();
+  std::list<BMscPtr> ret;
+  if(!checkers.size())
+    return ret;
+  PyConv * exp;
   try{
-    exp = new PyConv(cinp);
+    exp = new PyConv(*it);
   }
-  catch(int e){
-    std::cout << "Cannot initialize checker" << std::endl;
+  catch(int){
+    std::cout << "Cannot initialize checker:" << *it << std::endl;
     throw 15;
   }
-  std::list<BMscPtr> ret = exp->checkBMsc(bmsc, chm);
+  it++;
+  for(;it != checkers.end();it++){
+    if(!exp.reinit(*it)){
+      std::cout << "Cannot initialize checker:" << *it << std::endl;
+      throw 11;
+    }
+    ret = exp->checkBMsc(bmsc, chm);
+    if(ret.size()){
+      std::cout << "Supplied BMsc failed in module " << *it << std::endl;
+      return ret;
+    }
+  }
   delete exp;
   return ret;
 }

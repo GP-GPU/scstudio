@@ -111,6 +111,7 @@ public:
   ~PyConv();
 
   int init(const char *module);
+  int reinit(const char *module);
   int check(const MscPtr& msc, const ChannelMapperPtr& chm);
   std::list<BMscPtr> checkBMsc(const BMscPtr& bmsc, const ChannelMapperPtr& chm);
   std::list<HMscPtr> checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr& chm);

@@ -32,7 +32,45 @@ PyObject *mktuple(const std::wstring& a){
 }
 
 int PyConv::init(const char *module){
-  Py_Initialize();
+  if(!Py_IsInitialized())
+    Py_Initialize();
+  DPRINT("Importing module " << module);
+  DPRINT("Current PATH: " << Py_GetPath());
+  pob.name = PyString_FromString(module);
+  if(pob.name == NULL){
+    DPRINT(module << " cannot be converted to PyString");
+    return 0;
+  }
+  pob.module = PyImport_Import(pob.name);
+  if(pob.module == NULL){
+    DPRINT(module << " cannot be imported");
+    DPRINT("You must first install it (by default using setup.py installation file).");
+    if(PyErr_Occurred())
+      PyErr_Print();
+    return 0;
+  }
+  pob.pDict = PyModule_GetDict(pob.module);
+  if(pob.pDict == NULL){
+    DPRINT("Cannot extract dictionary from " << module);
+    return 0;
+  }
+  pob.funcBMsc = PyDict_GetItemString(pob.pDict, "checkBMsc");
+  if(pob.funcBMsc == NULL){
+    DPRINT("WARNING: checkBMsc is not implemented in module " << module);
+//    return 0;
+  }
+  pob.funcHMsc = PyDict_GetItemString(pob.pDict, "checkHMsc");
+  if(pob.funcHMsc == NULL){
+    DPRINT("WARNING: checkBMsc is not implemented in module " << module);
+//    return 0;
+  }
+  return 1;
+}
+
+int PyConv::reinit(const char *module){
+  DPRINT("Removing old module");
+  Py_XDECREF(pob.name);
+  Py_XDECREF(pob.module);
   DPRINT("Importing module " << module);
   DPRINT("Current PATH: " << Py_GetPath());
   pob.name = PyString_FromString(module);
@@ -103,7 +141,10 @@ std::list<BMscPtr> PyConv::checkBMsc(const BMscPtr& bmsc, const ChannelMapperPtr
   if(PyCallable_Check(pob.funcBMsc)){
     PyObject *tuple = PyTuple_New(2);
     ERRNULL(tuple);
-    PyTuple_SetItem(tuple, 0, convert_msc(bmsc));
+    PyObject *pbmsc = pob.msc.get(bmsc);
+    if(!pbmsc)
+      pbmsc = convert_msc(bmsc);
+    PyTuple_SetItem(tuple, 0, pbmsc);
     PyTuple_SetItem(tuple, 1, pchm);
     DPRINT("Calling checkBMsc");
     PyObject *presult = PyObject_CallObject(pob.funcBMsc, tuple);
@@ -145,7 +186,10 @@ std::list<HMscPtr> PyConv::checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr
   if(PyCallable_Check(pob.funcHMsc)){
     PyObject *tuple = PyTuple_New(2);
     ERRNULL(tuple);
-    PyTuple_SetItem(tuple, 0, convert_msc(hmsc));
+    PyObject *phmsc = pob.msc.get(hmsc);
+    if(!phmsc)
+      phmsc = convert_msc(hmsc);
+    PyTuple_SetItem(tuple, 0, phmsc);
     PyTuple_SetItem(tuple, 1, pchm);
     DPRINT("Calling checkHMsc");
     PyObject *presult = PyObject_CallObject(pob.funcHMsc, tuple);
