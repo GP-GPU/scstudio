@@ -56,7 +56,7 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
   }
   it++;
   for(;it != checkers.end();it++){
-    if(!exp.reinit(*it)){
+    if(!exp->reinit(*it)){
       std::cout << "Cannot initialize checker:" << *it << std::endl;
       throw 11;
     }
@@ -98,7 +98,7 @@ std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm
   }
   it++;
   for(;it != checkers.end();it++){
-    if(!exp.reinit(*it)){
+    if(!exp->reinit(*it)){
       std::cout << "Cannot initialize checker:" << *it << std::endl;
       throw 11;
     }
