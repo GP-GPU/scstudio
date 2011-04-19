@@ -71,37 +71,7 @@ int PyConv::reinit(const char *module){
   DPRINT("Removing old module");
   Py_XDECREF(pob.name);
   Py_XDECREF(pob.module);
-  DPRINT("Importing module " << module);
-  DPRINT("Current PATH: " << Py_GetPath());
-  pob.name = PyString_FromString(module);
-  if(pob.name == NULL){
-    DPRINT(module << " cannot be converted to PyString");
-    return 0;
-  }
-  pob.module = PyImport_Import(pob.name);
-  if(pob.module == NULL){
-    DPRINT(module << " cannot be imported");
-    DPRINT("You must first install it (by default using setup.py installation file).");
-    if(PyErr_Occurred())
-      PyErr_Print();
-    return 0;
-  }
-  pob.pDict = PyModule_GetDict(pob.module);
-  if(pob.pDict == NULL){
-    DPRINT("Cannot extract dictionary from " << module);
-    return 0;
-  }
-  pob.funcBMsc = PyDict_GetItemString(pob.pDict, "checkBMsc");
-  if(pob.funcBMsc == NULL){
-    DPRINT("WARNING: checkBMsc is not implemented in module " << module);
-//    return 0;
-  }
-  pob.funcHMsc = PyDict_GetItemString(pob.pDict, "checkHMsc");
-  if(pob.funcHMsc == NULL){
-    DPRINT("WARNING: checkBMsc is not implemented in module " << module);
-//    return 0;
-  }
-  return 1;
+  return init(module);
 }
 
 int PyConv::check(const MscPtr& msc, const ChannelMapperPtr& chm){
