@@ -744,4 +744,5 @@ PyConv::~PyConv(){
     // DECREF only these two, all the other PyObjects are borrowed references
     Py_XDECREF(pob.name);
     Py_XDECREF(pob.module);
+    Py_Finalize();
 }
