@@ -215,6 +215,17 @@ Section "Microsoft Visio Add-On" SecAddon
   WriteRegDWORD HKCU '${RegMainPath}\Beautify' 'CrossingPenalization' '1'
   WriteRegDWORD HKCU '${RegMainPath}\Beautify' 'GoingBackPenalization' '1'
   WriteRegDWORD HKCU '${RegMainPath}\Beautify' 'MinInstanceBottomDistance' '5'
+  ; configure pycheck
+  WriteRegDWORD HKCU '${RegChecksPath}\PyBDeadlockFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyHDeadlockFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyBLivelockFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyHLivelockFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyBAcyclicFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyHAcyclicFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyBFIFOFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyHFIFOFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyBUniversalFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyHUniversalFree' 'Priority' '0'
   ; configure simulator
   WriteRegBin HKCU '${RegMainPath}\Simulator' 'BinWidth' 0000803F
   WriteRegBin HKCU '${RegMainPath}\Simulator' 'MaxMessageDelay' 00002041
