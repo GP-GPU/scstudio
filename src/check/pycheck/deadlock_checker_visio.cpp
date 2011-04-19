@@ -46,16 +46,7 @@ Checker::PreconditionList PyHDeadlockChecker::get_preconditions(MscPtr msc) cons
 PyBDeadlockCheckerPtr PyBDeadlockChecker::m_instance;
 
 std::list<BMscPtr> PyBDeadlockChecker::check(BMscPtr bmsc, ChannelMapperPtr chm){
-  PyConv *exp;
-  try{
-    exp = new PyConv("pycheck.deadlock_checker");
-  }
-  catch(int e){
-    std::cout << "Cannot initialize checker" << std::endl;
-    throw 15;
-  }
-  std::list<BMscPtr> ret = exp->checkBMsc(bmsc, chm);
-  delete exp;
+  std::list<BMscPtr> ret;
   return ret;
 }
 

@@ -46,16 +46,7 @@ Checker::PreconditionList PyHLivelockChecker::get_preconditions(MscPtr msc) cons
 PyBLivelockCheckerPtr PyBLivelockChecker::m_instance;
 
 std::list<BMscPtr> PyBLivelockChecker::check(BMscPtr bmsc, ChannelMapperPtr chm){
-  PyConv *exp;
-  try{
-    exp = new PyConv("pycheck.livelock_checker");
-  }
-  catch(int e){
-    std::cout << "Cannot initialize checker" << std::endl;
-    throw 15;
-  }
-  std::list<BMscPtr> ret = exp->checkBMsc(bmsc, chm);
-  delete exp;
+  std::list<BMscPtr> ret;
   return ret;
 }
 
