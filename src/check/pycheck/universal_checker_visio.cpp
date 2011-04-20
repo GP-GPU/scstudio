@@ -61,24 +61,6 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
   return ret;
 }
 
-/*  std::ifstream f;
-  f.open(get_file_name());
-  std::string inp;
-  char *cinp;
-  if(!f.is_open()){
-    std::cout << "Cannot open conf file:" << get_file_name() << std::endl;
-    throw 13;
-  }
-  while(f.good()){
-    getline(f, inp);
-    if(inp != ""){
-      cinp = new char [inp.size()+1];
-      strcpy(cinp, inp.c_str());
-      ret.push_back(cinp);
-    }
-  }
-  f.close();*/
-
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
   std::map<char *, wchar_t *> checkers = list_checkers("hcheckers");
   std::map<char *, wchar_t *>::iterator it = checkers.begin();
