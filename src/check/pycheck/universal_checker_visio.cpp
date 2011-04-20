@@ -19,7 +19,7 @@
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
 std::map<char *, wchar_t *> list_checkers(const char *var){
-  std::list<char *> ret;
+  std::map<char *, wchar_t *> ret;
   if(!Py_IsInitialized())
     Py_Initialize();
   std::cout << "Importing module pyscuser";
