@@ -51,7 +51,7 @@ std::list<wchar_t *> list_checkers(const char *var){
      PyObject *mem = PyList_GetItem(checkers, i);
      Py_ssize_t psize = PyUnicode_GetSize(mem);
      wchar_t *wret = new wchar_t [psize + 1];
-     PyUnicode_AsWideChar(mem, wret, psize);
+     PyUnicode_AsWideChar((PyUnicodeObject *)mem, wret, psize);
      wret[psize] = '\0';
      ret.push_back(wret);
   }
@@ -75,16 +75,14 @@ std::list<wchar_t *> list_checkers(const char *var){
     }
   }
   f.close();*/
-  return ret;
-}
 
-wstring chrtows(const char *){
-  std::wstring;
-  return wstring;
+std::wstring chrtows(const char *cstr){
+  std::wstring wstr;
+  return wstr;
 }
 
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
-  std::list<wchar_t *> checkers = list_checkers();
+  std::list<wchar_t *> checkers = list_checkers("hcheckers");
   std::list<wchar_t *>::iterator it = checkers.begin();
   std::list<HMscPtr> ret;
   if(!checkers.size())
@@ -138,10 +136,10 @@ Checker::PreconditionList PyHUniversalChecker::get_preconditions(MscPtr msc) con
 PyBUniversalCheckerPtr PyBUniversalChecker::m_instance;
 
 std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm){
-  std::list<char *> checkers = list_checkers();
-  std::list<char *>::iterator it = checkers.begin();
+//  std::list<char *> checkers = list_checkers();
+//  std::list<char *>::iterator it = checkers.begin();
   std::list<BMscPtr> ret;
-  if(!checkers.size())
+/*  if(!checkers.size())
     return ret;
   PyConv * exp;
   try{
@@ -163,7 +161,7 @@ std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm
       return ret;
     }
   }
-  delete exp;
+  delete exp;*/
   return ret;
 }
 
