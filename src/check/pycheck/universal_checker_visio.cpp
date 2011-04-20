@@ -48,15 +48,14 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
     return ret;
   }
   for(int i = 0;i < PyList_Size(checkers);i++){
-     PyObject *mem = PyList_GetItem(checkers, i);
-     Py_ssize_t psize = PyUnicode_GetSize(mem);
-     wchar_t *wret = new wchar_t [psize + 1];
-     char *cret = new char [psize + 1];
-     sprintf(cret, "%ls", wret);
-     PyUnicode_AsWideChar((PyUnicodeObject *)mem, wret, psize);
-     wret[psize] = '\0';
-     sprintf(cret, "%ls", wret);
-     ret[cret] = wret;
+    PyObject *mem = PyList_GetItem(checkers, i);
+    Py_ssize_t psize = PyUnicode_GetSize(mem);
+    wchar_t *wret = new wchar_t [psize + 1];
+    char *cret = new char [psize + 1];
+    PyUnicode_AsWideChar((PyUnicodeObject *)mem, wret, psize);
+    wret[psize] = '\0';
+    sprintf(cret, "%ls", wret);
+    ret[cret] = wret;
   }
   Py_XDECREF(name);
   Py_XDECREF(module);
