@@ -22,16 +22,16 @@ std::list<wchar_t b*> list_checkers(const char *var){
   std::list<wchar_t *> ret;
   if(!Py_IsInitialized())
     Py_Initialize();
-  DPRINT("Importing module pyscuser");
+  std::cout << "Importing module pyscuser";
   PyObject *name = PyString_FromString("pyscuser");
   if(!name){
-    DPRINT("Cannot create PyString pyscuser");
+    std::cout << "Cannot create PyString pyscuser";
     return ret;
   }
   PyObject *module = PyImport_Import(name);
   if(!module){
-    DPRINT("Module pyscuser cannot be imported.");
-    DPRINT("You should install it.");
+    std::cout << "Module pyscuser cannot be imported.";
+    std::cout << "You should install it.";
     if(PyErr_Occurred()){
       PyErr_Print();
       return ret;
@@ -39,12 +39,12 @@ std::list<wchar_t b*> list_checkers(const char *var){
   }
   PyObject *dict = PyModule_GetDict(module);
   if(!dict){
-    DPRINT("Cannot extract dictionary from pyscuser.");
+    std::cout << "Cannot extract dictionary from pyscuser.";
     return ret;
   }
   PyObject *checkers = PyDict_GetItemString(dict, var);
   if(!checkers){
-    DPRINT("Cannot find variable " << var << "in dictionary of pyscuser.");
+    std::cout << "Cannot find variable " << var << "in dictionary of pyscuser.";
     return ret;
   }
   for(int i = 0;i < PyList_Size(presult);i++){
