@@ -116,6 +116,7 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
       for(std::list<HMscPtr>::iterator hit = ret.begin();hit != ret.end();hit++)
         ret.push_back(*hit);
 //    return ret;
+    }
   }
   delete exp;
   return ret;
