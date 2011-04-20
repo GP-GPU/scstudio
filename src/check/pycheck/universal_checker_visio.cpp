@@ -18,8 +18,8 @@
 
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
-std::list<wchar_t *> list_checkers(const char *var){
-  std::list<wchar_t *> ret;
+std::map<char *, wchar_t *> list_checkers(const char *var){
+  std::list<char *> ret;
   if(!Py_IsInitialized())
     Py_Initialize();
   std::cout << "Importing module pyscuser";
@@ -51,9 +51,13 @@ std::list<wchar_t *> list_checkers(const char *var){
      PyObject *mem = PyList_GetItem(checkers, i);
      Py_ssize_t psize = PyUnicode_GetSize(mem);
      wchar_t *wret = new wchar_t [psize + 1];
+     const char *tmp PyUnicode_AS_DATA(mem);
+     char *cret = new char [psize + 1];
+     strcpy(cret, tmp);
      PyUnicode_AsWideChar((PyUnicodeObject *)mem, wret, psize);
      wret[psize] = '\0';
-     ret.push_back(wret);
+     ret[cret] = wret;
+//     ret.push_back(wret);
   }
   return ret;
 }
@@ -82,36 +86,36 @@ std::wstring chrtows(const char *cstr){
 }
 
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
-  std::list<wchar_t *> checkers = list_checkers("hcheckers");
-  std::list<wchar_t *>::iterator it = checkers.begin();
+  std::map<char *, wchar_t *> checkers = list_checkers("hcheckers");
+  std::list<char *, wchar_t *>::iterator it = checkers.begin();
   std::list<HMscPtr> ret;
   if(!checkers.size())
     return ret;
   PyConv * exp;
   try{
-    exp = new PyConv(*it);
+    exp = new PyConv((*it).first);
   }
   catch(int){
-    std::cout << "Cannot initialize checker:" << *it << std::endl;
+    std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
     throw 15;
   }
   ret = exp->checkHMsc(hmsc, chm);
   if(ret.size()){
-    HMscPtr checker_name(new HMsc(*it));
+    HMscPtr checker_name(new HMsc((*it).second));
     ret.push_back(checker_name);
     for(std::list<HMscPtr>::iterator hit = ret.begin();hit != ret.end();hit++)
       ret.push_back(*hit);
   }
   it++;
   for(;it != checkers.end();it++){
-    if(!exp->reinit(*it)){
-      std::cout << "Cannot initialize checker:" << *it << std::endl;
+    if(!exp->reinit((*it).first)){
+      std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
       continue;
       //throw 11;
     }
     ret = exp->checkHMsc(hmsc, chm);
     if(ret.size()){
-      HMscPtr checker_name(new HMsc(*it));
+      HMscPtr checker_name(new HMsc((*it).second));
       ret.push_back(checker_name);
       for(std::list<HMscPtr>::iterator hit = ret.begin();hit != ret.end();hit++)
         ret.push_back(*hit);
