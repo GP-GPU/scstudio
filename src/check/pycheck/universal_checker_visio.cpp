@@ -23,9 +23,9 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
   if(!Py_IsInitialized())
     Py_Initialize();
   std::cout << "Importing module pyscuser";
-  PyObject *name = PyString_FromString("pyscuser");
+  PyObject *name = PyUnicode_FromString("pyscuser");
   if(!name){
-    std::cout << "Cannot create PyString pyscuser";
+    std::cout << "Cannot create PyUnicode pyscuser";
     return ret;
   }
   PyObject *module = PyImport_Import(name);

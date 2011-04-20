@@ -36,9 +36,9 @@ int PyConv::init(const char *module){
     Py_Initialize();
   DPRINT("Importing module " << module);
   DPRINT("Current PATH: " << Py_GetPath());
-  pob.name = PyString_FromString(module);
+  pob.name = PyUnicode_FromString(module);
   if(pob.name == NULL){
-    DPRINT(module << " cannot be converted to PyString");
+    DPRINT(module << " cannot be converted to PyUnicode");
     return 0;
   }
   pob.module = PyImport_Import(pob.name);
