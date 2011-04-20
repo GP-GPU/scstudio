@@ -58,6 +58,8 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
      sprintf(cret, "%ls", wret);
      ret[cret] = wret;
   }
+  Py_XDECREF(name);
+  Py_XDECREF(module);
   return ret;
 }
 
