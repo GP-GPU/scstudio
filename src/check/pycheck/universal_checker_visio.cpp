@@ -95,11 +95,11 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
     std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
     throw 15;
   }
-  ret = exp->checkHMsc(hmsc, chm);
-  if(ret.size()){
+  std::list<HMscPtr> hret = exp->checkHMsc(hmsc, chm);
+  if(hret.size()){
     HMscPtr checker_name(new HMsc((*it).second));
     ret.push_back(checker_name);
-    for(std::list<HMscPtr>::iterator hit = ret.begin();hit != ret.end();hit++)
+    for(std::list<HMscPtr>::iterator hit = hret.begin();hit != hret.end();hit++)
       ret.push_back(*hit);
   }
   it++;
@@ -109,11 +109,11 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
       continue;
       //throw 11;
     }
-    ret = exp->checkHMsc(hmsc, chm);
+    std::list<HMscPtr> hret = exp->checkHMsc(hmsc, chm);
     if(ret.size()){
       HMscPtr checker_name(new HMsc((*it).second));
       ret.push_back(checker_name);
-      for(std::list<HMscPtr>::iterator hit = ret.begin();hit != ret.end();hit++)
+      for(std::list<HMscPtr>::iterator hit = hret.begin();hit != hret.end();hit++)
         ret.push_back(*hit);
 //    return ret;
     }
