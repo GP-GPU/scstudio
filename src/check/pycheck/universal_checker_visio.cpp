@@ -93,7 +93,7 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
   }
   catch(int){
     std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
-    throw 15;
+    return ret;
   }
   std::list<HMscPtr> hret = exp->checkHMsc(hmsc, chm);
   if(hret.size()){
@@ -107,7 +107,6 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
     if(!exp->reinit((*it).first)){
       std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
       continue;
-      //throw 11;
     }
     std::list<HMscPtr> hret = exp->checkHMsc(hmsc, chm);
     if(ret.size()){
@@ -115,7 +114,6 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
       ret.push_back(checker_name);
       for(std::list<HMscPtr>::iterator hit = hret.begin();hit != hret.end();hit++)
         ret.push_back(*hit);
-//    return ret;
     }
   }
   delete exp;
@@ -137,32 +135,43 @@ Checker::PreconditionList PyHUniversalChecker::get_preconditions(MscPtr msc) con
 PyBUniversalCheckerPtr PyBUniversalChecker::m_instance;
 
 std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm){
-//  std::list<char *> checkers = list_checkers();
-//  std::list<char *>::iterator it = checkers.begin();
+  std::map<char *, wchar_t *> checkers = list_checkers("bcheckers");
+  std::map<char *, wchar_t *>::iterator it = checkers.begin();
   std::list<BMscPtr> ret;
-/*  if(!checkers.size())
+  if(!checkers.size())
     return ret;
+  std::cout << "\nfirst: " << (*it).first << "\nsecond: ";
+  std::wcout << (*it).second << std::endl;
   PyConv * exp;
   try{
-    exp = new PyConv(*it);
+    exp = new PyConv((*it).first);
   }
   catch(int){
-    std::cout << "Cannot initialize checker:" << *it << std::endl;
-    throw 15;
+    std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
+    return ret;
+  }
+  std::list<BMscPtr> bret = exp->checkBMsc(bmsc, chm);
+  if(bret.size()){
+    BMscPtr checker_name(new BMsc((*it).second));
+    ret.push_back(checker_name);
+    for(std::list<BMscPtr>::iterator hit = bret.begin();hit != bret.end();hit++)
+      ret.push_back(*hit);
   }
   it++;
   for(;it != checkers.end();it++){
-    if(!exp->reinit(*it)){
-      std::cout << "Cannot initialize checker:" << *it << std::endl;
-      throw 11;
+    if(!exp->reinit((*it).first)){
+      std::cout << "Cannot initialize checker:" << (*it).second << std::endl;
+      continue;
     }
-    ret = exp->checkBMsc(bmsc, chm);
+    std::list<BMscPtr> bret = exp->checkBMsc(bmsc, chm);
     if(ret.size()){
-      std::cout << "Supplied BMsc failed in module " << *it << std::endl;
-      return ret;
+      BMscPtr checker_name(new BMsc((*it).second));
+      ret.push_back(checker_name);
+      for(std::list<BMscPtr>::iterator hit = bret.begin();hit != bret.end();hit++)
+        ret.push_back(*hit);
     }
   }
-  delete exp;*/
+  delete exp;
   return ret;
 }
 
