@@ -1,5 +1,6 @@
 #include "check/pycheck/livelock_checker_visio.h"
 #include "check/pycheck/fifo_checker_visio.h"
+#include "check/pycheck/universal_checker_visio.h"
 #include "data/msc.h"
 #include <vector>
 #include <iostream>
@@ -157,9 +158,9 @@ int main(){
   bmscs = pfifo->check(myBmsc3, chm);
   std::cout << bmscs.size() << std::endl;
 
-  PyHLivelockChecker *plive;
+  PyHUniversalChecker *plive;
   try{
-    plive = new PyHLivelockChecker();
+    plive = new PyHUniversalChecker();
   }
   catch(int e){
     return e;
