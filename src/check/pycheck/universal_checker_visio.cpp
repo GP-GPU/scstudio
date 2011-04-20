@@ -18,7 +18,7 @@
 
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
-std::list<wchar_t b*> list_checkers(const char *var){
+std::list<wchar_t *> list_checkers(const char *var){
   std::list<wchar_t *> ret;
   if(!Py_IsInitialized())
     Py_Initialize();
@@ -47,8 +47,8 @@ std::list<wchar_t b*> list_checkers(const char *var){
     std::cout << "Cannot find variable " << var << "in dictionary of pyscuser.";
     return ret;
   }
-  for(int i = 0;i < PyList_Size(presult);i++){
-     PyObject *mem = PyList_GetItem(presult, i);
+  for(int i = 0;i < PyList_Size(checkers);i++){
+     PyObject *mem = PyList_GetItem(checkers, i);
      Py_ssize_t psize = PyUnicode_GetSize(mem);
      wchar_t *wret = new wchar_t [psize + 1];
      PyUnicode_AsWideChar(mem, wret, psize);
