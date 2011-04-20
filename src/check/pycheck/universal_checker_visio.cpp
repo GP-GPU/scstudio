@@ -18,8 +18,46 @@
 
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
-std::list<char *> list_checkers(){
-  std::list<char *> ret;
+std::list<wchar_t b*> list_checkers(const char *var){
+  std::list<wchar_t *> ret;
+  if(!Py_IsInitialized())
+    Py_Initialize();
+  DPRINT("Importing module pyscuser");
+  PyObject *name = PyString_FromString("pyscuser");
+  if(!name){
+    DPRINT("Cannot create PyString pyscuser");
+    return ret;
+  }
+  PyObject *module = PyImport_Import(name);
+  if(!module){
+    DPRINT("Module pyscuser cannot be imported.");
+    DPRINT("You should install it.");
+    if(PyErr_Occurred()){
+      PyErr_Print();
+      return ret;
+    }
+  }
+  PyObject *dict = PyModule_GetDict(module);
+  if(!dict){
+    DPRINT("Cannot extract dictionary from pyscuser.");
+    return ret;
+  }
+  PyObject *checkers = PyDict_GetItemString(dict, var);
+  if(!checkers){
+    DPRINT("Cannot find variable " << var << "in dictionary of pyscuser.");
+    return ret;
+  }
+  for(int i = 0;i < PyList_Size(presult);i++){
+     PyObject *mem = PyList_GetItem(presult, i);
+     Py_ssize_t psize = PyUnicode_GetSize(mem);
+     wchar_t *wret = new wchar_t [psize + 1];
+     PyUnicode_AsWideChar(mem, wret, psize);
+     wret[psize] = '\0';
+     ret.push_back(wret);
+  }
+  return ret;
+}
+
 /*  std::ifstream f;
   f.open(get_file_name());
   std::string inp;
@@ -40,9 +78,14 @@ std::list<char *> list_checkers(){
   return ret;
 }
 
+wstring chrtows(const char *){
+  std::wstring;
+  return wstring;
+}
+
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
-  std::list<char *> checkers = list_checkers();
-  std::list<char *>::iterator it = checkers.begin();
+  std::list<wchar_t *> checkers = list_checkers();
+  std::list<wchar_t *>::iterator it = checkers.begin();
   std::list<HMscPtr> ret;
   if(!checkers.size())
     return ret;
@@ -53,6 +96,13 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
   catch(int){
     std::cout << "Cannot initialize checker:" << *it << std::endl;
     throw 15;
+  }
+  ret = exp->checkHMsc(hmsc, chm);
+  if(ret.size()){
+    HMscPtr checker_name(new HMsc(*it));
+    ret.push_back(checker_name);
+    for(std::list<HMscPtr>::iterator hit = ret.begin();hit != ret.end();hit++)
+      ret.push_back(*hit);
   }
   it++;
   for(;it != checkers.end();it++){
