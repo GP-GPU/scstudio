@@ -18,8 +18,8 @@
 
 PyHUniversalCheckerPtr PyHUniversalChecker::m_instance;
 
-std::map<char *, wchar_t *> list_checkers(const char *var){
-  std::map<char *, wchar_t *> ret;
+std::list<wchar_t *> list_checkers(const char *var){
+  std::list<wchar_t *> ret;
   if(!Py_IsInitialized())
     Py_Initialize();
   std::cout << "Importing module pyscuser";
@@ -51,13 +51,12 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
      PyObject *mem = PyList_GetItem(checkers, i);
      Py_ssize_t psize = PyUnicode_GetSize(mem);
      wchar_t *wret = new wchar_t [psize + 1];
-     const char *tmp PyUnicode_AS_DATA(mem);
      char *cret = new char [psize + 1];
-     strcpy(cret, tmp);
+     sprintf(cret, "%ls", wret);
      PyUnicode_AsWideChar((PyUnicodeObject *)mem, wret, psize);
      wret[psize] = '\0';
+     sprintf(cret, "%ls", wret);
      ret[cret] = wret;
-//     ret.push_back(wret);
   }
   return ret;
 }
@@ -80,17 +79,14 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
   }
   f.close();*/
 
-std::wstring chrtows(const char *cstr){
-  std::wstring wstr;
-  return wstr;
-}
-
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
   std::map<char *, wchar_t *> checkers = list_checkers("hcheckers");
   std::map<char *, wchar_t *>::iterator it = checkers.begin();
   std::list<HMscPtr> ret;
   if(!checkers.size())
     return ret;
+  std::cout << "\nfirst: " << (*it).first << "\nsecond: ";
+  std::wcout << (*it).second << std::endl;
   PyConv * exp;
   try{
     exp = new PyConv((*it).first);
