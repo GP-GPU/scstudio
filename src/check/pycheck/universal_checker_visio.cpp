@@ -102,6 +102,8 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
     for(std::list<HMscPtr>::iterator hit = hret.begin();hit != hret.end();hit++)
       ret.push_back(*hit);
   }
+  delete (*it).first;
+  delete (*it).second;
   it++;
   for(;it != checkers.end();it++){
     if(!exp->reinit((*it).first)){
@@ -115,6 +117,8 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
       for(std::list<HMscPtr>::iterator hit = hret.begin();hit != hret.end();hit++)
         ret.push_back(*hit);
     }
+    delete (*it).first;
+    delete (*it).second;
   }
   delete exp;
   return ret;
@@ -157,6 +161,8 @@ std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm
     for(std::list<BMscPtr>::iterator hit = bret.begin();hit != bret.end();hit++)
       ret.push_back(*hit);
   }
+  delete (*it).first;
+  delete (*it).second;
   it++;
   for(;it != checkers.end();it++){
     if(!exp->reinit((*it).first)){
@@ -170,6 +176,8 @@ std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm
       for(std::list<BMscPtr>::iterator hit = bret.begin();hit != bret.end();hit++)
         ret.push_back(*hit);
     }
+    delete (*it).first;
+    delete (*it).second;
   }
   delete exp;
   return ret;
