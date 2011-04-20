@@ -87,7 +87,7 @@ std::wstring chrtows(const char *cstr){
 
 std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm){
   std::map<char *, wchar_t *> checkers = list_checkers("hcheckers");
-  std::list<char *, wchar_t *>::iterator it = checkers.begin();
+  std::map<char *, wchar_t *>::iterator it = checkers.begin();
   std::list<HMscPtr> ret;
   if(!checkers.size())
     return ret;
