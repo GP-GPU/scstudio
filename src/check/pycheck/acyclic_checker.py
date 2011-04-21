@@ -5,7 +5,7 @@ def buildVisOrder(bmsc):
 	order = Set()
 	for e1 in bmsc.events:
 		for e2 in bmsc.events:
-			if (e1 == e2) or (e1.area.StrictOrderArea and e1.successor == e2) or ((e1, e2) in bmsc.CoregionEventRelation) or (e1.message and e1.message.CompleteMessage and e1.is_send and e1.message.receive_event == e2) or (e1.area.next == e2.area):
+			if (e1 == e2) or (e1.area and e1.area.StrictOrderArea and e1.successor == e2) or ((e1, e2) in bmsc.CoregionEventRelation) or (e1.message and e1.message.CompleteMessage and e1.is_send and e1.message.receive_event == e2) or (e1.area and e1.area.next == e2.area):
 				order += (e1, e2)
 	return order.transitive()
 

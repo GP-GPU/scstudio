@@ -8,7 +8,7 @@ def is_fifo(bmsc, chm):
 	visOrder = buildVisOrder(bmsc)
 	for e1 in bmsc.events:
 		for e2 in bmsc.events:
-			if chm.same_channel(e1, e2) and (e1, e2) in visOrder and e1.message.CompleteMessage and e2.message.CompleteMessage and not ((e1.matching_event, e2.matching_event) in visOrder):
+			if chm.same_channel(e1, e2) and (e1, e2) in visOrder and e1.message and e2.message and e1.message.CompleteMessage and e2.message.CompleteMessage and not ((e1.matching_event, e2.matching_event) in visOrder):
 				return False
 	return True
 

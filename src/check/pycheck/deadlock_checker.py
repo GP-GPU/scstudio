@@ -14,19 +14,19 @@ def referenced(h):
     return ref
 
 def isBMscGraph(h):
-    if h.HMsc and referenced(h) == [h]:
+    if h and h.HMsc and referenced(h) == [h]:
         return True
     else:
         return False
 
 def traverse(n, l = []):
     # input is node n and optional list l (of already traversed nodes)
-    if n.ReferenceNode and n.msc and n.msc.HMsc and n.msc.start not in l:
+    if n and n.ReferenceNode and n.msc and n.msc.HMsc and n.msc.start not in l:
         # Found new HMsc in reference node, traversing
         l.append(n.msc.start)
         traverse(n.msc.start, l)
     for node in n.succ:
-        if node not in l:
+        if node and node not in l:
             l.append(node)
             traverse(node, l)
         else:
@@ -57,12 +57,12 @@ def hasDeadlock(h):
     return None
 
 def checkHMsc(h, chm):
-	n = hasDeadlock(h)
-	if n:
-		print("Fail!")
-		return [n.owner]
-	print("Got pass")
-	return []
+    n = hasDeadlock(h)
+    if n:
+        print("Fail!")
+        return [n.owner]
+    print("Got pass")
+    return []
 
 def isPath(n, bmsc):
     a = n[0]
