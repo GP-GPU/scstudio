@@ -32,8 +32,8 @@ class Instance(object):
 		self.width = 0
 	def __getattr__(self, name):
 		if name == "height":
-			dx = line_end[0] - line_begin[0]
-			dy = line_end[1] - line_begin[1]
+			dx = self.line_end[0] - self.line_begin[0]
+			dy = self.line_end[1] - self.line_begin[1]
 			return math.sqrt(dx^2 + dy^2)
 		elif name == "is_empty":
 			return self.last == None

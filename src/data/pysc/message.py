@@ -17,9 +17,13 @@ class CompleteMessage(object):
 		self.receive_event = receiver
 	def __getattr__(self, name):
 		if name == "sender":
-			return self.send_event.instance
+			if self.send_event:
+				return self.send_event.instance
+			return None
 		elif name == "receiver":
-			return self.receive_event.instance
+			if self.receive_event:
+				return self.receive_event.instance
+			return None
 		elif name == "is_glued":
 			return (self.send_event and self.receive_event)
 		elif name == "CompleteMessage":
@@ -50,8 +54,8 @@ class CompleteMessage(object):
 			self.receive_event = value[1]
 		else:
 			object.__setattr__(self, name, value)
-	def is_glued(self):
-		return self.send_event and self.receive_event
+#	def is_glued(self):
+#		return self.send_event and self.receive_event
 
 
 class IncompleteMessage(object):

@@ -10,12 +10,12 @@ class Event(object):
 			self.position = original.position
 	def __getattr__(self, name):
 		if "complete_message" == name:
-			if self.message.otype == "Complete":
+			if self.message and self.message.otype == "Complete":
 				return self.message
 			else:
 				return None
 		elif "incomplete_message" == name:
-			if self.message.otype == "Incomplete":
+			if self.message and self.message.otype == "Incomplete":
 				return self.message
 			else:
 				return None
@@ -26,34 +26,47 @@ class Event(object):
 				return self.complete_message.send_event
 			return None
 		elif "is_matched" == name:
-			return self.message.CompleteMessage
+			return self.message and self.message.CompleteMessage
 		elif "is_send" == name:
 			if self.is_matched:
 				return self.message.send_event == self
-			else:
+			elif self.message:
 				return self.message.is_lost
+			else:
+				return False
 		elif "is_receive" == name:
-			return not self.is_send
+			if self.message:
+				return not self.is_send
+			else:
+				return False
 		elif "receiver_label" == name:
-			if self.is_matched:
-				return self.message.receiver.label
-			else:
-				if self.is_send:
-					return self.message.instance_label
+			try:
+				if self.is_matched:
+					return self.message.receiver.label
 				else:
-					return self.instance.label
+					if self.is_send:
+						return self.message.instance_label
+					else:
+						return self.instance.label
+			except:
+				return ""
 		elif "sender_label" == name:
-			if self.is_matched:
-				return self.message.sender.label
-			else:
-				if self.is_receive:
-					return self.message.instance_label
+			try:
+				if self.is_matched:
+					return self.message.sender.label
 				else:
-					return self.instance.label
+					if self.is_receive:
+						return self.message.instance_label
+					else:
+						return self.instance.label
+			except:
+				return ""
 		elif "general_area" == name:
 			return self.area
 		elif "instance" == name:
-			return self.area.instance
+			if self.area:
+				return self.area.instance
+			return None
 		elif "StrictEvent" == name or "CoregionEvent" == name:
 			return self.type == name[:-5]
 		else:

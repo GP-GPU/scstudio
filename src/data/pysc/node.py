@@ -4,17 +4,17 @@ class Node(object):
 	def __init__(self, t = "Start", l = ""):
 		self.owner = None
 		self.msc = None
-		self.succ = []
-		self.pred = []
+		self.succ = Set()
+		self.pred = Set()
 		self.type = t
 		self.position = (None, None)
 		self.label = l
 	def iss(self, t):
 		return self.type == t
 	def add_successor(self, succ):
-		if succ not in self.succ:
-			self.succ.append(succ)
-			succ.pred.append(self)
+		if succ:
+			self.succ.insert(succ)
+			succ.pred.insert(self)
 	def traverse(self, condition = None, l = []):
 		if self.ReferenceNode and self.msc and self.msc.HMsc:
 			self.msc.traverse(condition, l)
@@ -22,8 +22,6 @@ class Node(object):
 			if node not in l:
 				l.append(node)
 				node.traverse(condition, l)
-				if condition and condition(node):
-					print("YUPI")
 			else:
 				#Gray Node Found
 				pass

@@ -13,23 +13,30 @@ class Msc(object):
 	def iss(self, t):
 		return self.type == t
 	def add_node(self, n):
-		#change so that it uses function insert from list_ops
-		self.nodes.insert(n)
-		n.owner = self
+		if n:
+			self.nodes.insert(n)
+			n.owner = self
 	def remove_node(self, n):
 		self.nodes.remove(n)
 	def traverse(self, condition = None, l = []):
+		if not self.start or self.start in l:
+			return l
 		l.append(self.start)
 		self.start.traverse(condition, l)
 		return l
 	def reachable(self):
-		return self.start.reachable
+		if self.start:
+			return self.start.reachable
+		return []
 	def add_instance(self, instance):
-		self.instances.insert(instance)
-		instance.bmsc = self
+		if instance:
+			self.instances.insert(instance)
+			instance.bmsc = self
 	def __getattr__(self, name):
 		if name == "snodes":
-			return self.nodes + self.start
+			if self.start:
+				return self.nodes + self.start
+			return self.nodes
 		elif name == "events":
 			# Might be useful
 			return Set([e for i in self.instances for a in i.areas for e in a.events])
@@ -38,10 +45,11 @@ class Msc(object):
 		elif name == "CoregionEventRelation":
 			s = Set()
 			for e in self.events:
-				if e.CoregionEvent:
+				if e and e.CoregionEvent:
 					#print("CE: ", e)
 					for i in e.successors:
-						s += (i.predecessor, i.successor)
+						if i and i.predecessor and i.successor:
+							s += (i.predecessor, i.successor)
 			return s
 		else:
 			return object.__getattribute__(self, name)
