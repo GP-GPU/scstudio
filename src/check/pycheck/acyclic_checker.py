@@ -21,7 +21,7 @@ def hmsc_is_not_acyclic(h):
 	failed = Set()
 	for h1 in referenced(h):
 		for n in h1.nodes:
-			if n.ReferenceNode and n.msc and n.msc.BMsc:
+			if n and n.ReferenceNode and n.msc and n.msc.BMsc:
 				print("Running is_acyclic")
 				if not is_acyclic(n.msc):
 					failed += n.owner

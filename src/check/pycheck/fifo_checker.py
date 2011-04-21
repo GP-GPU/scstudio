@@ -16,7 +16,7 @@ def hmsc_is_not_fifo(hmsc, chm):
 	failed = Set()
 	for h1 in referenced(hmsc):
 		for n in h1.nodes:
-			if n.ReferenceNode and n.msc and n.msc.BMsc and not is_fifo(n.msc, chm):
+			if n and n.ReferenceNode and n.msc and n.msc.BMsc and not is_fifo(n.msc, chm):
 				failed += n.owner
 	return list(failed)
 
