@@ -25,7 +25,10 @@ class EventArea(object):
 		elif name == "is_first":
 			return self.previous == None
 		elif name == "height":
-			return abs(self.end_height - self.begin_height)
+			if self.end_height != None and self.begin_height != None:
+				return abs(self.end_height - self.begin_height)
+			else:
+				return 0
 		elif name == "StrictOrderArea" or name == "CoregionArea":
 			return self.type == name
 		else:
@@ -63,6 +66,8 @@ class StrictOrderArea(EventArea):
 		if name == "is_empty":
 			return self.first == None
 		elif name == "events":
+			if self.is_empty:
+				return Set()
 			s = Set([self.first])
 			runner = self.first
 			while runner.successor and runner.successor != self.last:
