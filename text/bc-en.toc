@@ -1,0 +1,75 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}
+\defcounter {refsection}{0}
+\select@language {english}
+\defcounter {refsection}{0}
+\contentsline {chapter}{\numberline {1}\bfseries Introduction}{2}{chapter.1}
+\defcounter {refsection}{0}
+\contentsline {chapter}{\numberline {2}\bfseries Notation for writing high-level Msc algorithms}{4}{chapter.2}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.1}\slshape Indentation}{5}{section.2.1}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.2}\slshape Basics}{5}{section.2.2}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.3}\slshape Module import}{5}{section.2.3}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.4}\slshape Basic binary operators}{6}{section.2.4}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.5}\slshape Expressions}{6}{section.2.5}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.6}\slshape Body}{7}{section.2.6}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.7}\slshape Objects}{7}{section.2.7}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.8}\slshape Conditions}{8}{section.2.8}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.9}\slshape Loops and cycles}{9}{section.2.9}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.10}\slshape Lists}{10}{section.2.10}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.11}\slshape Tuples}{10}{section.2.11}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.12}\slshape Sets}{11}{section.2.12}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {2.13}\slshape Functional programming tools}{13}{section.2.13}
+\defcounter {refsection}{0}
+\contentsline {chapter}{\numberline {3}\bfseries Extending data model}{14}{chapter.3}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.1}\slshape Introduction to Msc}{14}{section.3.1}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.2}\slshape BMsc}{14}{section.3.2}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.3}\slshape Instance}{15}{section.3.3}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.4}\slshape Areas}{16}{section.3.4}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.5}\slshape Events}{17}{section.3.5}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.6}\slshape Messages}{19}{section.3.6}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.7}\slshape HMsc}{21}{section.3.7}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.8}\slshape Nodes}{21}{section.3.8}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.9}\slshape Channel mapping}{23}{section.3.9}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {3.10}\slshape Set implementation}{23}{section.3.10}
+\defcounter {refsection}{0}
+\contentsline {chapter}{\numberline {4}\bfseries Implementing high-level algorithms}{27}{chapter.4}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {4.1}\slshape Basic transformation rules}{27}{section.4.1}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {4.2}\slshape Deadlock checker}{27}{section.4.2}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {4.3}\slshape Livelock checker}{30}{section.4.3}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {4.4}\slshape Acyclic checker}{31}{section.4.4}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {4.5}\slshape FIFO checker}{33}{section.4.5}
+\defcounter {refsection}{0}
+\contentsline {chapter}{\numberline {5}\bfseries Integration to scstudio}{35}{chapter.5}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {5.1}\slshape Integrating algorithms}{35}{section.5.1}
+\defcounter {refsection}{0}
+\contentsline {section}{\numberline {5.2}\slshape Data conversion}{36}{section.5.2}
+\defcounter {refsection}{0}
+\contentsline {chapter}{\numberline {6}\bfseries Conclusion}{38}{chapter.6}

@@ -1,0 +1,918 @@
+\documentclass[11pt,oneside]{fithesis2}  
+\usepackage[english]{babel} % package for multilingual support  
+\usepackage[utf8]{inputenc} % utf8 encoding  
+\usepackage[T1]{fontenc}  
+\usepackage[plainpages=false,pdfpagelabels,unicode]{hyperref}  
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage[sorting=none]{biblatex}
+\bibliography{bc-en}
+
+\thesistitle{Writing Graph Algorithms in Executable Pseudocode} % enter thesis title  
+\thesissubtitle{Bachelor thesis}  
+\thesisstudent{Boris Ranto}    % name of the author  
+\thesiswoman{false}          % defines author’s gender  
+\thesisfaculty{fi}  
+\thesisyear{spring 2011}  
+\thesisadvisor{Ing. Petr Gotthard} % fill in advisor’s name  
+\thesislang{en}                 % thesis is in English  
+
+\newcommand{\markit}[1]{\ \\\\{\noindent\textbf{#1}}}
+\newcommand{\T}[1]{\texttt{#1}}
+\newcommand{\ite}[1]{\item{\texttt{#1}}}
+
+\begin{document}
+\lstset{language=Python,breaklines,stepnumber=1,numbers=right,numberstyle=\tiny,numbersep=5pt}
+\FrontMatter  
+\ThesisTitlePage  
+ 
+\begin{ThesisDeclaration}  
+\DeclarationText  
+\AdvisorName  
+\end{ThesisDeclaration}  
+ 
+\begin{ThesisThanks}  
+I would like to thank my supervisor Ing. Petr Gotthard for the help, support and approach he used when he supervised this bachelor thesis.
+\end{ThesisThanks}  
+
+\begin{ThesisAbstract}  
+The aim of this bachelor thesis is to provide a tool that would allow software designer to write pseudocode that is directly executable without additional complexity in terms of pseudocode simplicity. The thesis is aimed to serve as a learning material for software designers that are willing to comply to the suggested notation.
+
+
+\end{ThesisAbstract}  
+
+\begin{ThesisKeyWords}  
+scstudio, graph algorithms, python, pseudocode, BMsc, HMsc, checking algorithms
+\end{ThesisKeyWords}  
+ 
+\MainMatter  
+%\chapter{Introduction}  
+%This is the first chapter of the thesis.  
+\tableofcontents          % prints table of contents  
+ 
+\chapter{Introduction}    % first chapter followed by  
+                          % many others  
+The main center of interest of this thesis is project scstudio (The Sequence Chart Studio)\cite{scstudio,scstudio2}. Scstudio is tool for drawing sequence charts and verifying properties on them. This thesis focuses more on the second part - verification algorithms. The final aim is to be able to write high-level executable code for verification of properties on sequence charts.
+
+The thesis is divided into four basic chapters. First chapter specifies the notation for writing pseudocode. The chapter serves as an introduction to the high level language that will be used. The notation is based on Python\cite{python,python2} programming language and tries to extend it so that pseudocode close to the mathematical notation can be used. The notation in this chapter should describe all the parts of the language that are necessary for the purposes of this thesis.
+
+Second chapter describes the way Python's data model had to be extended. The data model is extended so that objects from scstudio can be created and modified. At the end of the chapter modification of built-in set data type is described. The original built-in set can't handle objects that are not hashable for complexity reasons and therefore more high-level implementation of sets had to be provided. Since Python is highly object oriented programming language by extending the data model the language itself is extended too.
+
+Third chapter describes the implementation of checking algorithms in executable pseudocode. The chapter contains a lot of examples so that reader can see how to write the code. The description of implementation of all the checking algorithms (except for race checker) that were defined in the Master's thesis of Jindřich Babica\cite{babica} is provided in this chapter.
+
+Fourth chapter of this thesis is dedicated to the integration with the existing scstudio project. The aim was to simplify the integration as much as possible so that virtually no C++ code had to be written. This integration simplifies testing and input handling.
+
+I hope that this thesis will help a lot of software designers ease up their work and it will remove the necessity for implementation of checking algorithms in low level C++ code.
+
+The result of this thesis is the extension of the Python data model and the bachelor thesis itself that will hopefully serve as a good learning material. The extension is divided into several modules although there is also module that can import the complete extension.
+
+The resulting extension is licensed by \textit{GNU/LGPL} 3.0\cite{lgpl}. Therefore the extension is free software and can be legally modified to suit the needs of any other project.
+%This is the first chapter of the thesis.  
+
+\chapter{Notation for writing high-level Msc algorithms}
+
+There is quite a lot of languages that are high-level and can handle a lot of operations that are necessary for writing high-level graph algorithms. Therefore it is quite wise to pick one of the languages and build entire notation upon the language. I've decided to pick Python programming language for this purpose and therefore syntax for the writing of high-level code is mostly determined by Python's syntax. It must comply to the same basic rules as Python programs must although it might differ in some cases. It might be more strict than original Python's syntax and in few areas even less feature rich. Please take this notation as a recommendation for writing graph algorithms for the project scstudio. If you're a skilled python programmer you might want to use techniques that are not described in this thesis although you must be aware of the fact that person that learned only this notation might not understand your code. This chapter is aimed primarily for people that are not familiar with Python Programming language (with an exception in the section that describes set operations, the section also describes new features).
+
+
+Python was chosen as a basis because the language was already created with high-levelness in mind. It also supports (at least to certain point) all three major programming paradigms (functional programming, standard structured programming and object oriented programming). Although the object oriented paradigm is not well suited for writing graph algorithms in pseudocode (and it is not part of the notation) it comes in very handy if the aim is to create high-level extension of the language. Python is also known for its readability.
+
+More specifically version 3 of Python programming language was chosen as a basis. Although this version is mostly backward compatible there are certain incompatibilities (most notably: function print can't be called without parenthesis and indentation must be more consistent (without mixing tabulators and spaces)). The code and library itself is written so that it can be executed in both environments with few minor inconsistencies in the output of algorithms (function print in Python 2 will consider its input enclosed in parenthesis as a tuple).
+
+Variable names in examples (where it is useful) are often shortcuts from their full names and therefore should be quite self-explanatory.
+
+\section{Indentation}
+The language does not use any begin/end syntax that would specify the begin and the end of the block of code. The code block is defined purely by indentation and therefore it is necessary to define a way to indent algorithms. That is why this notation forces indentation of the code blocks. Tabulators are preferred over spaces. The indentation steps and whole indentation must be consistent through whole document.
+
+\section{Basics}
+This section is just a very slight introduction to the notation and should give the reader just a basic feeling about the way algorithms are written. This part is here to avoid at least some confusion with the problematic cyclic dependencies of definitions.
+
+All the values are assigned with \T{=}. When already existing variable is assigned a value, its previous content is unreferenced (and can be deleted from memory).
+
+Everything is considered to be an object. There are two basic kinds of objects: function objects and ordinary objects. Function objects can be called using parenthesis. Any function object can be assigned a value of any other (function) object.
+
+To print any value, function 'print' can be used.
+
+Natural and rational numbers are defined. Strings are also defined and are denoted by quotation marks.
+
+Line beginning with $>>>$ in examples denotes expression. Output of the expression is in the next line. Comments begin with \# sign.
+\markit{Example}
+\begin{lstlisting}
+>>> a = 1
+>>> str = "help"
+>>> print(str, a) # Print the variables separated by space
+help 1
+\end{lstlisting}
+
+\section{Module import}
+Every source file can also be treated as a module. There are three ways to import any module (source file) although one of them is just an extension of another one.
+\markit{import pysc}
+
+This call will create object named pysc (name can be changed) that will contain everything the pysc module contains. Therefore any part can be accessed directly trough dot operator.
+
+Example: If one wants to access attribute alpha from module pysc, it is necessary to precede the attribute with \T{pysc.} and the resulting statement will look like this: \T{pysc.alpha}.
+\markit{from pysc import *}
+
+This will import everything from the pysc module directly into program. Therefore to access any object, all that is needed is to use its name.
+
+Example: To access attribute alpha, it is necessary to use statement 'alpha'.
+\markit{import module as ownName}
+
+This call will just rename the module name to ownName, everything else is same as in first case.
+
+\section{Basic binary operators}
+Several predefined operators exists. The operators can be recognized by their infix notation. The most basic non-conditional operators include '=' for assignment, + for addition, * for multiplication, - for subtraction, / for division and ** for exponentiation.
+\markit{Example}
+\begin{lstlisting}
+>>> n=7
+>>> print(2**n, 2.0**7, n)
+128 128.0 7
+>>> a = n+3
+>>> print(a*n, a, n)
+7 1 7
+\end{lstlisting}
+
+\section{Expressions}
+Expression is any object or any usage of any object (mostly function objects) or usage of operators on objects. Expression's objects must contain necessary attributes. Everything after >>> in previous examples was also an example of expression (although the line can be a little more powerful as described in next section).
+
+\section{Body}
+Body is basic element of any program. It defines complete program. Basically body denotes any expressions (+ special expressions) that use at least the indentation of the first expression. Since it is defined recursively, any significant part of body is also a body (and working program).
+
+Every body must satisfy any of following scheme (recursively):
+\begin{lstlisting}
+--------
+exp1
+--------
+spExp:
+    body
+--------
+body1
+...
+bodyK
+--------
+\end{lstlisting}
+
+Body in any of the schemes can denote any other scheme. spExp denotes condition, loop, cycle or function definition. These special expressions can be recognized by following keywords: if, for, while, def (as defined later in this chapter).
+
+\section{Objects}
+\markit{Standard objects}
+
+Everything is considered to be object having some properties (that are also objects). Properties of any object can be accessed through dot operator. Properties of any object can be viewed with dir() function object. Please note that every property of object is also a object and therefore can be treated same way as the new object.
+
+Every property call must satisfy following scheme:
+\begin{lstlisting}
+object.property
+\end{lstlisting}
+\markit{Function objects}
+
+Special types of objects are so-called function objects. Function object is just like any other object except for the fact that it can be executed using parenthesis.
+
+Function objects are commonly referred to as functions.
+
+Functions are defined using 'def' keyword. Functions can return a value using special expression 'return Exp1' where Exp1 is any regular expression.
+
+Every function declaration must satisfy following scheme:
+\begin{lstlisting}
+def function(par1, ..., parN, oPar1=v1, ..., oParM=vM):
+    body
+\end{lstlisting}
+parX parameters are mandatory, oParX parameters are voluntary.
+If any voluntary parameter is not specified in function call, default value vX is used for the parameter.
+
+Every function execution must satisfy one of the following schemes or their mixture:
+%\markit{Scheme}
+\begin{lstlisting}
+f(v1, ..., vN, ov1, ..., ovK, pX=opv1, ..., pM=opvS)
+\end{lstlisting}
+Character f denotes function that is called, vX denotes value for X-th mandatory parameter, ovX's denote values for first K voluntary parameters. Any voluntary parameter can be directly specified with pX=opvX notation.
+
+\section{Conditions}
+\markit{Conditional operators}
+
+These operators are usually used in conditions because they map their input into boolean value. They also use infix notation (as well as any other operator). Conditional operators include == for test on equality, != for test on non-equality, >, <, <=, >= for comparing, 'in' and 'not in' for test of membership to a complex object and 'is', 'is not' for the test of identity of two objects.
+
+Conditional operators can also be from boolean to boolean (these are usually used to merge several conditions). This group includes 'and' and 'or' operators.
+\markit{Condition expressions}
+
+Any object can be condition expression. Object is considered to be true unless it is not empty (False, 0, empty list, empty string, empty object=None, ...). 
+Every condition expression must satisfy any of the following schemes:
+
+\begin{lstlisting}
+object
+------
+condExp binOp condExp
+------
+not condExp
+\end{lstlisting}
+binOp denotes binary operation, condExp denotes any of the preceding.
+\markit{Complete conditions}
+
+Condition must satisfy following scheme:
+\begin{lstlisting}
+if condExp:
+    body1
+else:
+    body2
+\end{lstlisting}
+Else part is voluntary. If condExp is satisfied, body1 is executed, otherwise body2 is executed. Please note that it is possible to use shortcut notation of elif for 'else if' branch. This notation allows to save additional indentation.
+
+\section{Loops and cycles}
+Every loop must satisfy following scheme:
+\begin{lstlisting}
+for member in iterator:
+    body
+\end{lstlisting}
+Iterator denotes object that can be iterated (most notably lists and sets). Object member will be accessible in the body of this expression. Both member and expression can be modified in the body.
+
+Cycles are defined basically the same way as in most common imperative programming languages.
+\begin{lstlisting}
+while condExp:
+    body
+\end{lstlisting}
+If conditional expression condExp is satisfied body is cyclically executed until condExp is not satisfied.
+
+\section{Lists}
+List is very powerful built-in type of objects. Lists can be recognized by the type of parenthesis that wrap them. Every list is ordered. The order is defined by the way the members of list are included into the list (usually appended). Lists can be iterated and are iterated with respect to the order in which they were defined.
+
+Every list must satisfy following scheme (although it might be defined in few different ways it always satisfies the structure internally):
+\begin{lstlisting}
+[object1,...,objectN]
+\end{lstlisting}
+Members of list don't have to be of identical type.
+\markit{List indexation}
+
+Since lists are ordered they can be indexed. Lists are indexed by integers. Negative numbers are interpreted as indexation from the end of the list. First member is indexed by 0, second by 1, last by -1 and so on. Lists can also be indexed by intervals using : operator. Please note that left integer is inclusive and right integer is exclusive.
+
+Function len(L) can be used to get the length of the list L.
+\markit{List as a stack}
+
+To operate with a list as with a stack there is predefined function attribute 'append' to insert item to the end of the list and function attribute 'pop' to return and remove last item from the list.
+\markit{Example}
+\begin{lstlisting}
+>>> a = [1,3,2,7]
+>>> a.append('g')
+>>> print(a[3], a[1:-1], a.pop())
+7 [3, 2, 7] g
+\end{lstlisting}
+
+\section{Tuples}
+Tuple can be thought of as a fixed list. Meaning that its size cannot be changed once they're created. The benefit for using tuples is mostly in their speed with respect to lists.
+\markit{Example}
+\begin{lstlisting}
+>>> (a, b, c) = (3, 4, [1, 2, 3]) # assigning values to three new variables
+>>> print(c, a)
+[1, 2, 3] 3
+\end{lstlisting}
+
+\section{Sets}
+Sets can be created using optional initialization list and Set() function (without the list empty set is returned). Therefore to make set out of list it is necessary to use wrapper function Set() that will remove duplicities and return particular Set object. The call must satisfy one of the following schemes:
+\begin{lstlisting}
+a = Set([obj1, ..., objN])
+b = Set()
+\end{lstlisting}
+There is no limitation on obj1, ..., objN although complexity of set operations might differ based on the type of these objects.
+
+Sets are outputted with regular curly brackets that wrap them.
+
+This implementation of sets is part of the module that is supposed to extend Python programming language so that the extended language can be as high-level as possible. Implementation of this set can be found in file list\_ops.py.
+\markit{Conditional operators over sets}
+
+Sets support all the basic operators for testing membership (in, not in) and comparing sets (\T{<, <=, >, >=, ==, !=}) meaning the relations of any \T{a} being subset of any \T{b} (\T{a <= b}) and similar.
+\markit{Basic set operations}
+
+All the basic set operations are supported. Result of every operation is new set. No input set is modified when new set is being created.
+
+Following schemes must be used to make union, intersection, set difference or symmetric difference:
+\begin{lstlisting}
+set3 = set1 | set2 # Union
+set4 = set1 & set2 # Intersection
+set5 = set1 - set2 # Set difference
+set6 = set1 ^ set2 # Symmetric difference
+\end{lstlisting}
+
+There is also  's + m' operator construction that adds new member m to the set s and returns new composed set. Its semantic is equivalent to \T{s | Set([m])}.
+\markit{Transitive closure}
+
+A little more advanced operation of transitive closure of any set containing tuples (the standard set relation) is defined as the attribute of the Set. The function returns new set that is transitive closure of the original set. The attribute that is used for this is \T{transitive()}. It does not take any argument but it is rather complex attribute and therefore it is defined as a function attribute.
+\markit{Set modification functions}
+
+Content of set can easily be modified using few basic functions for addition and removal of set members.
+
+For insertion of a member \T{m} to set \T{S} there is function attribute insert. Alternatively \T{+=} operator is defined to simplify this.
+
+To remove a member of set there is the function attribute remove.
+\markit{Example}
+\begin{lstlisting}
+>>> a = Set([1,3,5,7,8])
+>>> a += 10
+>>> a.remove(10)
+>>> b = Set([2,3,5,12,15,2])
+>>> print(a & b)
+{3, 5}
+>>> union = a | b
+>>> print(union, union-b-a, union-a)
+{1, 2, 3, 5, 7, 8, 12, 15} {} {2, 12, 15}
+>>> sym_diff = a ^ b
+>>> print(sym_diff, union & a)
+{8, 1, 7} {8, 1, 3, 5, 7}
+>>> print(union & a == a, a < union, a < b, a == a, a > b, union >= b)
+True True False True False True
+>>> print(b+14)
+{2, 3, 5, 12, 14, 15}
+>>> print((Set([1,2]) * Set([1, 2]) + (2,3)).transitive())
+{(1, 2), (1, 3), (2, 1), (2, 3), (2, 2), (1, 1)}
+\end{lstlisting}
+
+
+\section{Functional programming tools}
+Since the notation should be close to standard mathematical notation few functional programming concepts are introduced to allow closer level of expressibility.
+\markit{Generating lists}
+
+List (or tuple) can be generated by a list with a condition. In order to create list A containing results of expression E that might depend on a member X of a iterable object L while satisfying condition C, following list generator can be used:
+\begin{lstlisting}
+A = [E for X in L if C] # List A
+A = (E for X in L if C) # Tuple A
+A = Set([E for X in L if C]) # Set A
+\end{lstlisting}
+\markit{Standard operators counterparts}
+
+Every operator has its counterpart defined in operator module. This counterpart is defined just like a regular function and can therefore be passed as a parameter to a function. This is quite essential for functional programming.
+
+Standard operators \T{<, <=, >, >=, is, is not, ==, !=} have following function counterparts defined in module operator: \T{lt, le, gt, ge, is\_, is\_not} respectively.
+
+Full list of operator counterparts is available online\cite{operators}, for this thesis only counterparts that are mentioned here are necessary.
+\markit{Standard functions}
+
+There are several functions quite essential for functional programming. One of the them is function map(a, b) that map function a on every member of iterable (list, set...) b.
+
+Another very important function is function filter(f, i) that filters iterable object i for the members that satisfy condition f(x) where x is member of i.
+
+Function range(i, j, k) is defined and it returns a list that contains numbers from i to j-1 that are k steps away from each other. If k is not specified it is considered to be 1. If j is not specified the list is from 0 to i-1. If i is not specified (function range got only one attribute j) it is assumed to be 0.
+
+
+\chapter{Extending data model}
+
+\section{Introduction to Msc}
+The MSC is a shortcut for Message Sequence Chart. It was defined by ITU-T\cite{itu-t} in Z.120\cite{z120} standard. The ITU-T describes it in the following way:
+\begin{quote}
+Message Sequence Chart (MSC) is a graphical and textual language for the description and specification of the interactions between system components. Message Sequence Charts are mainly used as a specification of real-time system behavior, in particular of telecommunication switching systems. Message Sequence Charts may be used for requirement, interface and test-case specification, simulation, validation and documentation of real-time systems.\cite{itdef}
+\end{quote}
+
+MSC consists of two languages: Basic Message Sequence Chart (BMSC) and High level Message Sequence Chart (HMSC). BMSC defines a sequence of messages that are passed between the systems while HMSC defines the relations between BMSCs.
+
+MSC can be represented in two standard ways: by its textual form and by its graphical form. In this chapter the textual form of MSC is described. The graphical form is expressed by Microsoft Visio add-on\cite{visio}.
+
+Python's data model had to be extended so that all the Msc objects can be defined in the language. All the attributes that take no argument are not function attributes and therefore these attributes can be get directly without the parenthesis. These attributes (if it makes sense to set the attribute - attribute is not computed from other attributes) can also be set with standard notation of \T{object.attribute = value}.
+
+The knowledge of Master's thesis of Jindřich Babica\cite{babica} is necessary for complete understanding of this section.
+
+\section{BMsc}
+The object \T{BMsc} creates and manipulates BMsc. The call of \T{BMsc()} can be used for the creation of the BMsc. The object consists of several attributes. Following attributes are defined for the object:
+
+\begin{itemize}
+\ite{type} being the attribute that contains information about the type of Msc, for BMsc it contains the string BMsc
+\ite{label} representing the label of the Msc
+\ite{instances} being the set of the \T{Instances} for the \T{BMsc}
+\ite{instance} where the instance that will be assigned to this attribute will be added to the set of instances
+\ite{events} that is the attribute that is supposed to be the equivalent of $Event_b$, the attribute returns the set of all the events referenced in the BMsc
+\ite{CoregionEventRelation} being the attribute that returns the equivalent of $CoregionEventRelation_b$ (set of CoregionEventRelations in the \T{BMsc})
+\ite{<Type>} to test whether Msc is of given type, possible values of \T{<Type>} are \T{BMsc} and \T{HMsc}
+\end{itemize}
+
+To completely fill the object BMsc only attributes label and instances (by direct manipulation or with the use of the instance attribute) has to be specified.
+
+BMsc and its methods are implemented in the file msc.py.
+
+
+\section{Instance}
+BMsc is specified by process instances. These instances are represented by the object Instance. This object can be created by the call \T{Instance()}. Instance as an object contains following attributes:
+\begin{itemize}
+\ite{areas} for the list of the areas
+\ite{form} containing the form as a string, possible values are Line and Column
+\ite{label} for the label of the instance
+\ite{kind} for the kind/type of the instance
+\ite{type} containing the same value as the \T{kind}
+\ite{first} for the first EventArea
+\ite{last} for the last EventArea
+\ite{bmsc} for the BMsc that this instance is part of
+\ite{line\_begin} for the tuple of two numbers representing the beginning of the line
+\ite{line\_end} for the tuple of two numbers representing the end of the line
+\ite{width} for the width of the instance
+\ite{height} for the height of the line, computed from \texttt{line\_begin} and \texttt{line\_end}
+\ite{is\_empty} to test whether the \texttt{last} event is defined
+\ite{has\_events} to test whether there is any event
+\end{itemize}
+
+Function attribute \texttt{add\_area(a1)} is defined that inserts area \texttt{a1} to the instance.
+
+To completely fill the instance the attributes areas, form, label, line\_begin, line\_end, width and type/kind (just one of them) need to be specified.
+
+Instance is implemented in file instance.py.
+
+
+\section{Areas}
+The Instances are specified by EventAreas - data types representing areas of the events. Two basic types are defined: CoregionArea, StrictOrderArea.
+
+Their definition is divided into two parts: common part and specific part. Therefore few attributes are common for both areas:
+\begin{itemize}
+\ite{next} for the next area, this attribute can also be set
+\ite{previous} for the previous area, this attribute can also be set
+\ite{begin\_height} for the integer specifying the height at the beginning
+\ite{end\_height} for the integer specifying the height at the end
+\ite{width} for the width of the area
+\ite{instance} for the instance that the area belongs to
+\ite{is\_empty} for the test whether the area contains anything
+\ite{is\_first} for the test whether the area is first
+\ite{height} for the height (computed as the absolute value of the difference of the begin\_height and the end\_height)
+\ite{events} for all the events in the corresponding area
+\ite{type} returning the string representing the type of the area
+\ite{<Type>Area} to test the type of the area, possible values of the \T{<Type>} are StrictOrder and Coregion
+\end{itemize}
+
+Function add\_event is also defined for both types of areas although it is overloaded and a little more sophisticated for CoregionArea (where it can add the event to both the minimal and the maximal events).
+
+Only the attributes width, begin\_height, end\_height and next/previous need to be set.
+
+The StrictOrderArea does not extend the common attributes too much. Only two additional attributes are defined:
+\begin{itemize}
+\ite{first} for first event in the area
+\ite{last} for last event in the area
+\end{itemize}
+
+Both attributes can and also should be set (either directly or indirectly using the function add\_event).
+
+The CoregionArea is a little more complex, it has following attributes defined:
+\begin{itemize}
+\ite{form} for the form of the drawn coregion
+\ite{minimal\_events} for the set of the minimal events
+\ite{maximal\_events} for the set of the maximal events
+\end{itemize}
+
+Basic functions for manipulating minimal\_events and maximal\_events sets are also defined although these sets can be manipulated directly with standard set functions or operators. The functions are quite self-explanatory: add\_minimal\_event, remove\_minimal\_event, add\_maximal\_event and remove\_maximal\_event.
+
+All three attributes can and also should be set (either directly or using functions mentioned above).
+
+EventAreas are implemented in file area.py.
+
+
+\section{Events}
+EventAreas consist of  Events. For each EventArea there is corresponding Event. These basic types of events are known as CoregionEvents and StrictEvents.
+
+Both types of events have quite a lot of common attributes:
+\begin{itemize}
+\ite{position} being the relative position of the event to the respective instance/area
+\ite{message} referencing the message corresponding to the event, it might be Complete or Incomplete message
+\ite{area} that holds the reference to the area that the event belongs to
+\ite{complete\_message} returning the message if it is CompleteMessage
+\ite{incomplete\_message} returning the message if it is IncompleteMessage
+\ite{matching\_event} returning matching event if the message is CompleteMessage (\T{None} is returned otherwise)
+\ite{is\_matched} testing whether the message is CompleteMessage
+\ite{is\_send} checking whether the event is the sender or the message was lost
+\ite{is\_receive} being the negation of the \T{is\_send}
+\ite{receiver\_label} returning the label of the receiver if it exists and the instance label of the message or instance label of the event otherwise
+\ite{sender\_label} returning the sender label if possible (falling back to the instance label of the message or the instance label of the event)
+\ite{general\_area} that is just an equivalent of the area
+\ite{instance} returning the instance of the area of the event
+\ite{<Type>Event} to test the type of the event, the \T{<Type>} can be either Strict or Coregion
+\end{itemize}
+
+Only the attributes position and message need to be set for both types of the events.
+
+StrictEvent contains all of the attributes above and adds several new attributes that are specific for the StrictEvent:
+\begin{itemize}
+\ite{successor} expressing the following event
+\ite{predecessor} referencing the previous event
+\ite{is\_first} testing whether the event is first (have no predecessor) in its area
+\ite{is\_last} checking whether the event is last (have no successor) in its area
+\end{itemize}
+
+The attribute successor can and should be set (along with the common attributes) to completely fill the StrictEvent.
+
+As well as StrictEvent, CoregionEvent has several additional attributes that are specific for it:
+\begin{itemize}
+\ite{successors} meaning the set of successors (CoregionEventRelations) of the event
+\ite{predecessors} referencing  the set of the predecessors of the event
+\ite{is\_minimal} returning true if there are no predecessors
+\ite{is\_maximal} returning true if there are no successors
+\ite{has\_successors} testing for the presence of any successors
+\ite{has\_predecessors} checking whether there are any predecessors
+\ite{coregion\_area} being the equivalent of the \T{area}
+\end{itemize}
+
+Additionally functions add\_successor(succ) and remove\_successor(succ) are defined for CoregionEvent to add and remove any successor.
+
+Only the sets successors and predecessors need to be filled (along with the common attributes) to completely fill the CoregionEvent. This attributes can be filled with the use of the successor modifying functions mentioned above.
+
+CoregionEventRelation is simply defined as an object containing three attributes: successor, predecessor and line. Successor and predecessor are CoregionEvents and line is just a list of tuples containing coordinates x and y, for example \T{[(0, 0), (1.1, 1.3)]}. The CoregionEventRelation is filled when all the three attributes are set.
+
+The events are implemented in file event.py.
+
+
+\section{Messages}
+Events carry messages. These messages are represented by two objects depending on the type of the message. The two types of the messages are CompleteMessage and IncompleteMessage.
+
+Each of the message types has its own attributes defined. CompleteMessage has following attributes defined:
+\begin{itemize}
+\ite{otype} being the attribute that stores the string that defines the type of the object (specifically message), for CompleteMessage its value is "Complete", for IncompleteMessage it's "Incomplete"
+\ite{label} being the string that labels the message
+\ite{send\_event} referencing the event that sends the message
+\ite{receive\_event} referencing the event that receives the message
+\ite{sender} being the instance of send\_event
+\ite{receiver} being the instance of receive\_event
+\ite{is\_glued} to test whether the events are already set
+\ite{events} being the attribute that can set both send event and receive event, it is assigned a tuple of the template \T{(send\_event, receive\_event)}
+\ite{<Type>Message} to test whether the message is of the given type, possible values of the \T{<Type>} are Complete and Incomplete
+\end{itemize}
+
+Only the attributes label, send\_event and receive\_event (either directly or using the attribute events) need to be set.
+
+IncompleteMessage contains attributes type, <Type>Message, is\_glued and label that have same meaning as in the CompleteMessage case. There are also attributes specific for this type of the message:
+\begin{itemize}
+\ite{type} being the attribute of the type string that stores the type of message - whether the message is lost or found
+\ite{dot\_position} denoting the coordinates of the message
+\ite{instance\_label} expressing the label of its instance
+\ite{event} referencing the event connected to the message, the attribute can be set directly and the message will be appropriately glued
+\ite{is\_lost} to test whether the message was lost
+\ite{is\_found} to test whether the message was found
+\end{itemize}
+
+Only the attributes label, type, event, dot\_position and instance\_label need to be set to completely fill the IncompleteMessage.
+
+Both CompleteMessage and IncompleteMessage are implemented in file messages.py.
+
+
+\section{HMsc}
+The object \T{HMsc} creates and manipulates HMsc. For creation of the HMsc the call \T{HMsc()} can be used. \T{HMsc} consists of several attributes. Following attributes are defined for \T{HMsc}:
+
+\begin{itemize}
+\ite{type} being the attribute that contains the information about the type of Msc, for HMsc it contains the string hmsc
+\ite{nodes} being the set representing all the nodes that are in HMsc (except for StartNode)
+\ite{start} that holds the reference to the StartNode of the HMsc
+\ite{snodes} being the set containing all the nodes (including the start node)
+\ite{label} representing the label of the Msc
+\ite{node} being the attribute for the addition of new node to \T{Msc}, by assigning a value to the attribute new node will be added to the nodes attribute
+\ite{<Type>} to test whether BMsc is of given type, possible values of the \T{<Type>} are \T{BMsc} and \T{HMsc}
+\end{itemize}
+
+To completely fill the HMsc only attributes nodes (by manipulating the set or with use of the attribute node), start and label need to be specified.
+
+HMsc and its methods are implemented in the file msc.py.
+
+
+\section{Nodes}
+Every HMsc contains a list of nodes. The nodes in HMsc represent other Mscs. In order to create and manipulate nodes, the object named Node is defined.
+
+Its first parameter is string declaring the type of the node. Possible values are \T{"Reference"}, \T{"Start"}, \T{"End"}, \T{"Condition"} and \T{"Connection"}. If the parameter is not passed, the Node is considered to be StartNode.
+
+As an alternative, all the nodes can be created with their full names, for example \T{ReferenceNode}. This form is just a shortcut for the previous form.
+
+Examples of usage of the data model can be found in the chapter that deals with implementing checking algorithms.
+
+Every Node holds following basic attributes: owner, type, succ, pred and msc. These attributes can be accessed and set directly. Please note that not all of the attributes makes sense for every type of Node.
+\begin{itemize}
+\item{\texttt{owner}} that holds the reference to the owner of the node (the HMsc that the node is part of)
+\item{\texttt{type}} that is the string referencing the type of the Node, value is same as the string that the node was created with
+\item{\texttt{pred}} that is the set of predecessors of current node, it holds that a is predecessor of b if and only if b is successor of a
+\item{\texttt{succ}} that is the set of successors of current node according to node relations
+\item{\texttt{msc}} that is the reference to another Msc, this attribute is only used if the type of the node is ReferenceNode
+\ite{<Type>Node} that is the attribute returning boolean value (True if and only if the node is of the type <Type>), <Type> can be any of the Reference, Start, End, Condition and Connection
+\ite{reachable} returning the list of reachable nodes from given node with respect to the path notion as defined in Deadlock checker part of \cite{babica}
+\ite{label} for the label of the node
+\ite{position} for the tuple representing position of the node
+\end{itemize}
+
+Attributes owner, type, msc, label and position can (and should) also be set. Attributes succ and pred can be modified using set operations. All the other attributes are only computed (and cannot be set).
+
+Attributes \T{succ} and \T{pred} can be used for traversing. Some basic traversers can be defined for nodes. Simplest one is probably \T{reachable}. It is node function that returns list of all the nodes where there is a path from the present node to the node that is member of the returned list. This traverser is defined as an attribute of Node. Traversers creation process will be better explained in the chapter that describes implementation of checking algorithms.
+
+Additionally functions \T{has\_pred(a)} and \T{has\_succ(b)} are defined to test whether object has predecessor \T{a} or successor \T{b}. These functions are just shortcuts for \T{a in c.pred} and \T{b in c.succ}.
+
+The described objects are implemented in the file node.py.
+
+
+\section{Channel mapping}
+Channel mapping serves as a tool that defines the way messages are ordered through FIFO (First In First Out) channels. Two basic ways to define message order are declared: \T{SRChannelMapper} and \T{SRMChannelMapper}. The SRChannelMapper has one FIFO channel per communicating pair while the SRMChannelMapper has one FIFO channel per communicating pair and message name.
+
+Two basic data types are important for this section: \T{MessageParts} and \T{ChannelMappers}. Both of these are just virtual data types with real implementations in \T{SRMessagePart}, \T{SRMMessagePart}, \T{SRChannelMapper}, \T{SRMChannelMapper}.
+
+Both implementations of MessageParts need one attribute when they are created. The attribute is event.
+
+\T{SRMessagePart} is the simpler \T{MessagePart} since it contains only two standard attributes, one function attribute and one operator redefinition. The standard attributes are sender for label of sender and receiver for label of receiver. The function attribute is \T{same\_channel(e1, e2)} and it tests whether the two events are on same channel. Operator \T{<} is redefined so that MessageParts can be compared.
+
+\T{SRMMessagePart} contains everything that \T{SRMessagePart} does and one additional standard attribute: \T{label} for label (name) of the message of the event. Operator \T{<} and function attribute \T{same\_channel} are redefined to correspond to the modified standard attributes.
+
+\T{SRChannelMapper} and \T{SRMChannelMapper} are defined almost the same way. Both of them contain function attributes \T{channel(event)} and \T{same\_channel(e1, e2)}. The attribute \T{same\_channel} is same as in the \T{MessagePart} case (respectively for the corresponding ChannelMappers. The attribute \T{channel} returns the index of event in channel if the event is in the channel. If the event is not found, it is added and corresponding index is returned (length of the list that contains channels).
+
+
+\section{Set implementation}
+The language itself provides definition of sets. The problem is that the object is incomplete because it can handle only certain kind of input (because of the way the set is implemented). The set uses efficient implementation that is based on comparison of its object with respect to their hashes. The problem is that several data types can't have their hashes defined because of their very dynamic nature. The typical representatives of objects that are not hashable are lists and modifiable sets. This division would bring unwanted complexity to the notation and therefore sets that would be closer to the mathematical sets had to be defined.
+
+Python allows a person to modify itself very easily. Mostly thanks to its cleanness and operator/function overloading. Python considers operators to be just a syntactic sugar for function attributes of objects and therefore by overriding attributes, operators can be overridden, too.
+
+\markit{Inefficient set implementation}
+
+Python supports basic set objects but these objects are not complete and have their limitations that make work with sets a little low-level. Because of complexity issues (there must be some sort of comparison to create efficient sets) every member of built-in set object must be hashable. A nice example of object that is not hashable is \T{list} or \T{set} itself (although there is object \T{frozenset} that is hashable). Basically non-hashable objects are dynamic objects that have redefined equality operator (otherwise pointer-based hash can be used).
+
+Since this issue makes usage of sets quite nonintuitive and low-level, new implementation of sets had to be introduced. New sets that can work without comparison had to be implemented. Additionally wrapper class for complete set and built-in set had to be created. The wrapper class uses efficient sets whenever it can and fall back to inefficient no-comparison based sets otherwise. Therefore the set can work for every object. The inefficient set is called \T{nefset}.
+
+The new object \T{nefset} is derived from standard \T{list} object and therefore all the operations that are not overridden can still be used (for example attribute \T{remove}).
+
+All the common set operations should be defined. Following operations and functions were overridden or defined so that intuitive version of sets can be defined.
+\begin{itemize}
+\ite{\_\_repr\_\_} is function that tells python how the object should look when it is outputted, function is defined so that it can remind more known representation of sets, therefore members are enclosed by curly brackets
+\ite{\_\_eq\_\_} that redefines equality operator on sets, sets are equal if every member of set a is in set b and vice versa
+\ite{\_\_ne\_\_} that redefines \T{!=} operator, test for non equality of two sets
+\ite{\_\_le\_\_} that redefines \T{<=} operator to the mathematical operation of $\subseteq$
+\ite{\_\_lt\_\_} that redefines \T{<} operator to the mathematical operation of $\subset$
+\ite{\_\_ge\_\_} that redefines \T{>=} operator to the mathematical operation of $\supseteq$
+\ite{\_\_gt\_\_} that redefines \T{>} operator to the mathematical operation of $\supset$
+\ite{\_\_or\_\_} that maps operator \T{|} to the set operation of union: $\cup$
+\ite{\_\_and\_\_} that maps operator \T{\&} to the set operation of intersection: $\cap$
+\ite{\_\_sub\_\_} that maps operator \T{-} to the set operation of difference: $\setminus$
+\ite{\_\_xor\_\_} that maps operator \T{\^} to the set operation of symmetric difference
+\ite{\_\_mul\_\_} that maps operator \T{*} to the cartesian product of two sets
+\ite{insert} that is the only attribute that is called directly and needed to be redefined since set can insert a member only if the member is not already there, the new member is the only attribute of this function
+%\ite{}
+\end{itemize}
+
+\markit{Wrapper for sets}
+
+As was mentioned earlier, the goal is to define sets that can be used for every object that can be created in Python and still be efficient if the members allows us to do so. Therefore it is necessary to create new wrapper class for built-in \T{set} object and previously defined \T{nefset} object.
+
+Since \T{nefset} object was defined so that it uses same operators for same mathematical operations as \T{set} does, the wrapper class can be quite straightforward (in the cases when there is no mixing of internal types).
+
+All the operations supported by this Set are mentioned in the chapter that specifies whole notation for writing graph algorithms (except data model for Msc objects).
+
+The wrapper class holds only two attributes that specifies it. First of them is \T{hashable} and this attribute tells what kind of underlying set implementation is used. If the attribute \T{hashable} is \T{True} then function uses \T{set} otherwise \T{nefset} is used. Second attribute is data and it stores the created \T{set} or \T{nefset}.
+
+Newly defined \T{Set} tries to use built-in \T{set} whenever it is possible and use \T{nefset} otherwise. Furthermore result of any of operations over \T{Set} uses \T{set} whenever it is possible and beneficial (for example, the result of intersection of internal \T{nefset} and internal \T{set} is always \T{set} since at least one of the attributes is \T{set} internally).
+
+Most of the implementations of binary methods differentiate three basic states. First state is when attribute hashable is same for both objects. Standard operations defined on \T{set} or \T{nefset} can be used in this case. Second state is when first object is hashable and second is not. Third state deals with the case when first object is not hashable but second object is. This two states are dealt appropriately so that \T{set} is used internally if it is possible and beneficial.
+
+Since mixing of internal representation is usually a special case, it might bring additional complexity.
+
+Sets are implemented in file list\_ops.py.
+
+
+\chapter{Implementing high-level algorithms}
+All the definitions in this part are referenced from the master's thesis of Jindřich Babica\cite{babica} and are denoted to the checking algorithms. The referenced checking algorithms are defined in this chapter with an explanation of their definition in suggested notation. This part should learn the reader to write code the way it was defined in previous chapters. Most of the pseudocode in this part is here to serve as an example of the usage of extended data model and the notation itself.
+
+\section{Basic transformation rules}
+The original algorithms are written in the mathematical notion. Therefore most important part are sets. The algorithms use sets in two ways. The first way references regular sets and this can be handled directly by the object \T{Set}. The other way is to test for the type of the object (the mathematical notion uses abstract sets that contain every member that is of the type, for example HMsc that contains all the HMscs). This can be handled by appropriate attribute (every object has got the appropriate boolean attributes defined).
+
+The sets can else be iterated. The mathematical notion uses two standard iterators: $\forall$ and $\exists$. Both of these iterators can be handled by the standard for loop: \T{for member in set}.
+
+The standard symbol $\in$ is used in two situations. To test whether $x \in set$ or to iterate over the the set using for loop. Both of these state can be handled directly by the \t{in} statement.
+
+The implication can be handled using \T{if} statement or using simple logic ($a \Rightarrow b \Leftrightarrow \neg a \vee b$) depending on the context and suitability.
+
+All the standard operators ($\vee$, $\wedge$, $\neg$, $\cap$, $\cup$, ...) are handled by the corresponding operators as defined in the chapter that defines the notation (\T{or}, \T{and}, \T{not}, \T{\&}, \T{|},...).
+
+New algorithms are written in the form of the functions taking necessary arguments. Every definition can be transformed into the function (with less or more modifications).
+
+\section{Deadlock checker}
+Definition 4.1 defines subset of all the hmsc's. It's defined recursively and its basis is the input itself. Therefore the following function can be defined:
+\begin{lstlisting}
+def referenced(h):
+    if h.HMsc:
+        # Msc must be HMsc
+        # Initialization, step 1, h is in referenced(h)
+        ref = [h]
+    # Recursive part, over all the HMsc's that are (or will be) part of the referenced(h) and all its nodes, we're looking for their msc's and adding new HMsc's
+    for k in ref:
+        for n in k.nodes:
+            if n.ReferenceNode and n.msc:
+                msc = n.msc
+                if msc.HMsc:
+                    ref.append(msc)
+    return ref
+\end{lstlisting}
+Definition 4.2 defines simple property of being BMsc-graph (being HMsc and being the only member of your referenced set). Following function can directly be defined:
+\begin{lstlisting}
+def isBMscGraph(h):
+    if h.HMsc and referenced(h) == [h]:
+        return True
+    else:
+        return False
+\end{lstlisting}
+Definition 4.3 defines path. Since every node knows its successors and its predecessors it's quite easy to traverse nodes. For complexity reasons it is not best to iterate over everything that exists and since the predecessors and the successors are known it is not even necessary. To demonstrate the work with successors and predecessors, following function that goes through all the accessible nodes recursively can be defined:
+\begin{lstlisting}
+def traverse(n, l = []):
+    # input is node n and optional list l (of already traversed nodes)
+    if n.ReferenceNode and n.msc and n.msc.HMsc and n.msc.start not in l:
+        # Found new HMsc in reference node, traversing
+        l.append(n.msc.start)
+        traverse(n.msc.start, l)
+    for node in n.succ:
+        if node not in l:
+            l.append(node)
+            traverse(node, l)
+        else:
+            # We don't want to end up in any cycle
+            # pass is just an empty body/statement
+            pass
+\end{lstlisting}
+The algorithm above is defined for nodes but can easily be used for HMscs. It is only necessary to get start node of the HMsc and pass it to the function.
+
+It is much easier and more algorithmic to use successors and predecessors to look through nodes. It might even bring better complexity to algorithms. Therefore function traverse and its modifications will most probably be used for high-level implementation when we'll be talking about paths in the future.
+
+Definition 4.4 defines what is reachable node in a HMsc. It's node that is end of any existing path that begins in the HMsc's start node. Therefore (if we wish to optimize algorithm at least a little) to find whether node is reachable it is necessary to begin with start node of HMsc and try to find the node according to path rules (so called traversing). If we find it while traversing then result is True. Otherwise the node is not reachable, hence False. The additional code is here because of the optimization. We can easily use function traverse that will store every traversable node in its optional parameter l. The result might look like this:
+\begin{lstlisting}
+def reachable(h, node):
+    l = []
+    # Lists are similar to pointers in C and can be changed inside of a function
+    traverse(h.start, l)
+    return node in l
+\end{lstlisting}
+Definition 4.5 is just simple usage of previous definitions and therefore can be transcribed quite easily.
+\begin{lstlisting}
+def hasDeadlock(h):
+    # Over all referenced HMsc's
+    for hm in referenced(h):
+        # Over all their nodes including start node
+        for n in hm.snodes:
+            if not n.ConnectionNode and not (n in h.nodes and n.EndNode):
+                if reachable(h, n):
+                    deadlock = True
+                    for m in n.reachable:
+                        if not m.ConnectionNode:
+                            # We found reachable Node that is not ConnectionNode -> no deadlock
+                            deadlock = False
+                    if deadlock:
+                        return n
+    return None
+\end{lstlisting}
+After the if statement it was assumed that there was deadlock but it was necessary to make sure that there was the deadlock with the for that followed. If any deadlock existed it was returned.
+
+Using the basic 5 definitions, high-level code that suffices suggested notation could easily be written. Some definitions were used directly, some were not because they defined property but not the efficient way to find it.
+
+\section{Livelock checker}
+Livelock checker is quite similar to deadlock checker. It uses the same path notion when traversing the nodes. Specific cyclic traverser can be defined to detect all the cycles in the hmsc and look for a livelock.
+\begin{lstlisting}
+def find_node_livelock(node, l = []):
+    found = Set([]) # Set of HMscs that does not satisfy this condition
+    if node.ReferenceNode and node.msc and node.msc.HMsc:
+        # Found reference node that references HMsc
+        found |= find_node_livelock(node.msc.start, l)
+    for n in node.succ:
+        if n not in l:
+            # Node that was not traversed in this path
+            l.append(n)
+            found |= find_node_livelock(n, l)
+            l.pop()
+        else:
+            # Reached same node -> cycle
+            cycle = l[l.index(n):]
+            ref = False
+            for i in cycle:
+                if i.ReferenceNode:
+                    ref = True
+                    # Modify for end node
+                    if [x for x in i.reachable if x.EndNode and x.owner == i.msc]:
+                        # Reachable EndNode was found
+                        ref = False
+            if ref:
+                found += n.owner
+                print("Livelock was found: ", cycle + [n])
+    return found
+\end{lstlisting}
+
+Traverser works almost the same way as the one for deadlock checker with an exception of pop after recursive call (and dealing with the livelock search but that is not a direct part of traverser).
+
+Cycle is quite easily detected (the same node is hit in the road) and extracted (everything from the place that node begins). The rest of the pseudocode looks for a ReferenceNode that has no reachable EndNode.
+
+The algorithm above uses function find\_livelock that has Msc as an argument. Therefore following function that extends the algorithm to its final look can be defined:
+\begin{lstlisting}
+def find_livelock(h, l = []):
+    if h.HMsc:
+        l.append(h.start)
+        hmscs = find_node_livelock(h.start, l)
+        l.pop()
+    return hmscs
+\end{lstlisting}
+In the case of HMsc, the necessary node is obviously its StartNode. Therefore find\_node\_livelock is called for the start node of HMsc.
+
+
+\section{Acyclic checker}
+The definition of acyclic checker begins with the definition of visual order relation $<$. The definition can be treated as the constructive definition (and it is also expected). Therefore following function that returns visual order relation for a BMsc can be defined:
+\begin{lstlisting}
+def buildVisOrder(bmsc):
+    order = Set()
+    for e1 in bmsc.events:
+        for e2 in bmsc.events:
+            # Over all the tuples of events
+            if (e1 == e2) or (e1.area.StrictOrderArea and e1.successor == e2) or ((e1, e2) in bmsc.CoregionEventRelation) or (e1.message.CompleteMessage and e1.is_send and e1.message.receive_event == e2) or (e1.area.next == e2.area):
+                # The tuple satisfy one of the conditions
+                order += (e1, e2)
+    # We need to return transitive closure so we'll use predefined function
+    return order.transitive()
+\end{lstlisting}
+The function consists of the composed condition and transitive closure. It iterates over all the events in bmsc and inserts the events that satisfy given condition or are in its transitive closure (reflexive closure is part of the condition).
+
+The result of the effort is the definition of acyclic BMsc so that function \T{is\_acyclic} that tests whether computed visual order relation is antisymmetric visual order can be defined. 
+\begin{lstlisting}
+def is_acyclic(bmsc):
+    # Create/find visual order relation
+    visOrdRel = buildVisOrder(bmsc)
+    # Test on antisymmetry
+    for (i, j) in visOrdRel:
+        if (j, i) in visOrdRel and i != j:
+            return False
+    return True
+\end{lstlisting}
+
+The extension for the HMsc is quite straightforward and can be defined quite easily.
+\begin{lstlisting}
+def hmsc_is_acyclic(h):
+    for h1 in referenced(h):
+        for n in h1.nodes:
+            if n.ReferenceNode and n.msc.BMsc:
+                # Check that all the referenced BMscs are acyclic
+                if not is_acyclic(n.msc):
+                    return False
+    return True
+\end{lstlisting}
+
+The function just iterates over all the nodes of all the referenced HMscs looking for the ReferenceNode that reference BMsc. Once the node is found, regular is\_acyclic function for BMsc is called.
+
+
+\section{FIFO checker}
+
+The definition of FIFO checker is based on the previous definitions and algorithms. The function itself just iterates over the events of a BMsc looking for two events satisfying given condition. The extension for HMsc is quite straightforward and very similar to the extension for acyclic checker. Implementation of the HMsc extension in the pseudocode can be found in fifo\_checker.py.
+\begin{lstlisting}
+def is_fifo(bmsc, chm):
+    visOrder = buildVisOrder(bmsc)
+    if not is_acyclic(bmsc):
+        # BMsc is not acyclic, hence false
+        return False
+    for e1 in bmsc.events:
+        for e2 in bmsc.events:
+            if chm.same_channel(e1, e2) and (e1, e2) in visOrder and e1.message.CompleteMessage and e2.message.CompleteMessage and not (e1.matching_event, e2.matching_event) in visOrder:
+                return False
+    return True
+\end{lstlisting}
+
+FIFO checker brings up another common aspect of checking algorithms - channel mapping (attribute chm).
+
+Algorithm begins with the creation of visual order relation (as defined for acyclic checker) and checks whether the relation is acyclic. If it is acyclic all the events are iterated looking for two events in visual order relation that are CompleteMessages on same channel with matching events that are not in the appropriate visual order relation.
+
+
+\chapter{Integration to scstudio}
+The previous implementation of checking algorithms was written in C++ and is part of scstudio. The algorithms can be run from Microsoft Visio once the Msc is designed.
+The aim of this chapter is to describe how to integrate algorithms written in pseudocode into scstudio and to explain the way it is done.
+\section{Integrating algorithms}
+The algorithms are written in an extension of Python programming language but scstudio uses C++ data structures/classes. Checking algorithms in scstudio should define two new classes that are supposed to be derived from classes HMscChecker and BMscChecker. These two classes define virtual function check for HMsc and BMsc respectively. The function takes HMsc/BMsc pointer and returns list of HMsc/BMsc pointers (respectively) that do not satisfy the the property.
+
+Additionally the two new classes that should be defined must derive from class Checker that provides few basic pieces of information about the checker that is going to be implemented. Virtual functions get\_property\_name (returns name of the property), get\_help\_filename() (returns the location of help file), get\_preconditions(), cleanup\_attributes() (cleans attributes) and is\_supported(chm) (true if the channel mapper chm is supported) should be defined. The definition of these functions is rather easy and does not differ from regular case when checking algorithms are written in C++.
+
+In order to define function check (either for BMscChecker or HMscChecker) it is necessary to handle data structure written in C++ and provide a Python object for the Msc. The class PyConv was defined for this purpose. The class assumes that corresponding checkHMsc and checkBMsc functions are defined in pseudocode module. Both functions must take HMsc/BMsc and return list of HMscs/BMscs respectively. The class will abstract everything else.
+
+To use the PyConv C++ class you need to create the class with the module name \footnote{Module name is the name of the file without its file extension (in this case without .py)} as an argument and call checkHMsc or checkBMsc as you can see in this example:
+\begin{lstlisting}
+HMscPtr hmsc;
+BMscPtr bmsc;
+ChannelMapperPtr chm;
+...
+PyConv exp = PyConv("livelock_checker"); // Initialize livelock checker
+exp.checkHMsc(hmsc, chm); // Run checker
+exp.checkBMsc(bmsc, chm);
+\end{lstlisting}
+
+To simplify the creation of the two classes that are supposed to be written, bash script called gen\_dir was created. The script includes file checker\_list (that is in fact bash script containing only one variable) to get the list of checkers that are implemented in their high-level version and generates all the necessary files for integration with scstudio. The script generates files only if they does not exist yet. Therefore it is safe to modify generator cpp and h files (few things might need modification, for example path to documentation).
+
+If you wish to integrate any new test all you need to do is to modify the variable CHECK in the checker\_list file so that it contains your checker, implement functions checkHMsc and/or checkBMsc and add the file to the module where other checkers are located with respect to following naming convention:
+\begin{itemize}
+\item{the name of the checker looks like regular word with leading capital letter (for example Deadlock, FIFO)}
+\item{the filename of test (module) is lower case version of the name of the checker with \_checker appended to it (e.g. deadlock\_checker, fifo\_checker)}
+\item{the name of C++ classes that are generated are of the form PyXZChecker where X is H for HMsc and B for BMsc and Z is the name of the checker (e.g. PyHDeadlockChecker, PYBFIFOChecker)}
+\item{the name of the property is of the form PyXZFree where X can be H (HMsc) or B (BMsc) and Z is the name of the checker (e.g. PyBDeadlockFree, PyHFIFOFree)}
+\end{itemize}
+
+\section{Data conversion}
+Since data must be shared between two different languages it must be converted between the two languages. Python offers API for this conversion. All the standard objects can be converted into corresponding Python objects of type PyObject* (since everything in Python is object). The API also offers several functions to manipulate classes and call functions.
+
+The conversion is done within the checker function described in previous section and is handled by PyConv class.
+
+This class consists of several functions for conversion of C++ data structures to Python objects. The class iterates the given BMsc or HMsc and creates and fills every corresponding structure that it finds during the iteration.
+
+In the end when checking algorithm of the class returns list of HMscs or BMscs it will find corresponding C++ structures and return them as a list.
+
+The conversion and data handling between the two data models was abstracted and hidden from the users this way.
+
+\chapter{Conclusion}
+In this thesis the notation for writing high-level checking algorithms was introduced. The notation was completely described and explained on examples.
+
+The extension of Python's data model for checking algorithms was introduced, described and implemented.
+
+The direct extension of Python programming language - ineffective set and wrapper set were described and implemented. This contributed to the simplification of the notation quite significantly.
+
+Several checking algorithms were implemented to demonstrate functionality of implemented extensions. Basis for the implementation was written in pure mathematical notion. Although few modifications were introduced they correspond to a regular transformation of mathematical notion to pseudocode.
+
+In order to further demonstrate functionality and simplify testing the integration to scstudio was implemented and described. Thanks to the supplied bash script integration is basically just a matter of modifying one line of one file and using suggested naming convention for files and functions.
+
+The implementation could be extended by addressing any of the existing extensions of MSC (for example time relations).
+
+\printbibliography
+%\bibliographystyle{plain} % sets plain bibliography style  
+%\bibliography{bc-en}     % BibTeX database file  
+ 
+\end{document} 
