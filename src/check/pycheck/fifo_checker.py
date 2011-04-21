@@ -1,5 +1,5 @@
 from pysc import *
-from acyclic_checker import *
+from pycheck.acyclic_checker import *
 
 def is_fifo(bmsc, chm):
 	if not is_acyclic(bmsc):

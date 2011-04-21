@@ -1,5 +1,5 @@
 from pysc import *
-from deadlock_checker import *
+from pycheck.deadlock_checker import *
 
 def buildVisOrder(bmsc):
 	order = Set()
