@@ -385,7 +385,8 @@ BMsc and its methods are implemented in the file msc.py.
 \section{Instance}
 BMsc is specified by process instances. These instances are represented by the object Instance. This object can be created by the call \T{Instance()}. Instance as an object contains following attributes:
 \begin{itemize}
-\ite{areas} for the list of the areas
+\ite{areas} for the set of its areas
+\ite{area} to add an area to the instance
 \ite{form} containing the form as a string, possible values are Line and Column
 \ite{label} for the label of the instance
 \ite{kind} for the kind/type of the instance
@@ -403,7 +404,7 @@ BMsc is specified by process instances. These instances are represented by the o
 
 Function attribute \texttt{add\_area(a1)} is defined that inserts area \texttt{a1} to the instance.
 
-To completely fill the instance the attributes areas, form, label, line\_begin, line\_end, width and type/kind (just one of them) need to be specified.
+To completely fill the instance the attributes areas, form, label, line\_begin, line\_end, width and type/kind (just one of them) need to be specified. The attribute \texttt{areas} shall be filled by the attribute \texttt{area} or the function \texttt{add\_area}.
 
 Instance is implemented in file instance.py.
 
@@ -442,8 +443,8 @@ Both attributes can and also should be set (either directly or indirectly using 
 The CoregionArea is a little more complex, it has following attributes defined:
 \begin{itemize}
 \ite{form} for the form of the drawn coregion
-\ite{minimal\_events} for the set of the minimal events
-\ite{maximal\_events} for the set of the maximal events
+\ite{minimal\_events} for the set of its minimal events
+\ite{maximal\_events} for the set of its maximal events
 \end{itemize}
 
 Basic functions for manipulating minimal\_events and maximal\_events sets are also defined although these sets can be manipulated directly with standard set functions or operators. The functions are quite self-explanatory: add\_minimal\_event, remove\_minimal\_event, add\_maximal\_event and remove\_maximal\_event.
@@ -572,6 +573,7 @@ Every Node holds following basic attributes: owner, type, succ, pred and msc. Th
 \item{\texttt{type}} that is the string referencing the type of the Node, value is same as the string that the node was created with
 \item{\texttt{pred}} that is the set of predecessors of current node, it holds that a is predecessor of b if and only if b is successor of a
 \item{\texttt{succ}} that is the set of successors of current node according to node relations
+\ite{successor} that can add new successor to the node
 \item{\texttt{msc}} that is the reference to another Msc, this attribute is only used if the type of the node is ReferenceNode
 \ite{<Type>Node} that is the attribute returning boolean value (True if and only if the node is of the type <Type>), <Type> can be any of the Reference, Start, End, Condition and Connection
 \ite{reachable} returning the list of reachable nodes from given node with respect to the path notion as defined in Deadlock checker part of \cite{babica}
@@ -579,7 +581,7 @@ Every Node holds following basic attributes: owner, type, succ, pred and msc. Th
 \ite{position} for the tuple representing position of the node
 \end{itemize}
 
-Attributes owner, type, msc, label and position can (and should) also be set. Attributes succ and pred can be modified using set operations. All the other attributes are only computed (and cannot be set).
+Attributes owner, type, msc, label and position can (and should) also be set. Attributes succ and pred can be modified using set operations or by the successor attribute. All the other attributes are only computed (and cannot be set).
 
 Attributes \T{succ} and \T{pred} can be used for traversing. Some basic traversers can be defined for nodes. Simplest one is probably \T{reachable}. It is node function that returns list of all the nodes where there is a path from the present node to the node that is member of the returned list. This traverser is defined as an attribute of Node. Traversers creation process will be better explained in the chapter that describes implementation of checking algorithms.
 

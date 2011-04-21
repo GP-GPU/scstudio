@@ -98,14 +98,13 @@ class CoregionArea(EventArea):
 		except:
 			pass
 	def add_event(self, event = CoregionEvent()):
-		self.events.insert(event)
+		# self.events.insert(event)
 		if event.is_minimal:
 			self.minimal_events.insert(event)
 		elif event.is_maximal:
 			self.maximal_events.insert(event)
 		event.area = self
 		return event
-
 	def add_maximal_event(self, event):
 		event.area = self
 		self.maximal_events.insert(event)
