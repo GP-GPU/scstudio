@@ -41,7 +41,23 @@ def fill2():
 	m2.events = (e2, e3)
 	return b1
 
+def fill3():
+	h1 = HMsc()
+	s = StartNode()
+	h1.start = s
+	n1 = ReferenceNode()
+	b1 = BMsc()
+	i1 = Instance("p1")
+	b1.instance = i1
+	i2 = Instance("p2")
+	b1.instance = i2
+	n1.msc = b1
+	h1.node = n1
+	return h1
+
 b1 = fill1()
 print(ac.is_acyclic(b1))
 b2 = fill2()
 print(ac.is_acyclic(b2))
+h = fill3()
+print(ac.checkHMsc(h, None))

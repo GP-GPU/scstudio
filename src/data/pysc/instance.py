@@ -41,6 +41,8 @@ class Instance(object):
 			return self.first != None and self.last != None
 		elif name == "areas":
 			runner = self.first
+			if not runner:
+				return Set()
 			s = Set([self.first])
 			while runner.next and runner.next != self.last:
 				s += runner.next
