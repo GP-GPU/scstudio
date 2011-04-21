@@ -32,7 +32,6 @@
 \end{ThesisDeclaration}  
  
 \begin{ThesisThanks}  
-I would like to thank my supervisor Ing. Petr Gotthard for the help, support and approach he used when he supervised this bachelor thesis.
 \end{ThesisThanks}  
 
 \begin{ThesisAbstract}  
@@ -52,21 +51,21 @@ scstudio, graph algorithms, python, pseudocode, BMsc, HMsc, checking algorithms
  
 \chapter{Introduction}    % first chapter followed by  
                           % many others  
-The main center of interest of this thesis is project scstudio (The Sequence Chart Studio)\cite{scstudio,scstudio2}. Scstudio is tool for drawing sequence charts and verifying properties on them. This thesis focuses more on the second part - verification algorithms. The final aim is to be able to write high-level executable code for verification of properties on sequence charts.
+The main center of interest of this thesis is project scstudio (The Sequence Chart Studio)\cite{scstudio,scstudio2}. Scstudio is a tool for drawing sequence charts and verifying properties on them. This thesis focuses more on the second part - verification algorithms. The final aim is to be able to write high-level executable code for verification of properties on sequence charts.
 
-The thesis is divided into four basic chapters. First chapter specifies the notation for writing pseudocode. The chapter serves as an introduction to the high level language that will be used. The notation is based on Python\cite{python,python2} programming language and tries to extend it so that pseudocode close to the mathematical notation can be used. The notation in this chapter should describe all the parts of the language that are necessary for the purposes of this thesis.
+The thesis is divided into four basic chapters. First chapter specifies the notation for writing pseudocode. The chapter serves as an introduction to the high level language that will be used. The notation is based on Python\cite{python,python2} programming language and tries to extend it so that pseudocode close to the mathematical notation can be written. The notation in this chapter should describe all the parts of the language that are necessary for the purposes of this thesis along with probably most important part - sets.
 
-Second chapter describes the way Python's data model had to be extended. The data model is extended so that objects from scstudio can be created and modified. At the end of the chapter modification of built-in set data type is described. The original built-in set can't handle objects that are not hashable for complexity reasons and therefore more high-level implementation of sets had to be provided. Since Python is highly object oriented programming language by extending the data model the language itself is extended too.
+Second chapter describes the way Python's data model had to be extended. The data model is extended so that objects from scstudio can be created and modified. At the end of the chapter modification of built-in set data type is described. The original built-in set can't handle highly dynamic objects for complexity reasons and therefore more high-level implementation of sets had to be provided. Since Python is highly object oriented programming language by extending the data model the language itself is extended too. Final part of this chapter describes creation of wrapper for original sets and newly defined sets.
 
 Third chapter describes the implementation of checking algorithms in executable pseudocode. The chapter contains a lot of examples so that reader can see how to write the code. The description of implementation of all the checking algorithms (except for race checker) that were defined in the Master's thesis of Jindřich Babica\cite{babica} is provided in this chapter.
 
-Fourth chapter of this thesis is dedicated to the integration with the existing scstudio project. The aim was to simplify the integration as much as possible so that virtually no C++ code had to be written. This integration simplifies testing and input handling.
+Fourth chapter of this thesis is dedicated to the integration with existing scstudio project. The aim was to simplify the integration as much as possible so that virtually no C++ code had to be written. This integration simplifies testing and input handling. The integration has two parts. The first one is developer level integration that provides higher level of configurability for checkers. The second one is user level integration that is aimed for end users of scstudio. This means that it does not expect user to do any compilation of scstudio or additional modules.
 
 I hope that this thesis will help a lot of software designers ease up their work and it will remove the necessity for implementation of checking algorithms in low level C++ code.
 
-The result of this thesis is the extension of the Python data model and the bachelor thesis itself that will hopefully serve as a good learning material. The extension is divided into several modules although there is also module that can import the complete extension.
+The result of this thesis is the extension of the Python data model and the bachelor thesis itself that will hopefully serve as a good learning material. The extension is divided into several modules although there is also module that can import the complete extension called pysc.
 
-The resulting extension is licensed by \textit{GNU/LGPL} 3.0\cite{lgpl}. Therefore the extension is free software and can be legally modified to suit the needs of any other project.
+The resulting extension is licensed by \textit{GNU/LGPL} 3.0\cite{lgpl}. Therefore the extension is free software and can be legally modified to suit the needs of any other project with respect to the license.
 %This is the first chapter of the thesis.  
 
 \chapter{Notation for writing high-level Msc algorithms}
