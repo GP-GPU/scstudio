@@ -62,4 +62,4 @@ class SRMChannelMapper(object):
 		return self.channels[idx][1]
 	def same_channel(self, e1, e2):
 		print("hodnoty: ", e1.sender_label, e1.receiver_label, e2.sender_label, e2.receiver_label, e1.message.label, e2.message.label)
-		return e1.sender_label == e2.sender_label and e1.receiver_label == e2.receiver_label and e1.message.label == e2.message.label
+		return e1.sender_label == e2.sender_label and e1.receiver_label == e2.receiver_label and e1.message and e2.message and e1.message.label == e2.message.label

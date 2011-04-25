@@ -2,6 +2,7 @@
 #include "check/pycheck/fifo_checker_visio.h"
 #include "check/pycheck/universal_checker_visio.h"
 #include "data/msc.h"
+#include "data/Z120/z120.h"
 #include <vector>
 #include <iostream>
 
@@ -149,7 +150,9 @@ int main(){
     return e;
   }
 
-  std::list<BMscPtr> bmscs = pfifo->check(myBmsc1, chm);
+  Z120 z;
+  std::vector<MscPtr> mscs = z.load_msc("tests/acyclic/acyclic1.mpr");
+  std::list<BMscPtr> bmscs = pfifo->check(boost::dynamic_pointer_cast<BMsc>(mscs[0]), chm);
   std::cout << bmscs.size() << std::endl;
   if(bmscs.back() == myBmsc1)
     std::cout << "It really works\n";
