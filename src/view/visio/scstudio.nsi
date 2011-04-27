@@ -224,8 +224,8 @@ Section "Microsoft Visio Add-On" SecAddon
   WriteRegDWORD HKCU '${RegChecksPath}\PyHAcyclicFree' 'Priority' '0'
   WriteRegDWORD HKCU '${RegChecksPath}\PyBFIFOFree' 'Priority' '0'
   WriteRegDWORD HKCU '${RegChecksPath}\PyHFIFOFree' 'Priority' '0'
-  ;WriteRegDWORD HKCU '${RegChecksPath}\PyBUniversalFree' 'Priority' '0'
-  ;WriteRegDWORD HKCU '${RegChecksPath}\PyHUniversalFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyBUniversalFree' 'Priority' '0'
+  WriteRegDWORD HKCU '${RegChecksPath}\PyHUniversalFree' 'Priority' '0'
   ; configure simulator
   WriteRegBin HKCU '${RegMainPath}\Simulator' 'BinWidth' 0000803F
   WriteRegBin HKCU '${RegMainPath}\Simulator' 'MaxMessageDelay' 00002041
