@@ -35,7 +35,9 @@ class SRMMessagePart(object):
 	def __le__(self, b):
 		return self.sender < mp.sender or (self.sender == mp.sender and (self.receiver < mp.receiver or (self.receiver == mp.receiver and self.label < mp.label)))
 	def same_channel(self, e1, e2):
-		return e1.sender_label == e2.sender_label and e1.receiver_label == e2.receiver_label and e1.message.label == e2.message.label
+		if (e1.is_send and e2.is_send) or (e1.is_receive and e2.is_receive):
+			return e1.sender_label == e2.sender_label and e1.receiver_label == e2.receiver_label and e1.message.label == e2.message.label
+		return False
 
 class SRChannelMapper(GeneralMapper):
 	def channel(self, ch):
@@ -61,5 +63,6 @@ class SRMChannelMapper(object):
 			return len(self.channels)-1
 		return self.channels[idx][1]
 	def same_channel(self, e1, e2):
-		print("hodnoty: ", e1.sender_label, e1.receiver_label, e2.sender_label, e2.receiver_label, e1.message.label, e2.message.label)
-		return e1.sender_label == e2.sender_label and e1.receiver_label == e2.receiver_label and e1.message and e2.message and e1.message.label == e2.message.label
+		if (e1.is_send and e2.is_send) or (e1.is_receive and e2.is_receive):
+			return e1.sender_label == e2.sender_label and e1.receiver_label == e2.receiver_label and e1.message and e2.message and e1.message.label == e2.message.label
+		return False
