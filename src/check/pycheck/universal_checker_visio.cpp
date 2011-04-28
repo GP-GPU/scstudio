@@ -94,7 +94,7 @@ std::list<HMscPtr> PyHUniversalChecker::check(HMscPtr hmsc, ChannelMapperPtr chm
       continue;
     }
     std::list<HMscPtr> hret = exp->checkHMsc(hmsc, chm);
-    if(ret.size()){
+    if(hret.size()){
       HMscPtr checker_name(new HMsc((*it).second));
       ret.push_back(checker_name);
       for(std::list<HMscPtr>::iterator hit = hret.begin();hit != hret.end();hit++)
