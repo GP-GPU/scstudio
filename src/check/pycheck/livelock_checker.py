@@ -30,7 +30,7 @@ def find_node_livelock(node, original, l = []):
 def find_livelock(h, l = []):
 	if h.HMsc:
 		l.append(h.start)
-		hmscs = find_node_livelock(h.start, original, l)
+		hmscs = find_node_livelock(h.start, h, l)
 		l.pop()
 	return hmscs
 
