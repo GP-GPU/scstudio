@@ -659,14 +659,14 @@ Sets are implemented in file list\_ops.py.
 
 
 \chapter{Implementing high-level algorithms}
-All the definitions in this part are referenced from the master's thesis of Jindřich Babica\cite{babica} and are denoted to the checking algorithms. The referenced checking algorithms are defined in this chapter with an explanation of their definition in suggested notation. This part should learn the reader to write code the way it was defined in previous chapters. Most of the pseudocode in this part is here to serve as an example of the usage of extended data model and the notation itself.
+All the definitions in this part are referenced from the master's thesis of Jindřich Babica\cite{babica} and are denoted to the checking algorithms. The referenced checking algorithms are defined in this chapter with an explanation of their definition in suggested notation. This part should show the reader how to write code the way it was defined in previous chapters. Most of the pseudocode in this part is here to serve as an example of the usage of extended data model and the notation itself.
 
 \section{Basic transformation rules}
-The original algorithms are written in the mathematical notion. Therefore most important part are sets. The algorithms use sets in two ways. The first way references regular sets and this can be handled directly by the object \T{Set}. The other way is to test for the type of the object (the mathematical notion uses abstract sets that contain every member that is of the type, for example HMsc that contains all the HMscs). This can be handled by appropriate attribute (every object has got the appropriate boolean attributes defined).
+The original algorithms are written in the mathematical notion. Therefore most important object is set object. The algorithms use sets in two ways. The first way references regular sets and this can be handled directly by the object \T{Set}. The other way is to test for the type of the object (the mathematical notion uses abstract sets that contain every member that is of the type, for example HMsc that contains all the HMscs). This can be handled by appropriate attribute (every object has got the appropriate boolean attributes defined).
 
-The sets can else be iterated. The mathematical notion uses two standard iterators: $\forall$ and $\exists$. Both of these iterators can be handled by the standard for loop: \T{for member in set}.
+The sets can also be iterated. The mathematical notion uses two standard iterators: $\forall$ and $\exists$. Both of these iterators can be handled by the standard for loop: \T{for member in set}.
 
-The standard symbol $\in$ is used in two situations. To test whether $x \in set$ or to iterate over the the set using for loop. Both of these state can be handled directly by the \t{in} statement.
+The standard symbol $\in$ is used in two situations. To test whether $x \in set$ or to iterate over the the set using for loop. Both of these situations can be handled directly by the \t{in} statement.
 
 The implication can be handled using \T{if} statement or using simple logic ($a \Rightarrow b \Leftrightarrow \neg a \vee b$) depending on the context and suitability.
 
@@ -675,7 +675,7 @@ All the standard operators ($\vee$, $\wedge$, $\neg$, $\cap$, $\cup$, ...) are h
 New algorithms are written in the form of the functions taking necessary arguments. Every definition can be transformed into the function (with less or more modifications).
 
 \section{Deadlock checker}
-Definition 4.1 defines subset of all the hmsc's. It's defined recursively and its basis is the input itself. Therefore the following function can be defined:
+Definition 4.1 from thesis of Jindřich Babica defines subset of all the hmsc's. It's defined recursively and its basis is the input itself. Therefore the following function can be defined:
 \begin{lstlisting}
 def referenced(h):
     if h.HMsc:
@@ -691,7 +691,7 @@ def referenced(h):
                     ref.append(msc)
     return ref
 \end{lstlisting}
-Definition 4.2 defines simple property of being BMsc-graph (being HMsc and being the only member of your referenced set). Following function can directly be defined:
+Definition 4.2 defines simple property of being BMsc-graph (being HMsc and being the only member of the own referenced set). Following function can directly be defined:
 \begin{lstlisting}
 def isBMscGraph(h):
     if h.HMsc and referenced(h) == [h]:
@@ -781,9 +781,9 @@ def find_node_livelock(node, l = []):
     return found
 \end{lstlisting}
 
-Traverser works almost the same way as the one for deadlock checker with an exception of pop after recursive call (and dealing with the livelock search but that is not a direct part of traverser).
+The traverser works almost the same way as the one for deadlock checker with an exception of pop after recursive call (and dealing with the livelock search but that is not a direct part of the traverser).
 
-Cycle is quite easily detected (the same node is hit in the road) and extracted (everything from the place that node begins). The rest of the pseudocode looks for a ReferenceNode that has no reachable EndNode.
+Cycle is quite easily detected (the same node is hit in the road) and extracted (everything from the place that node begins). The rest of the pseudocode looks for a cycle with a ReferenceNode that has no reachable EndNode.
 
 The algorithm above uses function find\_livelock that has Msc as an argument. Therefore following function that extends the algorithm to its final look can be defined:
 \begin{lstlisting}
@@ -837,7 +837,7 @@ def hmsc_is_acyclic(h):
     return True
 \end{lstlisting}
 
-The function just iterates over all the nodes of all the referenced HMscs looking for the ReferenceNode that reference BMsc. Once the node is found, regular is\_acyclic function for BMsc is called.
+The function just iterates over all the nodes of all the referenced HMscs looking for a ReferenceNode that references BMsc. Once the node is found, regular is\_acyclic function for BMsc is called.
 
 
 \section{FIFO checker}
@@ -860,12 +860,13 @@ FIFO checker brings up another common aspect of checking algorithms - channel ma
 
 Algorithm begins with the creation of visual order relation (as defined for acyclic checker) and checks whether the relation is acyclic. If it is acyclic all the events are iterated looking for two events in visual order relation that are CompleteMessages on same channel with matching events that are not in the appropriate visual order relation.
 
+The condition could be easily satisfied by two events that share common Message (one of them as sender, the other one as receiver). Therefore it is necessary to checke that the two events are of the same type (specifically receivers).
 
 \chapter{Integration to scstudio}
-The previous implementation of checking algorithms was written in C++ and is part of scstudio. The algorithms can be run from Microsoft Visio once the Msc is designed.
+The previous implementation of checking algorithms was written in C++ and is part of scstudio. The algorithms can be run from Microsoft Visio once a Msc is designed.
 The aim of this chapter is to describe how to integrate algorithms written in pseudocode into scstudio and to explain the way it is done.
 \section{Integrating algorithms}
-The algorithms are written in an extension of Python programming language but scstudio uses C++ data structures/classes. Checking algorithms in scstudio should define two new classes that are supposed to be derived from classes HMscChecker and BMscChecker. These two classes define virtual function check for HMsc and BMsc respectively. The function takes HMsc/BMsc pointer and returns list of HMsc/BMsc pointers (respectively) that do not satisfy the the property.
+The algorithms are written in an extension of Python programming language but scstudio uses C++ data structures/classes. Checking algorithms in scstudio should define two new classes that are supposed to be derived from classes HMscChecker and BMscChecker. These two classes define virtual function check for HMsc and BMsc respectively. The function takes HMsc/BMsc pointer and returns list of HMsc/BMsc pointers (respectively) that do not satisfy the property.
 
 Additionally the two new classes that should be defined must derive from class Checker that provides few basic pieces of information about the checker that is going to be implemented. Virtual functions get\_property\_name (returns name of the property), get\_help\_filename() (returns the location of help file), get\_preconditions(), cleanup\_attributes() (cleans attributes) and is\_supported(chm) (true if the channel mapper chm is supported) should be defined. The definition of these functions is rather easy and does not differ from regular case when checking algorithms are written in C++.
 
@@ -877,12 +878,12 @@ HMscPtr hmsc;
 BMscPtr bmsc;
 ChannelMapperPtr chm;
 ...
-PyConv exp = PyConv("livelock_checker"); // Initialize livelock checker
+PyConv exp = PyConv("acyclic_checker"); // Initialize acyclic checker
 exp.checkHMsc(hmsc, chm); // Run checker
 exp.checkBMsc(bmsc, chm);
 \end{lstlisting}
 
-To simplify the creation of the two classes that are supposed to be written, bash script called gen\_dir was created. The script includes file checker\_list (that is in fact bash script containing only one variable) to get the list of checkers that are implemented in their high-level version and generates all the necessary files for integration with scstudio. The script generates files only if they does not exist yet. Therefore it is safe to modify generator cpp and h files (few things might need modification, for example path to documentation).
+To simplify the creation of the two classes that are supposed to be written, bash script called gen\_dir was created. The script includes file checker\_list (that is in fact bash script containing only one variable) to get the list of checkers that are implemented in their high-level version and generates all the necessary files for integration with scstudio. The script generates files only if they does not exist yet. Therefore it is safe to modify generated cpp and h files (few things might need modification, for example path to documentation).
 
 If you wish to integrate any new test all you need to do is to modify the variable CHECK in the checker\_list file so that it contains your checker, implement functions checkHMsc and/or checkBMsc and add the file to the module where other checkers are located with respect to following naming convention:
 \begin{itemize}
@@ -906,30 +907,30 @@ In the end when checking algorithm of the class returns list of HMscs or BMscs i
 The conversion and data handling between the two data models was abstracted and hidden from the users this way.
 
 \section{Universal checker}
-Previous sections described powerful tool for running checking algorithms written in executable pseudocode from developer point of view. The biggest concern is that user must compile its own version of scstudio in order to add new checking algorithms to it.
+Previous sections described powerful tool for running checking algorithms written in executable pseudocode from developer point of view. The biggest concern is that a user must compile its own version of scstudio in order to add new checking algorithms to it.
 
-The universal checker allows user to just write a new checker in executable pseudocode and then run it from GUI without any need for compilation or registry modification.
+The universal checker allows a user to just write a new checker in executable pseudocode and then run it from GUI without any need for compilation or registry modification.
 
-This is done by introducing new Python package\footnote{Package in Python refers to a group of modules with initiator script. Modules from this package can be accessed as attributes of this package (by dot).} for user defined checkers - pyscuser. This package is installed along with other Python extensions and is located in standard directory for Python extensions (usually PYTHON\_PATH/Lib/site-packages/pyscuser). The universal checker will then run all the properly named checking algorithms in this directory. There are actually two universal checkers - one for HMsc and one for BMsc.
+This is done by introducing new Python package\footnote{Package in Python refers to a group of modules with initiator script. Modules from this package can be accessed as attributes of this package (by dot).} for user defined checkers - pyscuser. This package is installed along with other Python extensions and is located in standard directory for Python extensions (usually PYTHON\_LIBS/site-packages/pyscuser). The universal checker will then run all the properly named checking algorithms in this directory. There are actually two universal checkers - one for HMsc and one for BMsc.
 
-If user wish to add a checking algorithm to this checker the user must name the file appropriately and place in the directory of pyscuser package that was created purely for this purpose. The naming shall reflect basic property of the checker. If the new checker implements function checkHMsc the name of the checker shall reflect it by placing capital H anywhere in it. If the new checker implements function checkBMsc the checker should have capital B in its name. Please note that checker must also have standard Python extension (.py) and cannot have two underscores at the beginning of its name (this is mostly due to standard Python convention where modules and variables starting with underscores are considered to be private or protected and are usually used for internal purposes of Python).
+If user wish to add a checking algorithm to this checker the user must name the file appropriately and place it in the directory of pyscuser package that was created purely for this purpose. The naming shall reflect the basic property of the checker. If the new checker implements function checkHMsc the name of the checker shall reflect it by placing capital H anywhere in it. If the new checker implements function checkBMsc the checker should have capital B in its name. Please note that checker must also have standard Python extension (.py) and cannot have two underscores at the beginning of its name (this is mostly due to standard Python convention where modules and variables starting with underscores are considered to be private or protected and are usually used for internal purposes of Python).
 
 The universal checker is implemented as any other Python checker and therefore can be run from GUI as any other checker.
 
 If any of the checking algorithms failed the universal checker will return the output that the failed checkers returned along with new HMsc (or BMsc) labelled with the name of failed property.
 
 \chapter{Conclusion}
-In this thesis the notation for writing high-level checking algorithms was introduced. The notation was completely described and explained on examples.
+In this thesis the notation for writing high-level checking algorithms was introduced. The notation was completely described and explained on examples. As was shown on examples the notation is simple and powerful enough.
 
-The extension of Python's data model for checking algorithms was introduced, described and implemented.
+The extension of Python's data model for checking algorithms was introduced, described and implemented. The extension is complete and allows comfortable and simple way to create message sequence charts by their textual form.
 
-The direct extension of Python programming language - ineffective set and wrapper set were described and implemented. This contributed to the simplification of the notation quite significantly.
+The direct extension of Python programming language - ineffective set and wrapper set were described and implemented. This contributed to the simplification of the notation quite significantly by hiding the necessity to deal with several set implementations.
 
 Several checking algorithms were implemented to demonstrate functionality of implemented extensions. Basis for the implementation was written in pure mathematical notion. Although few modifications were introduced they correspond to a regular transformation of mathematical notion to pseudocode.
 
-In order to further demonstrate functionality and simplify testing the integration to scstudio was implemented and described. Thanks to the supplied bash script integration is basically just a matter of modifying one line of one file and using suggested naming convention for files and functions (from developer point of view). Thanks the supplied universal checker the integration is just a matter of copying one file to the directory of Python package that was created for this purpose and naming it properly.
+In order to further demonstrate functionality and simplify testing the integration to scstudio was implemented and described. Thanks to the supplied bash script integration is basically just a matter of modifying one line of one file and using suggested naming convention for files and functions (from developer point of view). Thanks to the supplied universal checker the integration is just a matter of copying one file to the directory of Python package that was created for this purpose and naming it properly (from user point of view).
 
-The implementation could be extended by addressing any of the existing extensions of MSC (for example time relations).
+The implementation could be further extended by addressing any of the existing extensions of MSC (for example time relations).
 
 \printbibliography
 %\bibliographystyle{plain} % sets plain bibliography style  
