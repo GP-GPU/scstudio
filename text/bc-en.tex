@@ -51,7 +51,7 @@ scstudio, graph algorithms, python, pseudocode, BMsc, HMsc, checking algorithms
  
 \chapter{Introduction}    % first chapter followed by  
                           % many others  
-The main center of interest of this thesis is project scstudio (The Sequence Chart Studio)\cite{scstudio,scstudio2}. Scstudio is a tool for drawing sequence charts and verifying properties on them. This thesis focuses more on the second part - verification algorithms. The final aim is to be able to write high-level executable code for verification of properties on sequence charts.
+The main center of interest of this thesis is project scstudio (The Sequence Chart Studio)\cite{scstudio,scstudio2}. Scstudio is a tool for drawing sequence charts and verifying properties on them. This thesis focuses more on the second part - verification algorithms. The final aim is to be able to write high-level executable code for verification of properties on message sequence charts (MSC).
 
 The thesis is divided into four basic chapters. First chapter specifies the notation for writing pseudocode. The chapter serves as an introduction to the high level language that will be used. The notation is based on Python\cite{python,python2} programming language and tries to extend it so that pseudocode close to the mathematical notation can be written. The notation in this chapter should describe all the parts of the language that are necessary for the purposes of this thesis along with probably most important part - sets.
 
@@ -59,23 +59,23 @@ Second chapter describes the way Python's data model had to be extended. The dat
 
 Third chapter describes the implementation of checking algorithms in executable pseudocode. The chapter contains a lot of examples so that reader can see how to write the code. The description of implementation of all the checking algorithms (except for race checker) that were defined in the Master's thesis of Jindřich Babica\cite{babica} is provided in this chapter.
 
-Fourth chapter of this thesis is dedicated to the integration with existing scstudio project. The aim was to simplify the integration as much as possible so that virtually no C++ code had to be written. This integration simplifies testing and input handling. The integration has two parts. The first one is developer level integration that provides higher level of configurability for checkers. The second one is user level integration that is aimed for end users of scstudio. This means that it does not expect user to do any compilation of scstudio or additional modules.
+Fourth chapter of this thesis is dedicated to the integration with existing scstudio project. The aim was to simplify the integration as much as possible so that virtually no C++ code had to be written. This integration simplifies testing and input handling. The integration has two parts. The first one is developer level integration that provides higher level of configurability for checkers. The second one is user level integration that is aimed for end users of scstudio. This means that it does not expect user to do any compilation of scstudio or any additional modules.
 
 I hope that this thesis will help a lot of software designers ease up their work and it will remove the necessity for implementation of checking algorithms in low level C++ code.
 
-The result of this thesis is the extension of the Python data model and the bachelor thesis itself that will hopefully serve as a good learning material. The extension is divided into several modules although there is also module that can import the complete extension called pysc.
+The result of this thesis is the extension of the Python data model, extension of scstudio and the bachelor thesis itself that will hopefully serve as a good learning material. The extension is divided into several modules although there is also module that can import the complete extension called pysc.
 
 The resulting extension is licensed by \textit{GNU/LGPL} 3.0\cite{lgpl}. Therefore the extension is free software and can be legally modified to suit the needs of any other project with respect to the license.
 %This is the first chapter of the thesis.  
 
 \chapter{Notation for writing high-level Msc algorithms}
 
-There is quite a lot of languages that are high-level and can handle a lot of operations that are necessary for writing high-level graph algorithms. Therefore it is quite wise to pick one of the languages and build entire notation upon the language. I've decided to pick Python programming language for this purpose and therefore syntax for the writing of high-level code is mostly determined by Python's syntax. It must comply to the same basic rules as Python programs must although it might differ in some cases. It might be more strict than original Python's syntax and in few areas even less feature rich. Please take this notation as a recommendation for writing graph algorithms for the project scstudio. If you're a skilled python programmer you might want to use techniques that are not described in this thesis although you must be aware of the fact that person that learned only this notation might not understand your code. This chapter is aimed primarily for people that are not familiar with Python Programming language (with an exception in the section that describes set operations, the section also describes new features).
+There is quite a lot of languages that are high-level and can handle a lot of operations that are necessary for writing high-level graph algorithms. Therefore it is quite wise to pick one of the languages and build entire notation upon the language. I've decided to pick Python programming language for this purpose and therefore syntax for the writing of high-level code is mostly determined by Python's syntax. It must comply to the same basic rules as Python programs must although it might differ in some cases. It might be more strict than original Python's syntax and in few areas even less feature rich. Please take this notation as a recommendation for writing graph algorithms for the project scstudio. If you're a skilled python programmer you might want to use techniques that are not described in this thesis although you must be aware of the fact that person that learned only this notation might not understand your code. This chapter is aimed primarily for people that are not familiar with Python Programming language (with an exception in the section that describes set operations, the section describes primarily new features).
 
 
 Python was chosen as a basis because the language was already created with high-levelness in mind. It also supports (at least to certain point) all three major programming paradigms (functional programming, standard structured programming and object oriented programming). Although the object oriented paradigm is not well suited for writing graph algorithms in pseudocode (and it is not part of the notation) it comes in very handy if the aim is to create high-level extension of the language. Python is also known for its readability.
 
-More specifically version 3 of Python programming language was chosen as a basis. Although this version is mostly backward compatible there are certain incompatibilities (most notably: function print can't be called without parenthesis and indentation must be more consistent (without mixing tabulators and spaces)). The code and library itself is written so that it can be executed in both environments with few minor inconsistencies in the output of algorithms (function print in Python 2 will consider its input enclosed in parenthesis as a tuple).
+More specifically version 3 of Python programming language was chosen as a basis. Although this version is mostly backward compatible there are certain incompatibilities (most notably: function print can't be called without parenthesis and indentation must be more consistent (without mixing tabulators and spaces)). The code and library itself is written so that it can be executed in both environments with few minor inconsistencies in the output of algorithms (function print in Python 2 might consider its input enclosed in parenthesis as a tuple).
 
 Variable names in examples (where it is useful) are often shortcuts from their full names and therefore should be quite self-explanatory.
 
@@ -93,7 +93,7 @@ To print any value, function 'print' can be used.
 
 Natural and rational numbers are defined. Strings are also defined and are denoted by quotation marks.
 
-Line beginning with $>>>$ in examples denotes expression. Output of the expression is in the next line. Comments begin with \# sign.
+Line beginning with $>>>$ in examples denotes an expression. Output of the expression is in the next line. Comments begin with \# sign.
 \markit{Example}
 \begin{lstlisting}
 >>> a = 1
@@ -106,7 +106,7 @@ help 1
 Every source file can also be treated as a module. There are three ways to import any module (source file) although one of them is just an extension of another one.
 \markit{import pysc}
 
-This call will create object named pysc (name can be changed) that will contain everything the pysc module contains. Therefore any part can be accessed directly trough dot operator.
+This call will create object named pysc (name can be changed) that will contain everything the pysc module contains. Therefore any part can be accessed directly through dot operator.
 
 Example: If one wants to access attribute alpha from module pysc, it is necessary to precede the attribute with \T{pysc.} and the resulting statement will look like this: \T{pysc.alpha}.
 \markit{from pysc import *}
@@ -119,7 +119,7 @@ Example: To access attribute alpha, it is necessary to use statement 'alpha'.
 This call will just rename the module name to ownName, everything else is same as in first case.
 
 \section{Basic binary operators}
-Several predefined operators exists. The operators can be recognized by their infix notation. The most basic non-conditional operators include '=' for assignment, + for addition, * for multiplication, - for subtraction, / for division and ** for exponentiation.
+Several predefined operators exist. The operators can be recognized by their infix notation. The most basic non-conditional operators include '=' for assignment, + for addition, * for multiplication, - for subtraction, / for division and ** for exponentiation.
 \markit{Example}
 \begin{lstlisting}
 >>> n=7
@@ -155,7 +155,7 @@ Body in any of the schemes can denote any other scheme. spExp denotes condition,
 \section{Objects}
 \markit{Standard objects}
 
-Everything is considered to be object having some properties (that are also objects). Properties of any object can be accessed through dot operator. Properties of any object can be viewed with dir() function object. Please note that every property of object is also a object and therefore can be treated same way as the new object.
+Everything is considered to be an object having some properties (that are also objects). Properties of any object can be accessed through dot operator. Properties of any object can be viewed with dir() function object. Please note that every property of object is also a object and therefore can be treated same way as the new object.
 
 Every property call must satisfy following scheme:
 \begin{lstlisting}
@@ -220,7 +220,7 @@ Every loop must satisfy following scheme:
 for member in iterator:
     body
 \end{lstlisting}
-Iterator denotes object that can be iterated (most notably lists and sets). Object member will be accessible in the body of this expression. Both member and expression can be modified in the body.
+Iterator denotes object that can be iterated (most notably lists and sets). Object member will be accessible in the body of this expression. Both member and iterator can be modified in the body.
 
 Cycles are defined basically the same way as in most common imperative programming languages.
 \begin{lstlisting}
@@ -236,7 +236,7 @@ Every list must satisfy following scheme (although it might be defined in few di
 \begin{lstlisting}
 [object1,...,objectN]
 \end{lstlisting}
-Members of list don't have to be of identical type.
+Members of list don't have to be of an identical type.
 \markit{List indexation}
 
 Since lists are ordered they can be indexed. Lists are indexed by integers. Negative numbers are interpreted as indexation from the end of the list. First member is indexed by 0, second by 1, last by -1 and so on. Lists can also be indexed by intervals using : operator. Please note that left integer is inclusive and right integer is exclusive.
@@ -254,7 +254,7 @@ To operate with a list as with a stack there is predefined function attribute 'a
 \end{lstlisting}
 
 \section{Tuples}
-Tuple can be thought of as a fixed list. Meaning that its size cannot be changed once they're created. The benefit for using tuples is mostly in their speed with respect to lists.
+Tuple can be thought of as a fixed list meaning that the size of tuple cannot be changed once the tuple is created. The benefit for using tuples is mostly in their speed with respect to lists.
 \markit{Example}
 \begin{lstlisting}
 >>> (a, b, c) = (3, 4, [1, 2, 3]) # assigning values to three new variables
@@ -263,7 +263,7 @@ Tuple can be thought of as a fixed list. Meaning that its size cannot be changed
 \end{lstlisting}
 
 \section{Sets}
-Sets can be created using optional initialization list and Set() function (without the list empty set is returned). Therefore to make set out of list it is necessary to use wrapper function Set() that will remove duplicities and return particular Set object. The call must satisfy one of the following schemes:
+Sets can be created using optional initialization list and Set() function (without the list empty set is returned). Therefore to make set out of a list it is necessary to use wrapper function Set() that will remove duplicities and return particular Set object. The call must satisfy one of the following schemes:
 \begin{lstlisting}
 a = Set([obj1, ..., objN])
 b = Set()
@@ -294,9 +294,9 @@ There is also  's + m' operator construction that adds new member m to the set s
 A little more advanced operation of transitive closure of any set containing tuples (the standard set relation) is defined as the attribute of the Set. The function returns new set that is transitive closure of the original set. The attribute that is used for this is \T{transitive()}. It does not take any argument but it is rather complex attribute and therefore it is defined as a function attribute.
 \markit{Set modification functions}
 
-Content of set can easily be modified using few basic functions for addition and removal of set members.
+The content of a set can easily be modified using few basic functions for addition and removal of set members.
 
-For insertion of a member \T{m} to set \T{S} there is function attribute insert. Alternatively \T{+=} operator is defined to simplify this.
+For insertion of a member \T{m} to set \T{S} there is function attribute insert. Alternatively \T{+=} operator is defined to simplify this process.
 
 To remove a member of set there is the function attribute remove.
 \markit{Example}
@@ -326,7 +326,7 @@ True True False True False True
 Since the notation should be close to standard mathematical notation few functional programming concepts are introduced to allow closer level of expressibility.
 \markit{Generating lists}
 
-List (or tuple) can be generated by a list with a condition. In order to create list A containing results of expression E that might depend on a member X of a iterable object L while satisfying condition C, following list generator can be used:
+List (or tuple) can be generated by a list with a condition. In order to create list (or tuple or set) A containing results of expression E that might depend on a member X of a iterable object L while satisfying condition C, following list generator can be used:
 \begin{lstlisting}
 A = [E for X in L if C] # List A
 A = (E for X in L if C) # Tuple A
@@ -338,14 +338,14 @@ Every operator has its counterpart defined in operator module. This counterpart 
 
 Standard operators \T{<, <=, >, >=, is, is not, ==, !=} have following function counterparts defined in module operator: \T{lt, le, gt, ge, is\_, is\_not} respectively.
 
-Full list of operator counterparts is available online\cite{operators}, for this thesis only counterparts that are mentioned here are necessary.
+Full list of the operators counterparts is available online\cite{operators}, for this thesis only counterparts that are mentioned here are necessary.
 \markit{Standard functions}
 
-There are several functions quite essential for functional programming. One of the them is function map(a, b) that map function a on every member of iterable (list, set...) b.
+There are several functions quite essential for functional programming. One of the them is function map(A, B) that map function A on every member of iterable (list, set...) B.
 
-Another very important function is function filter(f, i) that filters iterable object i for the members that satisfy condition f(x) where x is member of i.
+Another very important function is function filter(F, I) that filters iterable object I for the members that satisfy condition F(X) where X is a member of I.
 
-Function range(i, j, k) is defined and it returns a list that contains numbers from i to j-1 that are k steps away from each other. If k is not specified it is considered to be 1. If j is not specified the list is from 0 to i-1. If i is not specified (function range got only one attribute j) it is assumed to be 0.
+Function range(I, J, K) is defined and it returns a list that contains numbers from I to J-1 that are K steps away from each other. If K is not specified it is considered to be 1. If I is not specified (function range got only one attribute - J) it is assumed to be 0 resulting in the list that is from 0 to J-1.
 
 
 \chapter{Extending data model}
@@ -353,12 +353,12 @@ Function range(i, j, k) is defined and it returns a list that contains numbers f
 \section{Introduction to Msc}
 The MSC is a shortcut for Message Sequence Chart. It was defined by ITU-T\cite{itu-t} in Z.120\cite{z120} standard. The ITU-T describes it in the following way:
 \begin{quote}
-Message Sequence Chart (MSC) is a graphical and textual language for the description and specification of the interactions between system components. Message Sequence Charts are mainly used as a specification of real-time system behavior, in particular of telecommunication switching systems. Message Sequence Charts may be used for requirement, interface and test-case specification, simulation, validation and documentation of real-time systems.\cite{itdef}
+Message Sequence Chart (MSC) is a graphical and textual language for the description and specification of the interactions between system components. Message Sequence Charts are mainly used as a specification of real-time system behavior, in particular of telecommunication switching systems. Message Sequence Charts may be used for requirement, interface and test-case specification, simulation, validation and documentation of real-time systems.\cite{itudef}
 \end{quote}
 
 MSC consists of two languages: Basic Message Sequence Chart (BMSC) and High level Message Sequence Chart (HMSC). BMSC defines a sequence of messages that are passed between the systems while HMSC defines the relations between BMSCs.
 
-MSC can be represented in two standard ways: by its textual form and by its graphical form. In this chapter the textual form of MSC is described. The graphical form is expressed by Microsoft Visio add-on\cite{visio}.
+MSC can be represented in two standard ways: by its textual form and by its graphical form. In this chapter the textual form of MSC is described. The graphical form is expressed by Microsoft Visio\cite{visio} add-on.
 
 Python's data model had to be extended so that all the Msc objects can be defined in the language. All the attributes that take no argument are not function attributes and therefore these attributes can be get directly without the parenthesis. These attributes (if it makes sense to set the attribute - attribute is not computed from other attributes) can also be set with standard notation of \T{object.attribute = value}.
 
@@ -394,17 +394,17 @@ BMsc is specified by process instances. These instances are represented by the o
 \ite{first} for the first EventArea
 \ite{last} for the last EventArea
 \ite{bmsc} for the BMsc that this instance is part of
-\ite{line\_begin} for the tuple of two numbers representing the beginning of the line
-\ite{line\_end} for the tuple of two numbers representing the end of the line
+\ite{line\_begin} for the tuple of two numbers representing the beginning of line
+\ite{line\_end} for the tuple of two numbers representing the end of line
 \ite{width} for the width of the instance
 \ite{height} for the height of the line, computed from \texttt{line\_begin} and \texttt{line\_end}
 \ite{is\_empty} to test whether the \texttt{last} event is defined
 \ite{has\_events} to test whether there is any event
 \end{itemize}
 
-Function attribute \texttt{add\_area(a1)} is defined that inserts area \texttt{a1} to the instance.
+Additionally function attribute \texttt{add\_area(a1)} is defined that inserts area \texttt{a1} to the instance.
 
-To completely fill the instance the attributes areas, form, label, line\_begin, line\_end, width and type/kind (just one of them) need to be specified. The attribute \texttt{areas} shall be filled by the attribute \texttt{area} or the function \texttt{add\_area}.
+To completely fill the instance the attributes areas, form, label, line\_begin, line\_end, width and type/kind (just one of them) need to be specified. The attribute \texttt{areas} shall be filled by the attribute \texttt{area} or the function attribute \texttt{add\_area}.
 
 Instance is implemented in file instance.py.
 
@@ -444,18 +444,21 @@ The CoregionArea is a little more complex, it has following attributes defined:
 \begin{itemize}
 \ite{form} for the form of the drawn coregion
 \ite{minimal\_events} for the set of its minimal events
+\ite{minimal\_event} to add new minimal event
 \ite{maximal\_events} for the set of its maximal events
+\ite{maximal\_event} to add new maximal event
+\ite{events} returning union of minimal and maximal events
 \end{itemize}
 
 Basic functions for manipulating minimal\_events and maximal\_events sets are also defined although these sets can be manipulated directly with standard set functions or operators. The functions are quite self-explanatory: add\_minimal\_event, remove\_minimal\_event, add\_maximal\_event and remove\_maximal\_event.
 
-All three attributes can and also should be set (either directly or using functions mentioned above).
+Only following three attributes can and also should be set (either directly or using functions/attributes mentioned above): form, minimal\_events, maximal\_events.
 
 EventAreas are implemented in file area.py.
 
 
 \section{Events}
-EventAreas consist of  Events. For each EventArea there is corresponding Event. These basic types of events are known as CoregionEvents and StrictEvents.
+EventAreas consist of Events. For each EventArea's type there is corresponding Event's type. These basic types of events are known as CoregionEvents and StrictEvents.
 
 Both types of events have quite a lot of common attributes:
 \begin{itemize}
@@ -467,7 +470,7 @@ Both types of events have quite a lot of common attributes:
 \ite{matching\_event} returning matching event if the message is CompleteMessage (\T{None} is returned otherwise)
 \ite{is\_matched} testing whether the message is CompleteMessage
 \ite{is\_send} checking whether the event is the sender or the message was lost
-\ite{is\_receive} being the negation of the \T{is\_send}
+\ite{is\_receive} being the negation of the \T{is\_send} if a message exists
 \ite{receiver\_label} returning the label of the receiver if it exists and the instance label of the message or instance label of the event otherwise
 \ite{sender\_label} returning the sender label if possible (falling back to the instance label of the message or the instance label of the event)
 \ite{general\_area} that is just an equivalent of the area
@@ -485,11 +488,12 @@ StrictEvent contains all of the attributes above and adds several new attributes
 \ite{is\_last} checking whether the event is last (have no successor) in its area
 \end{itemize}
 
-The attribute successor can and should be set (along with the common attributes) to completely fill the StrictEvent.
+The attribute successor can and should be set (along with the common attributes) to completely fill the StrictEvent (predecessor attribute is handled automatically when the successor is being set).
 
 As well as StrictEvent, CoregionEvent has several additional attributes that are specific for it:
 \begin{itemize}
 \ite{successors} meaning the set of successors (CoregionEventRelations) of the event
+\ite{successor} to add new successor by setting this attribute to any new successor, predecessors are handled as well 
 \ite{predecessors} referencing  the set of the predecessors of the event
 \ite{is\_minimal} returning true if there are no predecessors
 \ite{is\_maximal} returning true if there are no successors
@@ -500,7 +504,7 @@ As well as StrictEvent, CoregionEvent has several additional attributes that are
 
 Additionally functions add\_successor(succ) and remove\_successor(succ) are defined for CoregionEvent to add and remove any successor.
 
-Only the sets successors and predecessors need to be filled (along with the common attributes) to completely fill the CoregionEvent. This attributes can be filled with the use of the successor modifying functions mentioned above.
+Only the sets successors and predecessors need to be filled (along with the common attributes) to completely fill the CoregionEvent. These attributes can be filled with the use of the successor modifying functions (or attribute) mentioned above.
 
 CoregionEventRelation is simply defined as an object containing three attributes: successor, predecessor and line. Successor and predecessor are CoregionEvents and line is just a list of tuples containing coordinates x and y, for example \T{[(0, 0), (1.1, 1.3)]}. The CoregionEventRelation is filled when all the three attributes are set.
 
@@ -525,7 +529,7 @@ Each of the message types has its own attributes defined. CompleteMessage has fo
 
 Only the attributes label, send\_event and receive\_event (either directly or using the attribute events) need to be set.
 
-IncompleteMessage contains attributes type, <Type>Message, is\_glued and label that have same meaning as in the CompleteMessage case. There are also attributes specific for this type of the message:
+IncompleteMessage contains attributes type, <Type>Message, is\_glued and label that have the same meaning as in the CompleteMessage case. There are also attributes specific for this type of the message:
 \begin{itemize}
 \ite{type} being the attribute of the type string that stores the type of message - whether the message is lost or found
 \ite{dot\_position} denoting the coordinates of the message
@@ -559,7 +563,7 @@ HMsc and its methods are implemented in the file msc.py.
 
 
 \section{Nodes}
-Every HMsc contains a list of nodes. The nodes in HMsc represent other Mscs. In order to create and manipulate nodes, the object named Node is defined.
+Every HMsc contains a list of nodes. The nodes in HMsc usually represent other Mscs. In order to create and manipulate nodes, the object named Node is defined.
 
 Its first parameter is string declaring the type of the node. Possible values are \T{"Reference"}, \T{"Start"}, \T{"End"}, \T{"Condition"} and \T{"Connection"}. If the parameter is not passed, the Node is considered to be StartNode.
 
@@ -567,11 +571,11 @@ As an alternative, all the nodes can be created with their full names, for examp
 
 Examples of usage of the data model can be found in the chapter that deals with implementing checking algorithms.
 
-Every Node holds following basic attributes: owner, type, succ, pred and msc. These attributes can be accessed and set directly. Please note that not all of the attributes makes sense for every type of Node.
+Every Node holds following basic attributes: owner, type, succ, pred and msc. These attributes can be accessed and set directly. Please note that not all of the attributes make sense for every type of Node.
 \begin{itemize}
 \item{\texttt{owner}} that holds the reference to the owner of the node (the HMsc that the node is part of)
 \item{\texttt{type}} that is the string referencing the type of the Node, value is same as the string that the node was created with
-\item{\texttt{pred}} that is the set of predecessors of current node, it holds that a is predecessor of b if and only if b is successor of a
+\item{\texttt{pred}} that is the set of predecessors of current node, it holds that A is predecessor of B if and only if B is successor of A
 \item{\texttt{succ}} that is the set of successors of current node according to node relations
 \ite{successor} that can add new successor to the node
 \item{\texttt{msc}} that is the reference to another Msc, this attribute is only used if the type of the node is ReferenceNode
@@ -601,7 +605,7 @@ Both implementations of MessageParts need one attribute when they are created. T
 
 \T{SRMMessagePart} contains everything that \T{SRMessagePart} does and one additional standard attribute: \T{label} for label (name) of the message of the event. Operator \T{<} and function attribute \T{same\_channel} are redefined to correspond to the modified standard attributes.
 
-\T{SRChannelMapper} and \T{SRMChannelMapper} are defined almost the same way. Both of them contain function attributes \T{channel(event)} and \T{same\_channel(e1, e2)}. The attribute \T{same\_channel} is same as in the \T{MessagePart} case (respectively for the corresponding ChannelMappers. The attribute \T{channel} returns the index of event in channel if the event is in the channel. If the event is not found, it is added and corresponding index is returned (length of the list that contains channels).
+\T{SRChannelMapper} and \T{SRMChannelMapper} are defined almost the same way. Both of them contain function attributes \T{channel(event)} and \T{same\_channel(e1, e2)}. The attribute \T{same\_channel} is same as in the \T{MessagePart} case (respectively for the corresponding ChannelMappers). The attribute \T{channel} returns the index of event in channel if the event is in the channel. If the event is not found, it is added and corresponding index is returned (length of the list that contains channels).
 
 
 \section{Set implementation}
