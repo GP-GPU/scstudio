@@ -14,6 +14,7 @@
  */
 
 #include "data/pysc/py_conv.h"
+#include "data/pysc/conv_py.h"
 
 #define ERR -7
 #ifdef MUTE
@@ -172,8 +173,10 @@ std::list<HMscPtr> PyConv::checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr
       DPRINT("Can't get result from checker");
       throw 0;
     }
+    ConvPy cpy;
     for(int i = 0;i < PyList_Size(presult);i++){
-      HMscPtr hret = boost::dynamic_pointer_cast<HMsc>(pob.msc.cget(PyList_GetItem(presult, i)));
+      HMscPtr hret = boost::dynamic_pointer_cast<HMsc>(cpy.convert_msc(PyList_GetItem(presult, i)));
+      //HMscPtr hret = boost::dynamic_pointer_cast<HMsc>(pob.msc.cget(PyList_GetItem(presult, i)));
       hlist.push_back(hret);
     }
   }
