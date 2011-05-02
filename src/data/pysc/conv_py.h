@@ -41,7 +41,7 @@ private:
 
 public:
   // this function assigns a unique identifier to Ptr objects
-  PyObject *pget(const Ptr& message){
+  PyObject *pget(Ptr message){
     typename std::map<Ptr, cobject_id>::iterator pos = m_mapper.find(message);
     if(pos != m_mapper.end())
       return (pos->second).py;
@@ -49,16 +49,16 @@ public:
     return NULL;
   }
 
-  const Ptr& get(PyObject *py){
+  Ptr get(PyObject *py){
     for(typename std::map<Ptr, cobject_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
       if((*it).second.py == py)
         return (*it).first;
     }
-    throw 0;
+    return Ptr(NULL);
     //return (Ptr)NULL;
   }
 
-  void add(const Ptr& message, PyObject *pyo){
+  void add(Ptr message, PyObject *pyo){
     cobject_id id = {pyo, false};
     m_mapper[message] = id;
   }
