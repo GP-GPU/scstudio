@@ -502,6 +502,9 @@ int PyConv::convert_bmsc(const BMscPtr& bmsc){
             ERRNULL(psucc);
             PyObject *ppred = create_event(predecessor, "CoregionEvent");
             ERRNULL(ppred);
+            PyObject *psuccarea = create_area(successor->get_area(), "CoregionArea");
+            ERRNULL(psuccarea);
+            PyObject_SetAttrString(psucc, "area", psuccarea);
             PyTuple_SetItem(tuple, 0, ppred);
             PyTuple_SetItem(tuple, 1, psucc);
             PyObject_SetAttrString(pevent, "successor", PyObject_CallObject(PyDict_GetItemString(pob.pDict, "CoregionEventRelation"), tuple));
