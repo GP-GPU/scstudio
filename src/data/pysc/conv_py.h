@@ -112,7 +112,7 @@ public:
 protected:
   int typed_msc(PyObject *msc);
   // note: insertion to m_printing must not invalidate iterators
-  std::list<MscPtr> m_printing;
+  std::list<PyObject *> m_printing;
 
   //! export a basic MSC drawing
   int convert_bmsc(PyObject *bmsc);

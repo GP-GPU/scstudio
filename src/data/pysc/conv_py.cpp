@@ -134,11 +134,20 @@ std::list<HMscPtr> PyConv::checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr
 }*/
 
 MscPtr ConvPy::convert_msc(PyObject *selected_msc){
-  if(selected_msc != Py_None){
-    typed_msc(selected_msc);
-    return pob.msc.get(selected_msc);
+  std::set<PyObject*> printed;
+  m_printing.push_back(selected_msc);
+  for(std::list<MscPtr>::const_iterator pos = m_printing.begin();
+  pos != m_printing.end(); pos++){
+    if(*pos == NULL)
+      continue;
+    if(printed.find(*pos) == printed.end() && *pos != Py_None){
+      typed_msc(*pos);
+    }
+    printed.insert(*pos);
   }
-  return MscPtr(NULL);
+
+  m_printing.clear();
+  return pob.msc.get(selected_msc);
 }
 
 std::wstring get_label(PyObject *py){
@@ -498,7 +507,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
         MscPtr cmsc = create_msc(PyObject_GetAttrString(node, "msc"));
         ERRNULL(cmsc);
 	reference_node->set_msc(cmsc);
-        m_printing.push_back(reference_node.get_msc()); // Deal with this
+        m_printing.push_back(PyObject_GetAttrString(node, "msc"); // Deal with this
       }
     }
 
