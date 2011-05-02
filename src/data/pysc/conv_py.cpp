@@ -134,7 +134,7 @@ std::list<HMscPtr> PyConv::checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr
 }*/
 
 MscPtr ConvPy::convert_msc(PyObject *selected_msc){
-  if(selected_msc != PyNone){
+  if(selected_msc != Py_None){
     typed_msc(selected_msc);
     return pob.msc.get(selected_msc);
   }
@@ -153,9 +153,9 @@ std::wstring get_label(PyObject *py){
 
 int ConvPy::typed_msc(PyObject *msc){
   if(PyObject_GetAttrString(msc, "BMsc") == Py_True)
-    return convert_bmsc(bmsc);
+    return convert_bmsc(msc);
   else if(PyObject_GetAttrString(msc, "HMsc") == Py_True)
-    return convert_hmsc(hmsc);
+    return convert_hmsc(msc);
   else
     return 1; // unexpected pointer
 }
@@ -219,7 +219,10 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
     return pmessage;
   }
   if(PyObject_GetAttrString(message, "IncompleteMessage") == Py_True){
-    IncompleteMessagePtr imessage = IncompleteMessagePtr(new IncompleteMessage(get_label(message)));
+    if(PyObject_GetAttrString(message, "is_lost") == Py_True)
+      IncompleteMessagePtr imessage = IncompleteMessagePtr(new IncompleteMessage(LOST, get_label(message)));
+    if(PyObject_GetAttrString(incomplete_message, "is_found") == Py_True)
+      IncompleteMessagePtr imessage = IncompleteMessagePtr(new IncompleteMessage(FOUND, get_label(message)));
     pob.message.add(imessage, message);
     return imessage;
   }
@@ -229,31 +232,25 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
 
 void ConvPy::handle_event(PyObject *event, EventPtr cevent){
   PyObject *complete_message = PyObject_GetAttrString(event, "complete_message");
-  MscMessagePtr cmessage = NULL;
+  MscMessagePtr cmessage(NULL);
   if(complete_message != Py_None){
-    cmessage = create_message(complete_message, "CompleteMessage");
+    cmessage = create_message(complete_message);
     ERRNULL(cmessage);
     if(!pob.message.is_filled(complete_message)){
       EventPtr csend = create_event(PyObject_GetAttrString(complete_message, "send_event"));
       ERRNULL(csend);
       EventPtr creceive = create_event(PyObject_GetAttrString(complete_message, "receive_event"));
       ERRNULL(creceive);
-      cmessage->glue_events(csend, creceive);
+      boost::dynamic_pointer_cast<CompleteMessage>(cmessage)->glue_events(csend, creceive);
     }
   }
 
   PyObject *incomplete_message = PyObject_GetAttrString(event, "incomplete_message");
   if(incomplete_message != Py_None){
-    cmessage = create_message(incomplete_message, "IncompleteMessage");
+    cmessage = create_message(incomplete_message);
     ERRNULL(cmessage);
     if(!pob.message.is_filled(incomplete_message)){
-      cmessage->glue_event(cevent);
-      // This has to be accessed/created when new object is created
-      if(PyObject_GetAttrString(incomplete_message, "is_lost") == Py_True)
-        PyObject_SetAttrString(pmessage, "type", PyUnicode_FromString("lost"));
-      if(PyObject_GetAttrString(incomplete_message, "is_found") == Py_True)
-        PyObject_SetAttrString(pmessage, "type", PyUnicode_FromString("found"));
-      MscPoint pnt;
+      boost::dynamic_pointer_cast<IncompleteMessage>(cmessage)->glue_event(cevent);
 
       PyObject *tuple = PyObject_GetAttrString(incomplete_message, "dot_position");
       if(tuple == Py_None){
@@ -263,14 +260,14 @@ void ConvPy::handle_event(PyObject *event, EventPtr cevent){
       double a = PyFloat_AsDouble(PyTuple_GetItem(tuple, 0));
       double b = PyFloat_AsDouble(PyTuple_GetItem(tuple, 1));
       MscPoint pnt(a, b);
-      cmessage->set_dot_position(pnt);
+      boost::dynamic_pointer_cast<IncompleteMessage>(cmessage)->set_dot_position(pnt);
     }
   }
 }
 
 int ConvPy::convert_bmsc(PyObject *bmsc){
   DPRINT("Converting BMsc");
-  BMscPtr cbmsc = create_msc(bmsc);
+  BMscPtr cbmsc = boost::dynamic_pointer_cast<BMsc>(create_msc(bmsc));
   ERRNULL(cbmsc);
 
   PyObject *linst = PyObject_GetAttrString(bmsc, "linstances");
@@ -301,7 +298,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
       PyObject *area = PyList_GetItem(larea, apos);
       EventAreaPtr carea;
 
-      if(PyObject_GetAttrString(area, "StrictOrderArea") == PyTrue){
+      if(PyObject_GetAttrString(area, "StrictOrderArea") == Py_True){
         carea = create_area(area);
         ERRNULL(carea);
 	cinst->add_area(carea);
@@ -310,10 +307,10 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	PyObject *levent = PyObject_GetAttrString(area, "levents");
         for(int epos = 0;epos < PyList_Size(levent);epos++){
 	  PyObject *event = PyList_GetItem(levent, epos);
-          StrictEventPtr cevent = create_event(event);
+          StrictEventPtr cevent = boost::dynamic_pointer_cast<StrictEvent>(create_event(event));
           ERRNULL(cevent);
 	  carea->add_event(cevent);
-          if(PyObject_GetAttrString(event, "successor") != PyNone){
+          if(PyObject_GetAttrString(event, "successor") != Py_None){
 	    StrictEventPtr csucc = create_event(PyObject_GetAttrString(event, "successor"));
             ERRNULL(csucc);
 	    cevent->set_successor(csucc);
@@ -343,11 +340,11 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	PyObject *levent = PyObject_GetAttrString(area, "lminevents");
         for(int epos = 0;epos < PyList_Size(levent);epos++){
 	  PyObject *event = PyList_GetItem(levent, epos);
-          CoregionEventPtr cevent = create_event(event);
+          CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
           carea->add_minimal_event(cevent);
           tuple = PyObject_GetAttrString(event, "position");
-          if(tuple != PyNone){
+          if(tuple != Py_None){
 	    MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
 	    cevent->set_position(mpnt);
 	  }
@@ -501,7 +498,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     ReferenceNodePtr reference_node = boost::dynamic_pointer_cast<ReferenceNode>(cnode);
     if(reference_node != NULL){
       chmsc->add_node(reference_node);
-      if(PyObject_GetAttrString(node, "msc") != PyNone){
+      if(PyObject_GetAttrString(node, "msc") != Py_None){
         MscPtr cmsc = create_msc(PyObject_GetAttrString(node, "msc"));
         ERRNULL(cmsc);
 	cnode->set_msc(cmsc);
@@ -515,7 +512,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     }
 
     PyObject *tuple = PyObject_GetAttrString(node, "position");
-    if(tuple != PyNone){
+    if(tuple != Py_None){
       MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
       cnode->set_position(mpnt);
     }

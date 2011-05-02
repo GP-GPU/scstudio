@@ -63,11 +63,11 @@ public:
     m_mapper[message] = id;
   }
 
-  bool is_filled(const Ptr& message){
-    typename std::map<Ptr, object_id>::iterator pos = m_mapper.find(message);
-    if(pos != m_mapper.end() && !((pos->second).filled)){
-      (pos->second).filled = true;
-      return false;
+  bool is_filled(PyObject *message){
+    for(typename std::map<Ptr, object_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
+      if((*it).second.py == message && !((*it).second.filled)){
+        (*it).second.filled = true;
+        return false;
     }
     return true;
   }
