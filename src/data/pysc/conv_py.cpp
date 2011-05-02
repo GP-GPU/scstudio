@@ -507,7 +507,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
         MscPtr cmsc = create_msc(PyObject_GetAttrString(node, "msc"));
         ERRNULL(cmsc);
 	reference_node->set_msc(cmsc);
-        m_printing.push_back(PyObject_GetAttrString(node, "msc"); // Deal with this
+        m_printing.push_back(PyObject_GetAttrString(node, "msc"));
       }
     }
 
@@ -526,7 +526,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     PyObject *lsucc = PyObject_GetAttrString(node, "lsuccesors");
     for(int spos = 0;spos < PyList_Size(lsucc);spos++){
       PyObject *succ = PyList_GetItem(lsucc, spos);
-      SuccessorNodePtr csucc = boost::dynamic_pointer_cast<SuccessorNode>(create_node(succ));
+      SuccessorNode *csucc = (boost::dynamic_pointer_cast<SuccessorNode>(create_node(succ))).get();
       ERRNULL(csucc);
       boost::dynamic_pointer_cast<PredecessorNode>(cnode)->add_successor(csucc);
     }
