@@ -124,6 +124,8 @@ class CoregionEvent(Event):
 			return len(self.successors) != 0
 		elif name == "coregion_area":
 			return self.area
+		elif name == "lcoregionrelations":
+			return list(self.successors)
 		else:
 			return super(CoregionEvent, self).__getattr__(name)
 	def __setattr__(self, name, value):

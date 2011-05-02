@@ -51,6 +51,10 @@ class Msc(object):
 						if i and i.predecessor and i.successor:
 							s += (i.predecessor, i.successor)
 			return s
+		elif name == "lnodes":
+			return list(self.snodes)
+		elif name == "linstances":
+			return list(self.instances)
 		else:
 			return object.__getattribute__(self, name)
 	def __setattr__(self, name, value):

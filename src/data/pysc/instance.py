@@ -49,6 +49,8 @@ class Instance(object):
 				runner = runner.next
 			s += self.last
 			return s
+		elif name == "lareas":
+			return list(self.areas)
 		else:
 			object.__getattribute__(self, name)
 	def __setattr__(self, name, value):

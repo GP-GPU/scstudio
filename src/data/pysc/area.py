@@ -75,6 +75,8 @@ class StrictOrderArea(EventArea):
 				runner = runner.successor
 			s += self.last
 			return s
+		elif name == "levents":
+			return list(self.events)
 		else:
 			return super(StrictOrderArea, self).__getattr__(name)
 	def add_event(self, e = None):
@@ -118,6 +120,10 @@ class CoregionArea(EventArea):
 			return len(self.minimal_events) == 0
 		elif name == "events":
 			return self.minimal_events | self.maximal_events
+		elif name == "lminevents":
+			return list(self.minimal_events)
+		elif name == "lmaxevents":
+			return list(self.maximal_events)
 		else:
 			return super(CoregionArea, self).__getattr__(name)
 	def __setattr__(self, name, value):

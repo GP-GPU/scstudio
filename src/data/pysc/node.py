@@ -33,6 +33,8 @@ class Node(object):
 			l = []
 			self.traverse(None, l)
 			return l
+		elif name == "lsuccessors":
+			return list(self.succ)
 		else:
 			return object.__getattribute__(self, name)
 	def __setattr__(self, name, value):
