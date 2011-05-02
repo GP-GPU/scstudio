@@ -219,10 +219,11 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
     return pmessage;
   }
   if(PyObject_GetAttrString(message, "IncompleteMessage") == Py_True){
+    IncompleteMessagePtr imessage;
     if(PyObject_GetAttrString(message, "is_lost") == Py_True)
-      IncompleteMessagePtr imessage = IncompleteMessagePtr(new IncompleteMessage(LOST, get_label(message)));
-    if(PyObject_GetAttrString(incomplete_message, "is_found") == Py_True)
-      IncompleteMessagePtr imessage = IncompleteMessagePtr(new IncompleteMessage(FOUND, get_label(message)));
+      imessage = IncompleteMessagePtr(new IncompleteMessage(LOST, get_label(message)));
+    if(PyObject_GetAttrString(message, "is_found") == Py_True)
+      imessage = IncompleteMessagePtr(new IncompleteMessage(FOUND, get_label(message)));
     pob.message.add(imessage, message);
     return imessage;
   }
@@ -309,9 +310,9 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	  PyObject *event = PyList_GetItem(levent, epos);
           StrictEventPtr cevent = boost::dynamic_pointer_cast<StrictEvent>(create_event(event));
           ERRNULL(cevent);
-	  carea->add_event(cevent);
+	  boost::dynamic_pointer_cast<StrictOrderArea>(carea)->add_event(cevent);
           if(PyObject_GetAttrString(event, "successor") != Py_None){
-	    StrictEventPtr csucc = create_event(PyObject_GetAttrString(event, "successor"));
+	    StrictEventPtr csucc = boost::dynamic_pointer_cast<StrictEvent>(create_event(PyObject_GetAttrString(event, "successor")));
             ERRNULL(csucc);
 	    cevent->set_successor(csucc);
           }
@@ -324,7 +325,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
         }
       }
 
-      if(PyObject_GetAttrString(area, "CoregionArea") == PyTrue){
+      if(PyObject_GetAttrString(area, "CoregionArea") == Py_True){
         carea = create_area(area);
         ERRNULL(carea);
 	cinst->add_area(carea);
@@ -342,7 +343,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
-          carea->add_minimal_event(cevent);
+          boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent);
           tuple = PyObject_GetAttrString(event, "position");
           if(tuple != Py_None){
 	    MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
@@ -356,14 +357,14 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	    PyObject *successor = PyObject_GetAttrString(corel, "successor");
 	    PyObject *predecessor = PyObject_GetAttrString(corel, "predecessor");
 
-            EventPtr cpred = create_event(predecessor);
+            CoregionEventPtr cpred = boost::dynamic_pointer_cast<CoregionEvent>(create_event(predecessor));
             ERRNULL(cpred);
-            EventPtr csucc = create_event(successor);
+            CoregionEventPtr csucc = boost::dynamic_pointer_cast<CoregionEvent>(create_event(successor));
             ERRNULL(csucc);
-	    CoregionAreaPtr csuccarea = create_area(PyObject_GetAttrString(successor, "area"));
+	    CoregionAreaPtr csuccarea = boost::dynamic_pointer_cast<CoregionArea>(create_area(PyObject_GetAttrString(successor, "area")));
             ERRNULL(csuccarea);
 	    csucc->set_area(csuccarea);
-	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred, csucc));
+	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred->get(), csucc->get()));
 	    cevent->add_successor(ccorevrel);
 
             // add successors of this event to the stack
@@ -373,13 +374,13 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 
 
         // Maximal events
-	PyObject *levent = PyObject_GetAttrString(area, "lmaxevents");
+	levent = PyObject_GetAttrString(area, "lmaxevents");
 	for(int epos = 0;epos < PyList_Size(levent);epos++){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = create_event(event);
           ERRNULL(cevent);
-	  carea->add_maximal_event(cevent);
-          handle_event(*epos, pevent);
+	  boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent);
+          handle_event(event, cevent);
 
           PyObject *lcorel = PyObject_GetAttrString(event, "lcoregionrelations");
           for(int spos = 0;spos < PyList_Size(lcorel);spos++){
@@ -387,14 +388,14 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	    PyObject *successor = PyObject_GetAttrString(corel, "successor");
 	    PyObject *predecessor = PyObject_GetAttrString(corel, "predecessor");
 
-            EventPtr cpred = create_event(predecessor);
+	    CoregionEventPtr cpred = boost::dynamic_pointer_cast<CoregionEvent>(create_event(predecessor));
 	    ERRNULL(cpred);
-	    EventPtr csucc = create_event(successor);
+	    CoregionEventPtr csucc = boost::dynamic_pointer_cast<CoregionEvent>(create_event(successor));
 	    ERRNULL(csucc);
-	    CoregionAreaPtr csuccarea = create_area(PyObject_GetAttrString(successor, "area"));
+	    CoregionAreaPtr csuccarea = boost::dynamic_pointer_cast<CoregionArea>(create_area(PyObject_GetAttrString(successor, "area")));
             ERRNULL(csuccarea);
 	    csucc->set_area(csuccarea);
-	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred, csucc));
+	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred->get(), csucc->get()));
 	    cevent->add_successor(ccorevrel);
           }
         }
@@ -459,13 +460,8 @@ HMscNodePtr ConvPy::create_node(PyObject *node)
 
 int ConvPy::convert_hmsc(PyObject *hmsc){
   DPRINT("Converting HMsc");
-  MscPtr chmsc = create_msc(hmsc);
+  HMscPtr chmsc = boost::dynamic_pointer_cast<HMsc>(create_msc(hmsc));
   ERRNULL(chmsc);
-  // nodes to be processed; this is to avoid recursion
-  std::list<HMscNodePtr> node_stack;
-
-  // initialize the stack with the start node
-  push_back_if_unique<HMscNodePtr>(node_stack, hmsc->get_start());
 
   // Data declaration -> first iteration
   // process all nodes in the stack
@@ -487,7 +483,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     ConditionNodePtr condition_node = boost::dynamic_pointer_cast<ConditionNode>(cnode);
     if(condition_node != NULL){
       chmsc->add_node(condition_node);
-      condition_node->assing_label(get_label(node)); // Only string, not wstring, change it
+      condition_node->assign_label(get_label(node)); // Only string, not wstring, change it
     }
 
     ConnectionNodePtr connection_node = boost::dynamic_pointer_cast<ConnectionNode>(cnode);
@@ -501,7 +497,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
       if(PyObject_GetAttrString(node, "msc") != Py_None){
         MscPtr cmsc = create_msc(PyObject_GetAttrString(node, "msc"));
         ERRNULL(cmsc);
-	cnode->set_msc(cmsc);
+	reference_node->set_msc(cmsc);
         m_printing.push_back(reference_node->get_msc()); // Deal with this
       }
     }
@@ -519,13 +515,12 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
 
     // Handle successors
     PyObject *lsucc = PyObject_GetAttrString(node, "lsuccesors");
-    PredecessorNode *predecessor_node = dynamic_cast<PredecessorNode*>(npos->get());
     if(predecessor_node != NULL){
       for(int spos = 0;spos < PyList_Size(lsucc);spos++){
         PyObject *succ = PyList_GetItem(lsucc, spos);
-	HMscNodePtr csucc = create_node(succ);
+	SuccessorNodePtr csucc = boost::dynamic_pointer_cast<SuccessorNode>(create_node(succ));
 	ERRNULL(csucc);
-	cnode->add_successor(csucc);
+	boost::dynamic_pointer_cast<PredecessorNode>(cnode)->add_successor(csucc);
       }
     }
   }
