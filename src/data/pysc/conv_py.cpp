@@ -136,7 +136,7 @@ std::list<HMscPtr> PyConv::checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr
 MscPtr ConvPy::convert_msc(PyObject *selected_msc){
   std::set<PyObject*> printed;
   m_printing.push_back(selected_msc);
-  for(std::list<MscPtr>::const_iterator pos = m_printing.begin();
+  for(std::list<PyObject*>::const_iterator pos = m_printing.begin();
   pos != m_printing.end(); pos++){
     if(*pos == NULL)
       continue;
