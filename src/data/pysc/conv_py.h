@@ -26,23 +26,23 @@
 #include "data/checker.h"
 #include "data/pysc/export.h"
 
-struct _object_id{
+struct _cobject_id{
   PyObject *py;
   bool filled;
 };
-typedef struct _object_id object_id;
+typedef struct _cobject_id cobject_id;
 
 template <class Ptr>
-class AdvPtrIDMap
+class AdvCPtrIDMap
 {
 private:
-  typedef std::map<Ptr, object_id> TPtrIDMapper;
+  typedef std::map<Ptr, cobject_id> TPtrIDMapper;
   TPtrIDMapper m_mapper;
 
 public:
   // this function assigns a unique identifier to Ptr objects
   PyObject *pget(const Ptr& message){
-    typename std::map<Ptr, object_id>::iterator pos = m_mapper.find(message);
+    typename std::map<Ptr, cobject_id>::iterator pos = m_mapper.find(message);
     if(pos != m_mapper.end())
       return (pos->second).py;
 
@@ -50,7 +50,7 @@ public:
   }
 
   const Ptr& get(PyObject *py){
-    for(typename std::map<Ptr, object_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
+    for(typename std::map<Ptr, cobject_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
       if((*it).second.py == py)
         return (*it).first;
     }
@@ -59,12 +59,12 @@ public:
   }
 
   void add(const Ptr& message, PyObject *pyo){
-    object_id id = {pyo, false};
+    cobject_id id = {pyo, false};
     m_mapper[message] = id;
   }
 
   bool is_filled(PyObject *message){
-    for(typename std::map<Ptr, object_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
+    for(typename std::map<Ptr, cobject_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
       if((*it).second.py == message && !((*it).second.filled)){
         (*it).second.filled = true;
         return false;
@@ -74,7 +74,7 @@ public:
   }
 
   void clear(){
-    for(typename std::map<Ptr, object_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
+    for(typename std::map<Ptr, cobject_id>::iterator it=m_mapper.begin() ; it != m_mapper.end();it++){
       Py_CLEAR((*it).second.py);
       (*it).second.py = NULL;
     }
@@ -85,28 +85,23 @@ public:
   }
 };
 
-struct _objects{
-	AdvPtrIDMap<MscPtr> msc;
-	AdvPtrIDMap<HMscNodePtr> node;
-	AdvPtrIDMap<InstancePtr> instance;
-	AdvPtrIDMap<EventAreaPtr> area;
-	AdvPtrIDMap<EventPtr> event;
-	AdvPtrIDMap<MscMessagePtr> message;
+struct _cobjects{
+	AdvCPtrIDMap<MscPtr> msc;
+	AdvCPtrIDMap<HMscNodePtr> node;
+	AdvCPtrIDMap<InstancePtr> instance;
+	AdvCPtrIDMap<EventAreaPtr> area;
+	AdvCPtrIDMap<EventPtr> event;
+	AdvCPtrIDMap<MscMessagePtr> message;
 };
-typedef struct _objects py_objects;
-
-typedef boost::intrusive_ptr<PyObject> PyObjectPtr;
+typedef struct _cobjects c_objects;
 
 class SCPYCONV_EXPORT ConvPy{
 public:
-  py_objects pob;
+  c_objects pob;
   ConvPy(){
   };
   ~ConvPy();
 
-  //int check(const MscPtr& msc, const ChannelMapperPtr& chm);
-  //std::list<BMscPtr> checkBMsc(const BMscPtr& bmsc, const ChannelMapperPtr& chm);
-  //std::list<HMscPtr> checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr& chm);
   MscPtr convert_msc(PyObject *selected_msc);
 
 protected:
