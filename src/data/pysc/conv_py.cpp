@@ -343,7 +343,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
-          boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent);
+          boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent.get());
           tuple = PyObject_GetAttrString(event, "position");
           if(tuple != Py_None){
 	    MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
@@ -364,7 +364,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	    CoregionAreaPtr csuccarea = boost::dynamic_pointer_cast<CoregionArea>(create_area(PyObject_GetAttrString(successor, "area")));
             ERRNULL(csuccarea);
 	    csucc->set_area(csuccarea);
-	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred->get(), csucc->get()));
+	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred.get(), csucc.get()));
 	    cevent->add_successor(ccorevrel);
 
             // add successors of this event to the stack
@@ -379,7 +379,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = create_event(event);
           ERRNULL(cevent);
-	  boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent);
+	  boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent.get());
           handle_event(event, cevent);
 
           PyObject *lcorel = PyObject_GetAttrString(event, "lcoregionrelations");
@@ -394,8 +394,8 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	    ERRNULL(csucc);
 	    CoregionAreaPtr csuccarea = boost::dynamic_pointer_cast<CoregionArea>(create_area(PyObject_GetAttrString(successor, "area")));
             ERRNULL(csuccarea);
-	    csucc->set_area(csuccarea);
-	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred->get(), csucc->get()));
+	    csucc->set_area(csuccarea.get());
+	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred.get(), csucc.get()));
 	    cevent->add_successor(ccorevrel);
           }
         }
@@ -498,7 +498,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
         MscPtr cmsc = create_msc(PyObject_GetAttrString(node, "msc"));
         ERRNULL(cmsc);
 	reference_node->set_msc(cmsc);
-        m_printing.push_back(reference_node->get_msc()); // Deal with this
+        m_printing.push_back(reference_node.get_msc()); // Deal with this
       }
     }
 
