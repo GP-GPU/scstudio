@@ -13,7 +13,7 @@
  *
  */
 
-#include "data/pysc/py_conv.h"
+#include "data/pysc/conv_py.h"
 
 #define ERR -7
 #ifdef MUTE
@@ -25,56 +25,7 @@
 #endif
 #define ERRNULL(a) if((a) == NULL){ DPRINT("Error creating " << #a);if(PyErr_Occurred()) PyErr_Print(); throw ERR;}
 
-PyObject *mktuple(const std::wstring& a){
-  PyObject *t = PyTuple_New(1);
-  PyTuple_SetItem(t, 0, PyUnicode_FromWideChar(a.c_str(), a.length()));
-  return t;
-}
-
-int PyConv::init(const char *module){
-  if(!Py_IsInitialized())
-    Py_Initialize();
-  DPRINT("Importing module " << module);
-  DPRINT("Current PATH: " << Py_GetPath());
-  pob.name = PyUnicode_FromString(module);
-  if(pob.name == NULL){
-    DPRINT(module << " cannot be converted to PyUnicode");
-    return 0;
-  }
-  pob.module = PyImport_Import(pob.name);
-  if(pob.module == NULL){
-    DPRINT(module << " cannot be imported");
-    DPRINT("You must first install it (by default using setup.py installation file).");
-    if(PyErr_Occurred())
-      PyErr_Print();
-    return 0;
-  }
-  pob.pDict = PyModule_GetDict(pob.module);
-  if(pob.pDict == NULL){
-    DPRINT("Cannot extract dictionary from " << module);
-    return 0;
-  }
-  pob.funcBMsc = PyDict_GetItemString(pob.pDict, "checkBMsc");
-  if(pob.funcBMsc == NULL){
-    DPRINT("WARNING: checkBMsc is not implemented in module " << module);
-//    return 0;
-  }
-  pob.funcHMsc = PyDict_GetItemString(pob.pDict, "checkHMsc");
-  if(pob.funcHMsc == NULL){
-    DPRINT("WARNING: checkBMsc is not implemented in module " << module);
-//    return 0;
-  }
-  return 1;
-}
-
-int PyConv::reinit(const char *module){
-  DPRINT("Removing old module");
-  Py_XDECREF(pob.name);
-  Py_XDECREF(pob.module);
-  return init(module);
-}
-
-int PyConv::check(const MscPtr& msc, const ChannelMapperPtr& chm){
+/*int PyConv::check(const MscPtr& msc, const ChannelMapperPtr& chm){
   BMscPtr bmsc = boost::dynamic_pointer_cast<BMsc>(msc);
   HMscPtr hmsc = boost::dynamic_pointer_cast<HMsc>(msc);
 
@@ -180,28 +131,14 @@ std::list<HMscPtr> PyConv::checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr
   else
     DPRINT("Function checkHMsc is not callable");
   return hlist;
-}
+}*/
 
 MscPtr ConvPy::convert_msc(PyObject *selected_msc){
-  std::set<std::wstring> printed;
-
-  // list of MSC to be printed
-  // new references may be added to m_printing by save_hmsc()
-
-  for(std::list<MscPtr>::const_iterator pos = m_printing.begin();
-    pos != m_printing.end(); pos++){
-    if(*pos == NULL)
-      continue;
-
-    // if not already generated
-    if(printed.find((*pos)->get_label()) == printed.end()){
-      typed_msc(*pos);
-      printed.insert((*pos)->get_label());
-    }
+  if(selected_msc != PyNone){
+    typed_msc(selected_msc);
+    return pob.msc.get(selected_msc);
   }
-
-  m_printing.clear();
-  return pob.msc.get(selected_msc);
+  return MscPtr(NULL);
 }
 
 std::wstring get_label(PyObject *py){
@@ -237,14 +174,6 @@ InstancePtr ConvPy::create_instance(PyObject *inst){
   return cinst;
 }
 
-const char *PyConv::get_area_type(PyObject *area){
-  if(PyObject_GetAttrString(boost::dynamic_pointer_cast<StrictOrderArea>(area)))
-    return "StrictOrderArea";
-  if(boost::dynamic_pointer_cast<CoregionArea>(area))
-    return "CoregionArea";
-  return "";
-}
-
 EventAreaPtr ConvPy::create_area(PyObject *area){
   EventAreaPtr carea = pob.area.get(area);
   if(carea)
@@ -260,14 +189,6 @@ EventAreaPtr ConvPy::create_area(PyObject *area){
     return aarea;
   }
   return carea;
-}
-
-const char *PyConv::get_event_type(const EventPtr& area){
-  if(boost::dynamic_pointer_cast<StrictEvent>(area))
-    return "StrictEvent";
-  if(boost::dynamic_pointer_cast<CoregionEvent>(area))
-    return "CoregionEvent";
-  return "";
 }
 
 EventPtr ConvPy::create_event(PyObject *event){
@@ -286,14 +207,6 @@ EventPtr ConvPy::create_event(PyObject *event){
   }
   DPRINT("DEBUG: Event created(" << event << ")");
   return cevent;
-}
-
-const char *PyConv::get_message_type(const MscMessagePtr& message){
-  if(boost::dynamic_pointer_cast<CompleteMessage>(message))
-    return "CompleteMessage";
-  if(boost::dynamic_pointer_cast<IncompleteMessage>(message))
-    return "IncompleteMessage";
-  return "";
 }
 
 MscMessagePtr ConvPy::create_message(PyObject *message){
@@ -494,14 +407,6 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
   return 0;
 }
 
-const char *PyConv::get_msc_type(const MscPtr& msc){
-  if(boost::dynamic_pointer_cast<HMsc>(msc))
-    return "HMsc";
-  if(boost::dynamic_pointer_cast<BMsc>(msc))
-    return "BMsc";
-  return "";
-}
-
 MscPtr ConvPy::create_msc(PyObject *msc){
   MscPtr cmsc = pob.msc.get(msc);
   if(cmsc)
@@ -518,20 +423,6 @@ MscPtr ConvPy::create_msc(PyObject *msc){
   }
   DPRINT("DEBUG: Msc created(" << msc << ")");
   return cmsc;
-}
-
-const char *PyConv::get_node_type(const HMscNodePtr& node){
-  if(boost::dynamic_pointer_cast<StartNode>(node))
-    return "StartNode";
-  if(boost::dynamic_pointer_cast<ConditionNode>(node))
-    return "ConditionNode";
-  if(boost::dynamic_pointer_cast<ConnectionNode>(node))
-    return "ConnectionNode";
-  if(boost::dynamic_pointer_cast<ReferenceNode>(node))
-    return "ReferenceNode";
-  if(boost::dynamic_pointer_cast<EndNode>(node))
-    return "EndNode";
-  return "";
 }
 
 HMscNodePtr ConvPy::create_node(PyObject *node)
@@ -569,7 +460,7 @@ HMscNodePtr ConvPy::create_node(PyObject *node)
   return cnode;
 }
 
-int PyConv::convert_hmsc(PyObject *hmsc){
+int ConvPy::convert_hmsc(PyObject *hmsc){
   DPRINT("Converting HMsc");
   MscPtr chmsc = create_msc(hmsc);
   ERRNULL(chmsc);
@@ -629,32 +520,22 @@ int PyConv::convert_hmsc(PyObject *hmsc){
       cnode->set_position(mpnt);
     }
 
-    // This might be a little problematic
-    // Hopefully just a little, very little
-    // Leaving for next wake day
+    // Handle successors
+    PyObject *lsucc = PyObject_GetAttrString(node, "lsuccesors");
     PredecessorNode *predecessor_node = dynamic_cast<PredecessorNode*>(npos->get());
     if(predecessor_node != NULL){
-      for(NodeRelationPtrVector::const_iterator spos = predecessor_node->get_successors().begin();
-        spos != predecessor_node->get_successors().end(); spos++){
-
-        SuccessorNode *successor = (*spos)->get_successor();
-
-        HMscNode *successor_node = dynamic_cast<HMscNode*>(successor);
-
-        PyObject *psucc = create_node(successor_node);
-        ERRNULL(psucc);
-        PyObject_SetAttrString(pnode, "successor", psucc);
-
-        // add successors of this node to the stack
-        // note: std::list<>::push_back doesn't invalidate iterators
-        push_back_if_unique<HMscNodePtr>(node_stack, successor_node);
+      for(int spos = 0;spos < PyList_Size(lsucc);spos++){
+        PyObject *succ = PyList_GetItem(lsucc, spos);
+	HMscNodePtr csucc = create_node(succ);
+	ERRNULL(csucc);
+	cnode->add_successor(csucc);
       }
     }
   }
   return 0;
 }
 
-PyConv::~PyConv(){
+ConvPy::~ConvPy(){
     pob.msc.clear();
     pob.node.clear();
     pob.instance.clear();
@@ -662,6 +543,4 @@ PyConv::~PyConv(){
     pob.event.clear();
     pob.message.clear();
     // DECREF only these two, all the other PyObjects are borrowed references
-    Py_XDECREF(pob.name);
-    Py_XDECREF(pob.module);
 }

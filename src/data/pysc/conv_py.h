@@ -14,8 +14,8 @@
  *
  */
 
-#ifndef _PYTHON_CONVERT_H
-#define _PYTHON_CONVERT_H
+#ifndef _CONVERT_PYTHON_H
+#define _CONVERT_PYTHON_H
 
 #include <Python.h>
 #include <vector>
@@ -91,63 +91,46 @@ struct _objects{
 	AdvPtrIDMap<EventAreaPtr> area;
 	AdvPtrIDMap<EventPtr> event;
 	AdvPtrIDMap<MscMessagePtr> message;
-	PyObject *name;
-	PyObject *module;
-	PyObject *pDict;
-	PyObject *funcBMsc;
-	PyObject *funcHMsc;
 };
 typedef struct _objects py_objects;
 
 typedef boost::intrusive_ptr<PyObject> PyObjectPtr;
 
-class SCPYCONV_EXPORT PyConv{
+class SCPYCONV_EXPORT ConvPy{
 public:
   py_objects pob;
-  PyConv(const char *module){
-    if(!init(module))
-      throw -1;
+  ConvPy(){
   };
-  ~PyConv();
+  ~ConvPy();
 
-  int init(const char *module);
-  int reinit(const char *module);
-  int check(const MscPtr& msc, const ChannelMapperPtr& chm);
-  std::list<BMscPtr> checkBMsc(const BMscPtr& bmsc, const ChannelMapperPtr& chm);
-  std::list<HMscPtr> checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr& chm);
-  PyObject* convert_msc(const MscPtr& selected_msc, const std::vector<MscPtr>& msc = std::vector<MscPtr>());
+  //int check(const MscPtr& msc, const ChannelMapperPtr& chm);
+  //std::list<BMscPtr> checkBMsc(const BMscPtr& bmsc, const ChannelMapperPtr& chm);
+  //std::list<HMscPtr> checkHMsc(const HMscPtr& hmsc, const ChannelMapperPtr& chm);
+  MscPtr convert_msc(PyObject *selected_msc);
 
 protected:
-  int typed_msc(const MscPtr& msc);
+  int typed_msc(PyObject *msc);
   // note: insertion to m_printing must not invalidate iterators
   std::list<MscPtr> m_printing;
 
   //! export a basic MSC drawing
-  int convert_bmsc(const BMscPtr& bmsc);
+  int convert_bmsc(PyObject *bmsc);
   //! export a HMSC drawing
-  int convert_hmsc(const HMscPtr& hmsc);
+  int convert_hmsc(PyObject *hmsc);
 
-  void handle_event(const EventPtr& event, PyObject *pevent);
+  void handle_event(PyObject *event, EventPtr cevent);
 
-  PyObject *create_instance(const InstancePtr& inst);
+  InstancePtr create_instance(PyObject *inst);
 
-  const char *get_area_type(const EventAreaPtr& msc);
-  PyObject *create_area(const EventAreaPtr& area, const char *optype = "");
+  EventAreaPtr create_area(PyObject *area);
 
-  const char *get_event_type(const EventPtr& msc);
-  PyObject *create_event(const EventPtr& event, const char *optype = "");
+  EventPtr create_event(PyObject *event);
 
-  const char *get_message_type(const MscMessagePtr& message);
-  PyObject *create_message(const MscMessagePtr& message, const char *optype = "");
+  MscMessagePtr create_message(PyObject *message);
 
-  const char *get_msc_type(const MscPtr& msc);
-  PyObject *create_msc(const MscPtr& msc, const char * type = "");
+  MscPtr create_msc(PyObject *msc);
 
-  const char *get_node_type(const HMscNodePtr& node);
-  PyObject *create_node(const HMscNodePtr& node, const char *type = "");
-
-  const char *get_chm_type(const ChannelMapperPtr& chm);
-  PyObject *create_chm(const ChannelMapperPtr& chm);
+  HMscNodePtr create_node(PyObject *node);
 };
 
-#endif /* _PYTHON_CONVERT_H */
+#endif /* _CONVERT_PYTHON_H */
