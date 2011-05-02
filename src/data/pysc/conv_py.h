@@ -79,7 +79,7 @@ public:
       (*it).second.py = NULL;
     }
   }
-  ~AdvPtrIDMap(){
+  ~AdvCPtrIDMap(){
     clear();
     m_mapper.clear();
   }
