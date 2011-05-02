@@ -526,7 +526,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     PyObject *lsucc = PyObject_GetAttrString(node, "lsuccesors");
     for(int spos = 0;spos < PyList_Size(lsucc);spos++){
       PyObject *succ = PyList_GetItem(lsucc, spos);
-      SuccessorNode *csucc = (boost::dynamic_pointer_cast<SuccessorNode>(create_node(succ))).get();
+      SuccessorNode *csucc = dynamic_cast<SuccessorNode>(create_node(succ).get());
       ERRNULL(csucc);
       boost::dynamic_pointer_cast<PredecessorNode>(cnode)->add_successor(csucc);
     }
