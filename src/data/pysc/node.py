@@ -7,7 +7,7 @@ class Node(object):
 		self.succ = Set()
 		self.pred = Set()
 		self.type = t
-		self.position = (None, None)
+		self.position = (0, 0)
 		self.label = l
 	def iss(self, t):
 		return self.type == t

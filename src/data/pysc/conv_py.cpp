@@ -415,7 +415,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     }
 
     // Handle successors
-    PyObject *lsucc = PyObject_GetAttrString(node, "lsuccesors");
+    PyObject *lsucc = PyObject_GetAttrString(node, "lsuccessors");
     for(int spos = 0;spos < PyList_Size(lsucc);spos++){
       PyObject *succ = PyList_GetItem(lsucc, spos);
       SuccessorNode *csucc = dynamic_cast<SuccessorNode*>(create_node(succ).get());
