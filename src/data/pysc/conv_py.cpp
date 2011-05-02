@@ -65,12 +65,12 @@ InstancePtr ConvPy::create_instance(PyObject *inst){
   InstancePtr cinst = pob.instance.get(inst);
   if(cinst)
     return cinst;
+  DPRINT("DEBUG: Creating instance(" << inst << ")");
   cinst = InstancePtr(new Instance(get_label(inst)));
   if(cinst == NULL){
     DPRINT("Instance is not callable object");
     return cinst;
   }
-  DPRINT("DEBUG: Instance created(" << cinst << ")");
   pob.instance.add(cinst, inst);
   return cinst;
 }
@@ -79,6 +79,7 @@ EventAreaPtr ConvPy::create_area(PyObject *area){
   EventAreaPtr carea = pob.area.get(area);
   if(carea)
     return carea;
+  DPRINT("DEBUG: Creating area(" << area << ")");
   if(PyObject_GetAttrString(area, "StrictOrderArea") == Py_True){
     StrictOrderAreaPtr sarea = StrictOrderAreaPtr(new StrictOrderArea());
     pob.area.add(sarea, area);
@@ -89,6 +90,7 @@ EventAreaPtr ConvPy::create_area(PyObject *area){
     pob.area.add(aarea, area);
     return aarea;
   }
+  DPRINT("Unrecognized area type");
   return carea;
 }
 
@@ -96,6 +98,7 @@ EventPtr ConvPy::create_event(PyObject *event){
   EventPtr cevent = pob.event.get(event);
   if(cevent)
     return cevent;
+  DPRINT("DEBUG: Creating event(" << event << ")");
   if(PyObject_GetAttrString(event, "StrictEvent") == Py_True){
     StrictEventPtr sevent = StrictEventPtr(new StrictEvent());
     pob.event.add(sevent, event);
@@ -106,7 +109,7 @@ EventPtr ConvPy::create_event(PyObject *event){
     pob.event.add(aevent, event);
     return aevent;
   }
-  DPRINT("DEBUG: Event created(" << event << ")");
+  DPRINT("Unrecognized event type");
   return cevent;
 }
 
@@ -114,6 +117,7 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
   MscMessagePtr cmessage = pob.message.get(message);
   if(cmessage)
     return cmessage;
+  DPRINT("DEBUG: Creating message(" << message << ")");
   if(PyObject_GetAttrString(message, "CompleteMessage") == Py_True){
     CompleteMessagePtr pmessage = CompleteMessagePtr(new CompleteMessage(get_label(message)));
     pob.message.add(pmessage, message);
@@ -128,7 +132,7 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
     pob.message.add(imessage, message);
     return imessage;
   }
-  DPRINT("DEBUG: Message created(" << message << ")");
+  DPRINT("Unrecognized message type");
   return cmessage;
 }
 
@@ -310,6 +314,7 @@ MscPtr ConvPy::create_msc(PyObject *msc){
   MscPtr cmsc = pob.msc.get(msc);
   if(cmsc)
     return cmsc;
+  DPRINT("DEBUG: Creating msc(" << msc << ")");
   if(PyObject_GetAttrString(msc, "HMsc") == Py_True){
     HMscPtr hmsc = HMscPtr(new HMsc(get_label(msc)));
     pob.msc.add(hmsc, msc);
@@ -320,7 +325,7 @@ MscPtr ConvPy::create_msc(PyObject *msc){
     pob.msc.add(bmsc, msc);
     return bmsc;
   }
-  DPRINT("DEBUG: Msc created(" << msc << ")");
+  DPRINT("Unrecognized msc type");
   return cmsc;
 }
 
@@ -330,6 +335,7 @@ HMscNodePtr ConvPy::create_node(PyObject *node)
   HMscNodePtr cnode = pob.node.get(node);
   if(cnode)
     return cnode;
+  DPRINT("DEBUG: Creating node(" << node << ")");
   if(PyObject_GetAttrString(node, "StartNode") == Py_True){
     StartNodePtr snode = StartNodePtr(new StartNode());
     pob.node.add(snode, node);
@@ -355,7 +361,7 @@ HMscNodePtr ConvPy::create_node(PyObject *node)
     pob.node.add(enode, node);
     return enode;
   }
-  DPRINT("DEBUG: Node created(" << node << ")");
+  DPRINT("Unrecognized node type");
   return cnode;
 }
 
