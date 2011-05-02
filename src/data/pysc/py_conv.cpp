@@ -611,7 +611,6 @@ int PyConv::convert_hmsc(const HMscPtr& hmsc){
       pnode = create_node(*npos, "StartNode");
       ERRNULL(pnode);
       PyObject_SetAttrString(phmsc, "start", pnode);
-      pob.node.add(*npos, PyObject_CallObject(PyDict_GetItemString(pob.pDict, "Node"), mktuple(L"Start")));
     }
 
     ConditionNodePtr condition_node = boost::dynamic_pointer_cast<ConditionNode>(*npos);
