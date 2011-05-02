@@ -363,7 +363,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
             ERRNULL(csucc);
 	    CoregionAreaPtr csuccarea = boost::dynamic_pointer_cast<CoregionArea>(create_area(PyObject_GetAttrString(successor, "area")));
             ERRNULL(csuccarea);
-	    csucc->set_area(csuccarea);
+	    csucc->set_area(csuccarea.get());
 	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred.get(), csucc.get()));
 	    cevent->add_successor(ccorevrel);
 
@@ -377,7 +377,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	levent = PyObject_GetAttrString(area, "lmaxevents");
 	for(int epos = 0;epos < PyList_Size(levent);epos++){
 	  PyObject *event = PyList_GetItem(levent, epos);
-          CoregionEventPtr cevent = create_event(event);
+          CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
 	  boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent.get());
           handle_event(event, cevent);
@@ -483,7 +483,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     ConditionNodePtr condition_node = boost::dynamic_pointer_cast<ConditionNode>(cnode);
     if(condition_node != NULL){
       chmsc->add_node(condition_node);
-      condition_node->assign_label(get_label(node)); // Only string, not wstring, change it
+      //condition_node->assign_label(get_label(node)); // Only string, not wstring, change it
     }
 
     ConnectionNodePtr connection_node = boost::dynamic_pointer_cast<ConnectionNode>(cnode);
@@ -515,13 +515,11 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
 
     // Handle successors
     PyObject *lsucc = PyObject_GetAttrString(node, "lsuccesors");
-    if(predecessor_node != NULL){
-      for(int spos = 0;spos < PyList_Size(lsucc);spos++){
-        PyObject *succ = PyList_GetItem(lsucc, spos);
-	SuccessorNodePtr csucc = boost::dynamic_pointer_cast<SuccessorNode>(create_node(succ));
-	ERRNULL(csucc);
-	boost::dynamic_pointer_cast<PredecessorNode>(cnode)->add_successor(csucc);
-      }
+    for(int spos = 0;spos < PyList_Size(lsucc);spos++){
+      PyObject *succ = PyList_GetItem(lsucc, spos);
+      SuccessorNodePtr csucc = boost::dynamic_pointer_cast<SuccessorNode>(create_node(succ));
+      ERRNULL(csucc);
+      boost::dynamic_pointer_cast<PredecessorNode>(cnode)->add_successor(csucc);
     }
   }
   return 0;
