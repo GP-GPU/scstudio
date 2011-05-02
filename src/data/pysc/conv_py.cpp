@@ -528,7 +528,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
       PyObject *succ = PyList_GetItem(lsucc, spos);
       SuccessorNode *csucc = dynamic_cast<SuccessorNode>(create_node(succ).get());
       ERRNULL(csucc);
-      boost::dynamic_pointer_cast<PredecessorNode>(cnode)->add_successor(csucc);
+      dynamic_cast<PredecessorNode>(cnode.get())->add_successor(csucc);
     }
   }
   return 0;
