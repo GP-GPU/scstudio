@@ -128,8 +128,10 @@ std::list<BMscPtr> PyConv::checkBMsc(const BMscPtr& bmsc, const ChannelMapperPtr
       DPRINT("Can't get result from checker");
       throw 0;
     }
+    ConvPy cpy;
     for(int i = 0;i < PyList_Size(presult);i++){
-      BMscPtr bret = boost::dynamic_pointer_cast<BMsc>(pob.msc.cget(PyList_GetItem(presult, i)));
+      BMscPtr bret = boost::dynamic_pointer_cast<BMsc>(cpy.convert_msc(PyList_GetItem(presult, i)));
+      //BMscPtr bret = boost::dynamic_pointer_cast<BMsc>(pob.msc.cget(PyList_GetItem(presult, i)));
       blist.push_back(bret);
     }
   }
