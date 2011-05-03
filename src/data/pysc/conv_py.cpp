@@ -193,7 +193,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
       cinst->set_line_end(mpnt);
     }
     cinst->set_width(PyFloat_AsDouble(PyObject_GetAttrString(inst, "width")));
-    // No form, might need update
+    // No way to set form in c++
 /*    if(PyUnicode_AsWideChar(PyObject_GetAttrString(inst, "form")) == L"line")
       cinst->set_form(PyObject_SetAttrString(pinst, "form", PyUnicode_FromString("line"));
     else

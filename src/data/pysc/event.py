@@ -3,7 +3,7 @@ from pysc.list_ops import *
 class Event(object):
 	def __init__(self, t = "Coregion", original = None):
 		self.type = t
-		self.position = (None, None)
+		self.position = (0, 0)
 		self.message = None
 		self.area = None
 		if original:
@@ -135,7 +135,7 @@ class CoregionEvent(Event):
 			Event.__setattr__(self, name, value)
 
 class CoregionEventRelation(object):
-	def __init__(self, pred = None, succ = None, line = (None, None)):
+	def __init__(self, pred = None, succ = None, line = (0, 0)):
 		self.predecessor = pred
 		self.successor = succ
 		self.line = line
