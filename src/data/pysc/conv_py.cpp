@@ -248,6 +248,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
+	  cevent->set_area((boost::dynamic_pointer_cast<CoregionArea>(carea)).get());
           boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent.get());
           tuple = PyObject_GetAttrString(event, "position");
           if(tuple != Py_None){
@@ -284,6 +285,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
+	  cevent->set_area((boost::dynamic_pointer_cast<CoregionArea>(carea)).get());
 	  boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent.get());
           handle_event(event, cevent);
 
