@@ -153,7 +153,7 @@ std::list<BMscPtr> PyBUniversalChecker::check(BMscPtr bmsc, ChannelMapperPtr chm
       continue;
     }
     std::list<BMscPtr> bret = exp->checkBMsc(bmsc, chm);
-    if(ret.size()){
+    if(bret.size()){
       BMscPtr checker_name(new BMsc((*it).second));
       ret.push_back(checker_name);
       for(std::list<BMscPtr>::iterator hit = bret.begin();hit != bret.end();hit++)
