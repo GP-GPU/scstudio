@@ -95,7 +95,7 @@ class StrictEvent(Event):
 			return super(StrictEvent, self).__getattr__(name)
 
 class CoregionEvent(Event):
-	def __init__(self, t = "Corregion"):
+	def __init__(self, t = "Coregion"):
 		super(CoregionEvent, self).__init__(t)
 		self.successors = Set()
 		self.predecessors = Set()
