@@ -130,10 +130,13 @@ class CoregionArea(EventArea):
 			return len(self.minimal_events) == 0
 		elif name == "events":
 			return self.minimal_events | self.maximal_events
-		elif name == "lminevents":
-			return list(self.minimal_events)
-		elif name == "lmaxevents":
-			return list(self.maximal_events)
+		elif name == "levents":
+			l = list(self.minimal_events)
+			for e in l:
+				for c in e.successors:
+					if c.successor not in l:
+						l.append(c.successor)
+			return l
 		else:
 			return super(CoregionArea, self).__getattr__(name)
 	def __setattr__(self, name, value):

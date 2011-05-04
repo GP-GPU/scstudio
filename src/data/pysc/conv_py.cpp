@@ -243,13 +243,16 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
         // events to be processed; this is to avoid recursion
 
         // process all events in the stack
-	PyObject *levent = PyObject_GetAttrString(area, "lminevents");
+	PyObject *levent = PyObject_GetAttrString(area, "levents");
         for(int epos = 0;epos < PyList_Size(levent);epos++){
 	  PyObject *event = PyList_GetItem(levent, epos);
           CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
 	  cevent->set_area((boost::dynamic_pointer_cast<CoregionArea>(carea)).get());
-          boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent.get());
+	  if(PyObject_GetAttrString(event, "is_minimal") == Py_True)
+            boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent.get());
+	  if(PyObject_GetAttrString(event, "is_maximal") == Py_True)
+	    boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent.get());
           tuple = PyObject_GetAttrString(event, "position");
           if(tuple != Py_None){
 	    MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
@@ -275,35 +278,6 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 
             // add successors of this event to the stack
             // note: std::list<>::push_back doesn't invalidate iterators
-          }
-        }
-
-
-        // Maximal events
-	levent = PyObject_GetAttrString(area, "lmaxevents");
-	for(int epos = 0;epos < PyList_Size(levent);epos++){
-	  PyObject *event = PyList_GetItem(levent, epos);
-          CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
-          ERRNULL(cevent);
-	  cevent->set_area((boost::dynamic_pointer_cast<CoregionArea>(carea)).get());
-	  boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent.get());
-          handle_event(event, cevent);
-
-          PyObject *lcorel = PyObject_GetAttrString(event, "lcoregionrelations");
-          for(int spos = 0;spos < PyList_Size(lcorel);spos++){
-	    PyObject *corel = PyList_GetItem(lcorel, spos);
-	    PyObject *successor = PyObject_GetAttrString(corel, "successor");
-	    PyObject *predecessor = PyObject_GetAttrString(corel, "predecessor");
-
-	    CoregionEventPtr cpred = boost::dynamic_pointer_cast<CoregionEvent>(create_event(predecessor));
-	    ERRNULL(cpred);
-	    CoregionEventPtr csucc = boost::dynamic_pointer_cast<CoregionEvent>(create_event(successor));
-	    ERRNULL(csucc);
-	    CoregionAreaPtr csuccarea = boost::dynamic_pointer_cast<CoregionArea>(create_area(PyObject_GetAttrString(successor, "area")));
-            ERRNULL(csuccarea);
-	    csucc->set_area(csuccarea.get());
-	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred.get(), csucc.get()));
-	    cevent->add_successor(ccorevrel);
           }
         }
       }
