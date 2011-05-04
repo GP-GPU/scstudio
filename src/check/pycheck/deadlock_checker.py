@@ -9,7 +9,7 @@ def referenced(h):
         for n in k.nodes:
             if n.ReferenceNode and n.msc:
                 msc = n.msc
-                if msc.HMsc:
+                if msc.HMsc and msc not in ref:
                     ref.append(msc)
     return ref
 
