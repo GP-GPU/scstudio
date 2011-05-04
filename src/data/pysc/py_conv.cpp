@@ -447,7 +447,10 @@ int PyConv::convert_bmsc(const BMscPtr& bmsc){
           epos != event_stack.end(); epos++){
           PyObject *pevent = create_event(*epos, "CoregionEvent");
           ERRNULL(pevent);
-          PyObject_SetAttrString(parea, "minimal_event", pevent);
+	  if((*epos)->is_minimal())
+            PyObject_SetAttrString(parea, "minimal_event", pevent);
+	  if((*epos)->is_maximal())
+	    PyObject_SetAttrString(parea, "maximal_event", pevent);
           tuple = PyTuple_New(2);
           ERRNULL(tuple);
           PyTuple_SetItem(tuple, 0, PyFloat_FromDouble((*epos)->get_position().get_x()));
@@ -465,48 +468,6 @@ int PyConv::convert_bmsc(const BMscPtr& bmsc){
             ERRNULL(ppred);
             PyObject *psucc = create_event(successor, "CoregionEvent");
             ERRNULL(psucc);
-            PyObject *psuccarea = create_area(successor->get_area(), "CoregionArea");
-            ERRNULL(psuccarea);
-            PyObject_SetAttrString(psucc, "area", psuccarea);
-            PyTuple_SetItem(tuple, 0, ppred);
-            PyTuple_SetItem(tuple, 1, psucc);
-            PyObject_SetAttrString(pevent, "successor", PyObject_CallObject(PyDict_GetItemString(pob.pDict, "CoregionEventRelation"), tuple));
-
-            // add successors of this event to the stack
-            // note: std::list<>::push_back doesn't invalidate iterators
-            push_back_if_unique<CoregionEventPtr>(event_stack, successor);
-          }
-        }
-
-
-        // Maximal events
-        event_stack.clear();
-
-        for(CoregionEventPVector::const_iterator mpos = coregion_area->get_maximal_events().begin();
-          mpos != coregion_area->get_maximal_events().end(); mpos++){
-          // initialize the stack with events with no predecessors
-          push_back_if_unique<CoregionEventPtr>(event_stack, *mpos);
-        }
-
-        // process all events in the stack
-        for(std::list<CoregionEventPtr>::const_iterator epos = event_stack.begin();
-          epos != event_stack.end(); epos++){
-          PyObject *pevent = create_event(*epos, "CoregionEvent");
-          ERRNULL(pevent);
-          PyObject_SetAttrString(parea, "maximal_event", pevent);
-          handle_event(*epos, pevent);
-
-          for(CoregEventRelPtrVector::const_iterator spos = (*epos)->get_successors().begin();
-            spos != (*epos)->get_successors().end(); spos++){
-            CoregionEventPtr successor = (*spos)->get_successor();
-            CoregionEventPtr predecessor = (*spos)->get_predecessor();
-
-            tuple = PyTuple_New(2);
-            ERRNULL(tuple);
-            PyObject *psucc = create_event(successor, "CoregionEvent");
-            ERRNULL(psucc);
-            PyObject *ppred = create_event(predecessor, "CoregionEvent");
-            ERRNULL(ppred);
             PyObject *psuccarea = create_area(successor->get_area(), "CoregionArea");
             ERRNULL(psuccarea);
             PyObject_SetAttrString(psucc, "area", psuccarea);
