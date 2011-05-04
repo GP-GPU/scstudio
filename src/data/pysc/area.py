@@ -81,7 +81,7 @@ class StrictOrderArea(EventArea):
 			l = [self.first]
 			runner = self.first
 			while runner.successor and runner.successor != self.last:
-				if runner.successor not in s:
+				if runner.successor not in l:
 					l.append(runner.successor)
 				runner = runner.successor
 			if self.last not in l:
