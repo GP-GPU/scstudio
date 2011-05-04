@@ -4,10 +4,19 @@ ADD_EXECUTABLE(py_convert_test
   py_convert_test.cpp)
 TARGET_LINK_LIBRARIES(py_convert_test
   scmsc
-  scZ120
   scpycheck
 )
 ADD_TEST(py_convert_test ${EXECUTABLE_OUTPUT_PATH}/py_convert_test)
+
+ADD_EXECUTABLE(py_test
+  py_test.cpp)
+TARGET_LINK_LIBRARIES(py_test
+  scmsc
+  scZ120
+  scpycheck
+)
+ADD_TEST(py_test ${EXECUTABLE_OUTPUT_PATH}/py_test)
+
 
 ADD_EXECUTABLE(universal_boundedness_checker_test
   universal_boundedness_checker_test.cpp

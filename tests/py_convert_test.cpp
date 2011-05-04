@@ -1,8 +1,6 @@
 #include "check/pycheck/livelock_checker_visio.h"
 #include "check/pycheck/fifo_checker_visio.h"
-#include "check/pycheck/universal_checker_visio.h"
 #include "data/msc.h"
-#include "data/Z120/z120.h"
 #include <vector>
 #include <iostream>
 
@@ -150,20 +148,16 @@ int main(){
     return e;
   }
 
-  Z120 z;
-  std::vector<MscPtr> mscs = z.load_msc("tests/acyclic/acyclic1.mpr");
-  std::list<BMscPtr> bmscs = pfifo->check(boost::dynamic_pointer_cast<BMsc>(mscs[0]), chm);
+  std::list<BMscPtr> bmscs = pfifo->check(myBmsc1, chm);
   std::cout << bmscs.size() << std::endl;
-  if(bmscs.back() == myBmsc1)
-    std::cout << "It really works\n";
   bmscs = pfifo->check(myBmsc2, chm);
   std::cout << bmscs.size() << std::endl;
   bmscs = pfifo->check(myBmsc3, chm);
   std::cout << bmscs.size() << std::endl;
 
-  PyHUniversalChecker *plive;
+  PyHLivelockChecker *plive;
   try{
-    plive = new PyHUniversalChecker();
+    plive = new PyHLivelockChecker();
   }
   catch(int e){
     return e;
@@ -173,7 +167,6 @@ int main(){
   std::cout << hmscs.size() << std::endl;
   hmscs = plive->check(h2, chm);
   std::cout << hmscs.size() << std::endl;
-//  exp.save_msc(std::cout, L"mymsc", h1, msc);
   delete plive;
   delete pfifo;
   return 0;
