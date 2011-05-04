@@ -240,10 +240,8 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
           PyObject_SetAttrString(parea, "form", PyUnicode_FromString("line"));
         else
           PyObject_SetAttrString(parea, "form", PyUnicode_FromString("column"));*/
-        // Minimal events
-        // events to be processed; this is to avoid recursion
 
-        // process all events in the stack
+        // process all the events, python handles it
 	PyObject *levent = PyObject_GetAttrString(area, "levents");
         for(int epos = 0;epos < PyList_Size(levent);epos++){
 	  PyObject *event = PyList_GetItem(levent, epos);
@@ -276,9 +274,6 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	    csucc->set_area(csuccarea.get());
 	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred.get(), csucc.get()));
 	    cevent->add_successor(ccorevrel);
-
-            // add successors of this event to the stack
-            // note: std::list<>::push_back doesn't invalidate iterators
           }
         }
       }
@@ -308,7 +303,6 @@ MscPtr ConvPy::create_msc(PyObject *msc){
 
 HMscNodePtr ConvPy::create_node(PyObject *node)
 {
-  // Add labels, forgot to do that
   HMscNodePtr cnode = pob.node.get(node);
   if(cnode)
     return cnode;
@@ -416,5 +410,4 @@ ConvPy::~ConvPy(){
     pob.area.clear();
     pob.event.clear();
     pob.message.clear();
-    // DECREF only these two, all the other PyObjects are borrowed references
 }

@@ -55,7 +55,6 @@ public:
         return (*it).first;
     }
     return Ptr(NULL);
-    //return (Ptr)NULL;
   }
 
   void add(Ptr message, PyObject *pyo){
@@ -106,7 +105,7 @@ public:
 
 protected:
   int typed_msc(PyObject *msc);
-  // note: insertion to m_printing must not invalidate iterators
+
   std::list<PyObject *> m_printing;
 
   //! export a basic MSC drawing
