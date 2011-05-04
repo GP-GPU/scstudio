@@ -49,6 +49,7 @@ std::wstring get_label(PyObject *py){
   PyUnicode_AsWideChar((PyUnicodeObject *)plabel, wret, psize);
   wret[psize] = '\0';
   std::wstring clabel(wret);
+  delete[] wret;
   return clabel;
 }
 
