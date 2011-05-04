@@ -50,7 +50,17 @@ class Instance(object):
 			s += self.last
 			return s
 		elif name == "lareas":
-			return list(self.areas)
+			runner = self.first
+			if not runner:
+				return []
+			l = [self.first]
+			while runner.next and runner.next != self.last:
+				if runner.next not in l:
+					l.append(runner.next)
+				runner = runner.next
+			if self.last not in l:
+				l.append(self.last)
+			return l
 		else:
 			object.__getattribute__(self, name)
 	def __setattr__(self, name, value):

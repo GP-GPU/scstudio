@@ -76,7 +76,17 @@ class StrictOrderArea(EventArea):
 			s += self.last
 			return s
 		elif name == "levents":
-			return list(self.events)
+			if self.is_empty:
+				return []
+			l = [self.first]
+			runner = self.first
+			while runner.successor and runner.successor != self.last:
+				if runner.successor not in s:
+					l.append(runner.successor)
+				runner = runner.successor
+			if self.last not in l:
+				l.append(self.last)
+			return l
 		else:
 			return super(StrictOrderArea, self).__getattr__(name)
 	def add_event(self, e = None):
