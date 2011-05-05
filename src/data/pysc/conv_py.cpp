@@ -139,27 +139,27 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
 
 void ConvPy::handle_event(PyObject *event, EventPtr cevent){
   PyObject *message = PyObject_GetAttrString(event, "message");
-  if(message ==Py_None)
+  if(message == Py_None)
     return;
-  if(PyObject_GetAttrString(message, "CompleteMessage") = Py_True){
+  if(PyObject_GetAttrString(message, "CompleteMessage") == Py_True){
     CompleteMessagePtr cmessage = boost::dynamic_pointer_cast<CompleteMessage>(create_message(message));
     ERRNULL(cmessage);
-    if(!pob.message.is_filled(complete_message)){
-      EventPtr csend = create_event(PyObject_GetAttrString(complete_message, "send_event"));
+    if(!pob.message.is_filled(message)){
+      EventPtr csend = create_event(PyObject_GetAttrString(message, "send_event"));
       ERRNULL(csend);
-      EventPtr creceive = create_event(PyObject_GetAttrString(complete_message, "receive_event"));
+      EventPtr creceive = create_event(PyObject_GetAttrString(message, "receive_event"));
       ERRNULL(creceive);
       cmessage->glue_events(csend, creceive);
     }
   }
 
-  if(PyObject_GetAttrString(message, "IncompleteMessage") != Py_True){
+  if(PyObject_GetAttrString(message, "IncompleteMessage") == Py_True){
     IncompleteMessagePtr imessage = boost::dynamic_pointer_cast<IncompleteMessage>(create_message(message));
     ERRNULL(imessage);
-    if(!pob.message.is_filled(incomplete_message)){
+    if(!pob.message.is_filled(message)){
       imessage->glue_event(cevent);
 
-      PyObject *tuple = PyObject_GetAttrString(incomplete_message, "dot_position");
+      PyObject *tuple = PyObject_GetAttrString(message, "dot_position");
       if(tuple == Py_None){
         //Problem
 	return;
