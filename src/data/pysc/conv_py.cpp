@@ -67,7 +67,7 @@ InstancePtr ConvPy::create_instance(PyObject *inst){
   if(cinst)
     return cinst;
   DPRINT("DEBUG: Creating instance(" << inst << ")");
-  cinst = InstancePtr(new Instance(get_label(inst)));
+  cinst = InstancePtr(new Instance(get_label(inst), get_label(inst)));
   if(cinst == NULL){
     DPRINT("Instance is not callable object");
     return cinst;
@@ -138,26 +138,26 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
 }
 
 void ConvPy::handle_event(PyObject *event, EventPtr cevent){
-  PyObject *complete_message = PyObject_GetAttrString(event, "complete_message");
-  MscMessagePtr cmessage(NULL);
-  if(complete_message != Py_None){
-    cmessage = create_message(complete_message);
+  PyObject *message = PyObject_GetAttrString(event, "message");
+  if(message ==Py_None)
+    return;
+  if(PyObject_GetAttrString(message, "CompleteMessage") = Py_True){
+    CompleteMessagePtr cmessage = boost::dynamic_pointer_cast<CompleteMessage>(create_message(message));
     ERRNULL(cmessage);
     if(!pob.message.is_filled(complete_message)){
       EventPtr csend = create_event(PyObject_GetAttrString(complete_message, "send_event"));
       ERRNULL(csend);
       EventPtr creceive = create_event(PyObject_GetAttrString(complete_message, "receive_event"));
       ERRNULL(creceive);
-      boost::dynamic_pointer_cast<CompleteMessage>(cmessage)->glue_events(csend, creceive);
+      cmessage->glue_events(csend, creceive);
     }
   }
 
-  PyObject *incomplete_message = PyObject_GetAttrString(event, "incomplete_message");
-  if(incomplete_message != Py_None){
-    cmessage = create_message(incomplete_message);
-    ERRNULL(cmessage);
+  if(PyObject_GetAttrString(message, "IncompleteMessage") != Py_True){
+    IncompleteMessagePtr imessage = boost::dynamic_pointer_cast<IncompleteMessage>(create_message(message));
+    ERRNULL(imessage);
     if(!pob.message.is_filled(incomplete_message)){
-      boost::dynamic_pointer_cast<IncompleteMessage>(cmessage)->glue_event(cevent);
+      imessage->glue_event(cevent);
 
       PyObject *tuple = PyObject_GetAttrString(incomplete_message, "dot_position");
       if(tuple == Py_None){
@@ -167,7 +167,7 @@ void ConvPy::handle_event(PyObject *event, EventPtr cevent){
       double a = PyFloat_AsDouble(PyTuple_GetItem(tuple, 0));
       double b = PyFloat_AsDouble(PyTuple_GetItem(tuple, 1));
       MscPoint pnt(a, b);
-      boost::dynamic_pointer_cast<IncompleteMessage>(cmessage)->set_dot_position(pnt);
+      imessage->set_dot_position(pnt);
     }
   }
 }
