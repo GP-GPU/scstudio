@@ -69,6 +69,13 @@ int PyConv::init(const char *module){
 }
 
 int PyConv::reinit(const char *module){
+  DPRINT("Removing old maps");
+  pob.msc.clear();
+  pob.node.clear();
+  pob.instance.clear();
+  pob.area.clear();
+  pob.event.clear();
+  pob.message.clear();
   DPRINT("Removing old module");
   Py_XDECREF(pob.name);
   Py_XDECREF(pob.module);
