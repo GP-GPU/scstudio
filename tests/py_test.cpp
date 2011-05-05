@@ -43,8 +43,16 @@ int main(int argc, char *argv[]){
     bmscs = pbuni->check(boost::dynamic_pointer_cast<BMsc>(mscs[0]), chm);
   if(boost::dynamic_pointer_cast<HMsc>(mscs[0]))
     hmscs = phuni->check(boost::dynamic_pointer_cast<HMsc>(mscs[0]), chm);
-  std::cout << bmscs.size() << std::endl;
-  std::cout << hmscs.size() << std::endl;
+  if(hmscs.size()){
+    hmscs.pop_front();
+    z.save_msc(std::cout, L"some_label", hmscs.front());
+    std::cout << hmscs.size() << std::endl;
+  }
+  if(bmscs.size()){
+    bmscs.pop_front();
+    z.save_msc(std::cout, L"some_label", bmscs.front());
+    std::cout << bmscs.size() << std::endl;
+  }
   delete pbuni;
   delete phuni;
   return 0;
