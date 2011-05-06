@@ -30,6 +30,7 @@ class Instance(object):
 		self.line_begin = (0, 0)
 		self.line_end = (0, 0)
 		self.width = 0
+		self.marked = False
 	def __getattr__(self, name):
 		if name == "height":
 			dx = self.line_end[0] - self.line_begin[0]

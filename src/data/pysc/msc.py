@@ -8,6 +8,7 @@ class Msc(object):
 		self.nodes = Set()
 		self.start = None
 		self.label = l
+		self.marked = False
 		# BMsc
 		self.instances = Set()
 	def iss(self, t):

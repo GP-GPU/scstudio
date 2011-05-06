@@ -9,6 +9,7 @@ class Node(object):
 		self.type = t
 		self.position = (0, 0)
 		self.label = l
+		self.marked = False
 	def iss(self, t):
 		return self.type == t
 	def add_successor(self, succ):

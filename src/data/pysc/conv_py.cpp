@@ -62,6 +62,11 @@ int ConvPy::typed_msc(PyObject *msc){
     return 1; // unexpected pointer
 }
 
+void create_mark(PyObject *py, MscElementPtr celem){
+  if(PyObject_GetAttrString(py, "marked") == Py_True)
+    celem->set_marked();
+}
+
 InstancePtr ConvPy::create_instance(PyObject *inst){
   InstancePtr cinst = pob.instance.get(inst);
   if(cinst)
@@ -72,6 +77,7 @@ InstancePtr ConvPy::create_instance(PyObject *inst){
     DPRINT("Instance is not callable object");
     return cinst;
   }
+  create_mark(inst, cinst);
   pob.instance.add(cinst, inst);
   return cinst;
 }
@@ -83,11 +89,13 @@ EventAreaPtr ConvPy::create_area(PyObject *area){
   DPRINT("DEBUG: Creating area(" << area << ")");
   if(PyObject_GetAttrString(area, "StrictOrderArea") == Py_True){
     StrictOrderAreaPtr sarea = StrictOrderAreaPtr(new StrictOrderArea());
+    create_mark(area, sarea);
     pob.area.add(sarea, area);
     return sarea;
   }
   if(PyObject_GetAttrString(area, "CoregionArea") == Py_True){
     CoregionAreaPtr aarea = CoregionAreaPtr(new CoregionArea());
+    create_mark(area, aarea);
     pob.area.add(aarea, area);
     return aarea;
   }
@@ -102,11 +110,13 @@ EventPtr ConvPy::create_event(PyObject *event){
   DPRINT("DEBUG: Creating event(" << event << ")");
   if(PyObject_GetAttrString(event, "StrictEvent") == Py_True){
     StrictEventPtr sevent = StrictEventPtr(new StrictEvent());
+    create_mark(event, sevent);
     pob.event.add(sevent, event);
     return sevent;
   }
   if(PyObject_GetAttrString(event, "CoregionEvent") == Py_True){
     CoregionEventPtr aevent = CoregionEventPtr(new CoregionEvent());
+    create_mark(event, aevent);
     pob.event.add(aevent, event);
     return aevent;
   }
@@ -121,6 +131,7 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
   DPRINT("DEBUG: Creating message(" << message << ")");
   if(PyObject_GetAttrString(message, "CompleteMessage") == Py_True){
     CompleteMessagePtr pmessage = CompleteMessagePtr(new CompleteMessage(get_label(message)));
+    create_mark(message, pmessage);
     pob.message.add(pmessage, message);
     return pmessage;
   }
@@ -130,6 +141,7 @@ MscMessagePtr ConvPy::create_message(PyObject *message){
       imessage = IncompleteMessagePtr(new IncompleteMessage(LOST, get_label(message)));
     if(PyObject_GetAttrString(message, "is_found") == Py_True)
       imessage = IncompleteMessagePtr(new IncompleteMessage(FOUND, get_label(message)));
+    create_mark(message, imessage);
     pob.message.add(imessage, message);
     return imessage;
   }
@@ -290,11 +302,13 @@ MscPtr ConvPy::create_msc(PyObject *msc){
   DPRINT("DEBUG: Creating msc(" << msc << ")");
   if(PyObject_GetAttrString(msc, "HMsc") == Py_True){
     HMscPtr hmsc = HMscPtr(new HMsc(get_label(msc)));
+    create_mark(msc, hmsc);
     pob.msc.add(hmsc, msc);
     return hmsc;
   }
   if(PyObject_GetAttrString(msc, "BMsc") == Py_True){
     BMscPtr bmsc = BMscPtr(new BMsc(get_label(msc)));
+    create_mark(msc, bmsc);
     pob.msc.add(bmsc, msc);
     return bmsc;
   }
@@ -310,26 +324,31 @@ HMscNodePtr ConvPy::create_node(PyObject *node)
   DPRINT("DEBUG: Creating node(" << node << ")");
   if(PyObject_GetAttrString(node, "StartNode") == Py_True){
     StartNodePtr snode = StartNodePtr(new StartNode());
+    create_mark(node, snode);
     pob.node.add(snode, node);
     return snode;
   }
   if(PyObject_GetAttrString(node, "ConditionNode") == Py_True){
     ConditionNodePtr cdnode = ConditionNodePtr(new ConditionNode());
+    create_mark(node, cdnode);
     pob.node.add(cdnode, node);
     return cdnode;
   }
   if(PyObject_GetAttrString(node, "ConnectionNode") == Py_True){
     ConnectionNodePtr cnode = ConnectionNodePtr(new ConnectionNode());
+    create_mark(node, cnode);
     pob.node.add(cnode, node);
     return cnode;
   }
   if(PyObject_GetAttrString(node, "ReferenceNode") == Py_True){
     ReferenceNodePtr rnode = ReferenceNodePtr(new ReferenceNode());
+    create_mark(node, rnode);
     pob.node.add(rnode, node);
     return rnode;
   }
   if(PyObject_GetAttrString(node, "EndNode") == Py_True){
     EndNodePtr enode = EndNodePtr(new EndNode());
+    create_mark(node, enode);
     pob.node.add(enode, node);
     return enode;
   }

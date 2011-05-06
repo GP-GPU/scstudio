@@ -10,6 +10,7 @@ class EventArea(object):
 		self.width = None
 		self.instance = None
 		self.type = t
+		self.marked = False
 	def __setattr__(self, name, value):
 		if name == "next":
 			object.__setattr__(self, name, value)

@@ -6,6 +6,7 @@ class Event(object):
 		self.position = (0, 0)
 		self.message = None
 		self.area = None
+		self.marked = False
 		if original:
 			self.position = original.position
 	def __getattr__(self, name):

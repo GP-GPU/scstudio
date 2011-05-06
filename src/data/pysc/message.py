@@ -15,6 +15,7 @@ class CompleteMessage(object):
 		self.label = label
 		self.send_event = sender
 		self.receive_event = receiver
+		self.marked = False
 	def __getattr__(self, name):
 		if name == "sender":
 			if self.send_event:
@@ -75,6 +76,7 @@ class IncompleteMessage(object):
 		self.dot_position = None
 		self.instance_label = None
 		self.event = None
+		self.marked = False
 	def __getattr__(self, name):
 		if name == "is_glued":
 			return self.event != None
