@@ -416,11 +416,12 @@ int PyConv::convert_bmsc(const BMscPtr& bmsc){
           PyObject *pevent = create_event(event, "StrictEvent");
           ERRNULL(pevent);
           PyObject_SetAttrString(parea, "event", pevent);
-          if(event->get_successor() != NULL){
+	  // Successors are handled when events are added to the area
+/*          if(event->get_successor() != NULL){
             PyObject *psucc = create_event(event->get_successor(), "StrictEvent");
             ERRNULL(psucc);
             PyObject_SetAttrString(pevent, "successor", psucc);
-          }
+          }*/
           tuple = PyTuple_New(2);
           ERRNULL(tuple);
           PyTuple_SetItem(tuple, 0, PyFloat_FromDouble(event->get_position().get_x()));
