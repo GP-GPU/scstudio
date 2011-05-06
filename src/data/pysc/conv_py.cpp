@@ -275,6 +275,9 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
         boost::dynamic_pointer_cast<CoregionArea>(carea)->add_event(cevent);
         }
       }
+      carea->set_begin_height(PyFloat_AsDouble(PyObject_GetAttrString(area, "begin_height")));
+      carea->set_end_height(PyFloat_AsDouble(PyObject_GetAttrString(area, "end_height")));
+      carea->set_width(PyFloat_AsDouble(PyObject_GetAttrString(area, "width")));
     }
   }
   return 0;

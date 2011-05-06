@@ -491,6 +491,9 @@ int PyConv::convert_bmsc(const BMscPtr& bmsc){
           }
         }
       }
+      PyObject_SetAttrString(parea, "begin_height", PyFloat_FromDouble(area->get_begin_height()));
+      PyObject_SetAttrString(parea, "end_height", PyFloat_FromDouble(area->get_end_height()));
+      PyObject_SetAttrString(parea, "width", PyFloat_FromDouble(area->get_width()));
     }
   }
   return 0;
