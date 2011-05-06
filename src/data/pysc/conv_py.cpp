@@ -249,10 +249,6 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
           CoregionEventPtr cevent = boost::dynamic_pointer_cast<CoregionEvent>(create_event(event));
           ERRNULL(cevent);
 	  cevent->set_area((boost::dynamic_pointer_cast<CoregionArea>(carea)).get());
-	  if(PyObject_GetAttrString(event, "is_minimal") == Py_True)
-            boost::dynamic_pointer_cast<CoregionArea>(carea)->add_minimal_event(cevent.get());
-	  if(PyObject_GetAttrString(event, "is_maximal") == Py_True)
-	    boost::dynamic_pointer_cast<CoregionArea>(carea)->add_maximal_event(cevent.get());
           tuple = PyObject_GetAttrString(event, "position");
           if(tuple != Py_None){
 	    MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
@@ -276,6 +272,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
 	    CoregEventRelPtr ccorevrel = CoregEventRelPtr(new CoregionEventRelation(cpred.get(), csucc.get()));
 	    cevent->add_successor(ccorevrel);
           }
+        boost::dynamic_pointer_cast<CoregionArea>(carea)->add_event(cevent);
         }
       }
     }

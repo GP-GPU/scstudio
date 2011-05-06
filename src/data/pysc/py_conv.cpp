@@ -459,6 +459,7 @@ int PyConv::convert_bmsc(const BMscPtr& bmsc){
             PyObject_SetAttrString(parea, "minimal_event", pevent);
 	  if((*epos)->is_maximal())
 	    PyObject_SetAttrString(parea, "maximal_event", pevent);
+          PyObject_SetAttrString(pevent, "area", parea);
           tuple = PyTuple_New(2);
           ERRNULL(tuple);
           PyTuple_SetItem(tuple, 0, PyFloat_FromDouble((*epos)->get_position().get_x()));
