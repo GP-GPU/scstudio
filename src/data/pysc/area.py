@@ -101,7 +101,7 @@ class CoregionArea(EventArea):
 		self.form = None
 		self.minimal_events = Set([])
 		self.maximal_events = Set([])
-		self.events = Set([])
+		self.aevents = Set([])
 	def add_minimal_event(self, event):
 		event.area = self
 		self.minimal_events.insert(event)
@@ -111,7 +111,7 @@ class CoregionArea(EventArea):
 		except:
 			pass
 	def add_event(self, event = CoregionEvent()):
-		self.events.insert(event)
+		self.aevents.insert(event)
 		if event.is_minimal:
 			self.minimal_events.insert(event)
 		elif event.is_maximal:
@@ -129,8 +129,8 @@ class CoregionArea(EventArea):
 	def __getattr__(self, name):
 		if name == "is_empty":
 			return len(self.minimal_events) == 0
-		#elif name == "events":
-		#	return self.minimal_events | self.maximal_events
+		elif name == "events":
+			return self.aevents | self.minimal_events | self.maximal_events
 		elif name == "levents":
 			l = list(self.minimal_events)
 			for e in l:
@@ -145,5 +145,9 @@ class CoregionArea(EventArea):
 			self.add_minimal_event(value)
 		elif name == "maximal_event":
 			self.add_maximal_event(value)
+		elif name == "aevent":
+			self.aevents.insert(value)
+		elif name == "event":
+			self.add_event(value)
 		else:
 			EventArea.__setattr__(self, name, value)
