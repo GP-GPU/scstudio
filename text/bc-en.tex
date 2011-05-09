@@ -917,7 +917,12 @@ If user wish to add a checking algorithm to this checker the user must name the 
 
 The universal checker is implemented as any other Python checker and therefore can be run from GUI as any other checker.
 
-If any of the checking algorithms failed the universal checker will return the output that the failed checkers returned along with new HMsc (or BMsc) labelled with the name of failed property.
+\section{Input and output handling}
+The input that checkers get is converted from its C++ counterpart by PyConv class and is independent of the original data. Therefore modifications can be performed on the supplied HMsc or BMsc and the input can be returned by checkHMsc or checkBMsc in its modified form.
+
+Once the property of checker is not satisfied the checker shall return a HMsc or BMsc that does not satisfy the property. The HMsc or BMsc can be modified without influencing its original C++ counterpart. Once a BMsc or HMsc is returned it is converted back to C++ and any other operations can be performed to the new C++ data structure.
+
+Sometimes it might be useful to mark elements that does not satisfy the property of checker. The attribute marked was created for this purpose. The attribute's default value is False indicating that the element is not marked. If you wish to mark an element you just have to set the value of the attribute marked to True. When new HMsc or BMsc is converted from its C++ counterpart all the elements are unmarked.
 
 \chapter{Conclusion}
 In this thesis the notation for writing high-level checking algorithms was introduced. The notation was completely described and explained on examples. As was shown on examples the notation is simple and powerful enough.
