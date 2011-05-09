@@ -902,7 +902,7 @@ The conversion is done within the checker function described in previous section
 
 This class consists of several functions for conversion of C++ data structures to Python objects. The class iterates the given BMsc or HMsc and creates and fills every corresponding structure that it finds during the iteration.
 
-In the end when checking algorithm of the class returns list of HMscs or BMscs it will find corresponding C++ structures and return them as a list (this can be done easily thanks to the usage of mapper between PyObjects and C++ structures).
+In the end when checking algorithm of the class returns list of HMscs or BMscs it will create new corresponding C++ structures and return them as a list.
 
 The conversion and data handling between the two data models was abstracted and hidden from the users this way.
 
@@ -916,8 +916,8 @@ This is done by introducing new Python package\footnote{Package in Python refers
 If user wish to add a checking algorithm to this checker the user must name the file appropriately and place it in the directory of pyscuser package that was created purely for this purpose. The naming shall reflect the basic property of the checker. If the new checker implements function checkHMsc the name of the checker shall reflect it by placing capital H anywhere in it. If the new checker implements function checkBMsc the checker should have capital B in its name. Please note that checker must also have standard Python extension (.py) and cannot have two underscores at the beginning of its name (this is mostly due to standard Python convention where modules and variables starting with underscores are considered to be private or protected and are usually used for internal purposes of Python).
 
 The universal checker is implemented as any other Python checker and therefore can be run from GUI as any other checker.
+\markit{Input and output handling}
 
-\section{Input and output handling}
 The input that checkers get is converted from its C++ counterpart by PyConv class and is independent of the original data. Therefore modifications can be performed on the supplied HMsc or BMsc and the input can be returned by checkHMsc or checkBMsc in its modified form.
 
 Once the property of checker is not satisfied the checker shall return a HMsc or BMsc that does not satisfy the property. The HMsc or BMsc can be modified without influencing its original C++ counterpart. Once a BMsc or HMsc is returned it is converted back to C++ and any other operations can be performed to the new C++ data structure.
