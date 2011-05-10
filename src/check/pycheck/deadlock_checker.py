@@ -63,28 +63,3 @@ def checkHMsc(h, chm):
         return [n.owner]
     print("Got pass")
     return []
-
-def isPath(n, bmsc):
-    a = n[0]
-    if not a.StartNode:
-        # First one is not start node
-        return False
-    for j in range(len(n)):
-        if n[j].StartNode and (n[j], n[j+1]) not in n[j].owner.NodeRelation:
-            print("tuple " + str((n[j], n[j+1])) + " is not in NodeRelation")
-            return False
-        if n[j].ReferenceNode and n[j].msc.HMsc and n[j+1] != n[j].msc.start:
-            print("successor of ReferenceNode must be StartNode of referenced Msc")
-            return False
-        if (n[j].ConnectionNode or (n[j].ReferenceNode and n[j].msc.BMsc)) and (n[j], n[j+1]) not in n[j].owner.NodeRelation:
-            # Problem
-            return False
-        if n[j].EndNode:
-            def condition(node):
-                return node.ReferenceNode and node.msc == n[j].owner
-            if filter(condition, n) == []:
-                # Not last End node and have no follower
-                return False
-    # We tested everything and everything is clean
-    return True
-

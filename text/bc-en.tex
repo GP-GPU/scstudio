@@ -351,9 +351,9 @@ Function range(I, J, K) is defined and it returns a list that contains numbers f
 \chapter{Extending data model}
 
 \section{Introduction to Msc}
-The MSC is a shortcut for Message Sequence Chart. It was defined by ITU-T\cite{itu-t} in Z.120\cite{z120} standard. The ITU-T describes it in the following way:
+The MSC is a shortcut for Message Sequence Chart. It was defined by ITU-T\cite{itu-t} in Z.120\cite{z120} standard (recommendation). It can be described in the following way:
 \begin{quote}
-Message Sequence Chart (MSC) is a graphical and textual language for the description and specification of the interactions between system components. Message Sequence Charts are mainly used as a specification of real-time system behavior, in particular of telecommunication switching systems. Message Sequence Charts may be used for requirement, interface and test-case specification, simulation, validation and documentation of real-time systems.\cite{itudef}
+MSC is a graphical and textual language for the description and specification of the interactions between system components. The main area of application for Message Sequence Charts is as an overview specification of the communication behaviour of real-time systems, in particular telecommunication switching systems. Message Sequence Charts may be used for requirement specification, simulation and validation, test-case specification and documentation of real-time systems.\cite{sdl-forum}
 \end{quote}
 
 MSC consists of two languages: Basic Message Sequence Chart (BMSC) and High level Message Sequence Chart (HMSC). BMSC defines a sequence of messages that are passed between the systems while HMSC defines the relations between BMSCs.
@@ -679,7 +679,6 @@ Definition 4.1 from thesis of Jindřich Babica defines subset of all the hmsc's.
 \begin{lstlisting}
 def referenced(h):
     if h.HMsc:
-        # Msc must be HMsc
         # Initialization, step 1, h is in referenced(h)
         ref = [h]
     # Recursive part, over all the HMsc's that are (or will be) part of the referenced(h) and all its nodes, we're looking for their msc's and adding new HMsc's
@@ -687,14 +686,14 @@ def referenced(h):
         for n in k.nodes:
             if n.ReferenceNode and n.msc:
                 msc = n.msc
-                if msc.HMsc:
+                if msc.HMsc and msc not in ref:
                     ref.append(msc)
     return ref
 \end{lstlisting}
 Definition 4.2 defines simple property of being BMsc-graph (being HMsc and being the only member of the own referenced set). Following function can directly be defined:
 \begin{lstlisting}
 def isBMscGraph(h):
-    if h.HMsc and referenced(h) == [h]:
+    if h and h.HMsc and referenced(h) == [h]:
         return True
     else:
         return False
@@ -703,12 +702,12 @@ Definition 4.3 defines path. Since every node knows its successors and its prede
 \begin{lstlisting}
 def traverse(n, l = []):
     # input is node n and optional list l (of already traversed nodes)
-    if n.ReferenceNode and n.msc and n.msc.HMsc and n.msc.start not in l:
+    if n and n.ReferenceNode and n.msc and n.msc.HMsc and n.msc.start not in l:
         # Found new HMsc in reference node, traversing
         l.append(n.msc.start)
         traverse(n.msc.start, l)
     for node in n.succ:
-        if node not in l:
+        if node and node not in l:
             l.append(node)
             traverse(node, l)
         else:
@@ -753,16 +752,16 @@ Using the basic 5 definitions, high-level code that suffices suggested notation 
 \section{Livelock checker}
 Livelock checker is quite similar to deadlock checker. It uses the same path notion when traversing the nodes. Specific cyclic traverser can be defined to detect all the cycles in the hmsc and look for a livelock.
 \begin{lstlisting}
-def find_node_livelock(node, l = []):
+def find_node_livelock(node, original, l = []):
     found = Set([]) # Set of HMscs that does not satisfy this condition
     if node.ReferenceNode and node.msc and node.msc.HMsc:
         # Found reference node that references HMsc
-        found |= find_node_livelock(node.msc.start, l)
+        found |= find_node_livelock(node.msc.start, original, l)
     for n in node.succ:
         if n not in l:
             # Node that was not traversed in this path
             l.append(n)
-            found |= find_node_livelock(n, l)
+            found |= find_node_livelock(n, original, l)
             l.pop()
         else:
             # Reached same node -> cycle
@@ -772,7 +771,7 @@ def find_node_livelock(node, l = []):
                 if i.ReferenceNode:
                     ref = True
                     # Modify for end node
-                    if [x for x in i.reachable if x.EndNode and x.owner == i.msc]:
+                    if [x for x in i.reachable if x.EndNode and x.owner == original]:
                         # Reachable EndNode was found
                         ref = False
             if ref:
@@ -781,16 +780,18 @@ def find_node_livelock(node, l = []):
     return found
 \end{lstlisting}
 
+The attribute original refers to the original HMsc that and it is necessary for finding EndNode that belongs to the HMsc.
+
 The traverser works almost the same way as the one for deadlock checker with an exception of pop after recursive call (and dealing with the livelock search but that is not a direct part of the traverser).
 
 Cycle is quite easily detected (the same node is hit in the road) and extracted (everything from the place that node begins). The rest of the pseudocode looks for a cycle with a ReferenceNode that has no reachable EndNode.
 
-The algorithm above uses function find\_livelock that has Msc as an argument. Therefore following function that extends the algorithm to its final look can be defined:
+The algorithm above defines function find\_node\_livelock that has node as an argument. Therefore following function that extends the algorithm to its final look must be defined:
 \begin{lstlisting}
 def find_livelock(h, l = []):
     if h.HMsc:
         l.append(h.start)
-        hmscs = find_node_livelock(h.start, l)
+        hmscs = find_node_livelock(h.start, h, l)
         l.pop()
     return hmscs
 \end{lstlisting}
@@ -804,11 +805,8 @@ def buildVisOrder(bmsc):
     order = Set()
     for e1 in bmsc.events:
         for e2 in bmsc.events:
-            # Over all the tuples of events
-            if (e1 == e2) or (e1.area.StrictOrderArea and e1.successor == e2) or ((e1, e2) in bmsc.CoregionEventRelation) or (e1.message.CompleteMessage and e1.is_send and e1.message.receive_event == e2) or (e1.area.next == e2.area):
-                # The tuple satisfy one of the conditions
+            if (e1 == e2) or (e1.area and e1.area.StrictOrderArea and e1.successor == e2) or ((e1, e2) in bmsc.CoregionEventRelation) or (e1.message and e1.message.CompleteMessage and e1.is_send and e1.message.receive_event == e2) or (e1.area and e1.area.next == e2.area):
                 order += (e1, e2)
-    # We need to return transitive closure so we'll use predefined function
     return order.transitive()
 \end{lstlisting}
 The function consists of the composed condition and transitive closure. It iterates over all the events in bmsc and inserts the events that satisfy given condition or are in its transitive closure (reflexive closure is part of the condition).
@@ -816,7 +814,6 @@ The function consists of the composed condition and transitive closure. It itera
 The result of the effort is the definition of acyclic BMsc so that function \T{is\_acyclic} that tests whether computed visual order relation is antisymmetric visual order can be defined. 
 \begin{lstlisting}
 def is_acyclic(bmsc):
-    # Create/find visual order relation
     visOrdRel = buildVisOrder(bmsc)
     # Test on antisymmetry
     for (i, j) in visOrdRel:
@@ -827,14 +824,15 @@ def is_acyclic(bmsc):
 
 The extension for the HMsc is quite straightforward and can be defined quite easily.
 \begin{lstlisting}
-def hmsc_is_acyclic(h):
+def hmsc_is_not_acyclic(h):
+    failed = Set()
     for h1 in referenced(h):
         for n in h1.nodes:
-            if n.ReferenceNode and n.msc.BMsc:
-                # Check that all the referenced BMscs are acyclic
+            if n and n.ReferenceNode and n.msc and n.msc.BMsc:
+                print("Running is_acyclic")
                 if not is_acyclic(n.msc):
-                    return False
-    return True
+                    failed += n.owner
+    return failed
 \end{lstlisting}
 
 The function just iterates over all the nodes of all the referenced HMscs looking for a ReferenceNode that references BMsc. Once the node is found, regular is\_acyclic function for BMsc is called.
@@ -845,13 +843,13 @@ The function just iterates over all the nodes of all the referenced HMscs lookin
 The definition of FIFO checker is based on the previous definitions and algorithms. The function itself just iterates over the events of a BMsc looking for two events satisfying given condition. The extension for HMsc is quite straightforward and very similar to the extension for acyclic checker. Implementation of the HMsc extension in the pseudocode can be found in fifo\_checker.py.
 \begin{lstlisting}
 def is_fifo(bmsc, chm):
-    visOrder = buildVisOrder(bmsc)
     if not is_acyclic(bmsc):
         # BMsc is not acyclic, hence false
         return False
+    visOrder = buildVisOrder(bmsc)
     for e1 in bmsc.events:
         for e2 in bmsc.events:
-            if chm.same_channel(e1, e2) and (e1, e2) in visOrder and e1.message.CompleteMessage and e2.message.CompleteMessage and not (e1.matching_event, e2.matching_event) in visOrder:
+            if e1.is_receive and e2.is_receive and chm.same_channel(e1, e2) and (e1, e2) in visOrder and e1.message and e2.message and e1.message.CompleteMessage and e2.message.CompleteMessage and not ((e1.matching_event, e2.matching_event) in visOrder):
                 return False
     return True
 \end{lstlisting}
