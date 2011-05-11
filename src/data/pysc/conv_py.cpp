@@ -238,12 +238,6 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
           StrictEventPtr cevent = boost::dynamic_pointer_cast<StrictEvent>(create_event(event));
           ERRNULL(cevent);
 	  boost::dynamic_pointer_cast<StrictOrderArea>(carea)->add_event(cevent);
-	  // Successors area handled when add_event is used
-/*          if(PyObject_GetAttrString(event, "successor") != Py_None){
-	    StrictEventPtr csucc = boost::dynamic_pointer_cast<StrictEvent>(create_event(PyObject_GetAttrString(event, "successor")));
-            ERRNULL(csucc);
-	    cevent->set_successor(csucc);
-          }*/
           tuple = PyObject_GetAttrString(event, "position");
 	  if(tuple != Py_None){
 	    MscPoint mpnt(PyFloat_AsDouble(PyTuple_GetItem(tuple, 0)), PyFloat_AsDouble(PyTuple_GetItem(tuple, 1)));
@@ -257,7 +251,7 @@ int ConvPy::convert_bmsc(PyObject *bmsc){
         carea = create_area(area);
         ERRNULL(carea);
 	cinst->add_area(carea);
-        // Not now, can't set form...
+        // Can't set form...
 	/*if(coregion_area->get_form() == LINE)
           PyObject_SetAttrString(parea, "form", PyUnicode_FromString("line"));
         else
