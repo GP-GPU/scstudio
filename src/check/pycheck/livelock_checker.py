@@ -18,7 +18,6 @@ def find_node_livelock(node, original, l = []):
 			for i in cycle:
 				if i.ReferenceNode:
 					ref = True
-					# Modify for end node
 					if [x for x in i.reachable if x.EndNode and x.owner == original]:
 						# Reachable EndNode was found
 						ref = False
