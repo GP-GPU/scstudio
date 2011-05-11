@@ -53,6 +53,15 @@ std::wstring get_label(PyObject *py){
   return clabel;
 }
 
+std::string get_slabel(PyObject *py){
+  PyObject *plabel = PyObject_GetAttrString(py, "label");
+  PyObject *pby = PyUnicode_AsEncodedString(plabel, "utf-8", "Error ~");
+  const char *cstr = PyBytes_AS_STRING(pby);
+  std::string clabel(cstr);
+  Py_XDECREF(pby);
+  return clabel;
+}
+
 int ConvPy::typed_msc(PyObject *msc){
   if(PyObject_GetAttrString(msc, "BMsc") == Py_True)
     return convert_bmsc(msc);
@@ -381,7 +390,7 @@ int ConvPy::convert_hmsc(PyObject *hmsc){
     ConditionNodePtr condition_node = boost::dynamic_pointer_cast<ConditionNode>(cnode);
     if(condition_node != NULL){
       chmsc->add_node(condition_node);
-      //condition_node->assign_label(get_label(node)); // Only string, not wstring, change it
+      condition_node->assign_label(get_slabel(node));
     }
 
     ConnectionNodePtr connection_node = boost::dynamic_pointer_cast<ConnectionNode>(cnode);
