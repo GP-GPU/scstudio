@@ -8,6 +8,7 @@ TARGET_LINK_LIBRARIES(py_convert_test
 )
 ADD_TEST(py_convert_test ${EXECUTABLE_OUTPUT_PATH}/py_convert_test)
 
+IF(ANTLR_FOUND)
 ADD_EXECUTABLE(py_test
   py_test.cpp)
 TARGET_LINK_LIBRARIES(py_test
@@ -16,7 +17,7 @@ TARGET_LINK_LIBRARIES(py_test
   scpycheck
 )
 ADD_TEST(py_test ${EXECUTABLE_OUTPUT_PATH}/py_test)
-
+ENDIF(ANTLR_FOUND)
 
 ADD_EXECUTABLE(universal_boundedness_checker_test
   universal_boundedness_checker_test.cpp
