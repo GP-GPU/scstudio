@@ -28,8 +28,8 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
     std::cout << "Cannot create PyUnicode pyscuser";
     return ret;
   }
-  PyObject *module = PyImport_Import(name);
-  if(!module){
+  PyObject *tmod = PyImport_Import(name);
+  if(!tmod){
     std::cout << "Module pyscuser cannot be imported.";
     std::cout << "You should install it.";
     if(PyErr_Occurred()){
@@ -37,6 +37,16 @@ std::map<char *, wchar_t *> list_checkers(const char *var){
       return ret;
     }
   }
+  PyObject *module = PyImport_ReloadModule(tmod);
+  if(!module){
+    std::cout << "Module pyscuser cannot be reloaded.";
+    std::cout << "It looks like some wrong modification.";
+    if(PyErr_Occurred()){
+      PyErr_Print();
+      return ret;
+    }
+  }
+  Py_XDECREF(tmod);
   PyObject *dict = PyModule_GetDict(module);
   if(!dict){
     std::cout << "Cannot extract dictionary from pyscuser.";

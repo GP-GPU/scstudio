@@ -42,14 +42,24 @@ int PyConv::init(const char *module){
     DPRINT(module << " cannot be converted to PyUnicode");
     return 0;
   }
-  pob.module = PyImport_Import(pob.name);
-  if(pob.module == NULL){
+  PyObject *tmod = PyImport_Import(pob.name);
+  if(tmod == NULL){
     DPRINT(module << " cannot be imported");
     DPRINT("You must first install it (by default using setup.py installation file).");
     if(PyErr_Occurred())
       PyErr_Print();
+     return 0;
+  }
+  pob.module = PyImport_ReloadModule(tmod);
+  if(pob.module == NULL){
+    DPRINT(module << " cannot be reloaded");
+    DPRINT("Probably wrong modifications.");
+    if(PyErr_Occurred())
+      PyErr_Print();
     return 0;
   }
+  Py_XDECREF(tmod);
+
   pob.pDict = PyModule_GetDict(pob.module);
   if(pob.pDict == NULL){
     DPRINT("Cannot extract dictionary from " << module);
